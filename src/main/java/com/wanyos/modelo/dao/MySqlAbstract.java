@@ -7,8 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author wanyos
@@ -22,7 +20,7 @@ public class MySqlAbstract {
     private final String sql_dia_cambio = "select fecha from cambio where dia_pedido=?";
     private final String sql_dia_pedido = "select fecha from generado where fecha_disfrute=?";
     private final String sql_dia_festivo = "select fecha from festivo where fecha=?";
-    
+    private final String sql_dia_servicio = "select fecha from servicio where fecha=?";
     
     protected void closeObjetos(ResultSet rs, PreparedStatement ps) {
         if (rs != null) {
@@ -112,11 +110,14 @@ public class MySqlAbstract {
         return this.existeFecha(cx, sql_dia_pedido, fecha);
     }
     
-    
+    protected boolean getDiaServicio(Connection cx, LocalDate fecha){
+        return this.existeFecha(cx, sql_dia_servicio, fecha);
+    }
     
     
     /**
      * Comprueba si la fecha es un dia festivo, o el dia de la semana
+     * @param cx
      * @param fecha
      * @return tipo de dia: L=laboral S=sabado F=festivo
      */

@@ -1,7 +1,6 @@
 
 package com.wanyos.controlador;
 
-import com.wanyos.modelo.Turno;
 import com.wanyos.modelo.dao.MySqlManagerDao;
 import com.wanyos.modelo.dao.MySqlServicioDao;
 import com.wanyos.vista.PnAbstract;
@@ -24,20 +23,27 @@ public class CtrNombramiento {
         pn_nombramiento = new PnNombramiento(lbl_mensaje, this);
         manager_dao = new MySqlManagerDao();
         mysql_servicio = manager_dao.getServicioDao();
+        if(mysql_servicio == null){
+            pn_nombramiento.setMensajeLbl("Error no existe conexión con la BD...");
+        }
     }
     
     
     public PnAbstract getPnNombramiento(){
-        return this.pn_nombramiento;
+        if(mysql_servicio != null){
+            return this.pn_nombramiento;
+        }
+        return null;
     }
     
     public String getDiaDisponible(LocalDate fecha){
-        String mensaje = "disponible";
+         String mensaje = "disponible";
         String mensaje_libre = getDiaLibreDisponible(fecha);
         String mensaje_vacacion = getDiaVacacionDisponible(fecha);
         String mensaje_baja = getDiaBajaDisponible(fecha);
         String mensaje_cambio = getDiaCambioDisponible(fecha);
         String mensaje_pedido = getDiaPedidoDisponible(fecha);
+        String mensaje_servicio = getDiaServicio(fecha);
         
         if(!mensaje_baja.equalsIgnoreCase(mensaje)){
             return mensaje_baja;
@@ -51,8 +57,10 @@ public class CtrNombramiento {
             return mensaje_cambio;
         } else if(!mensaje_pedido.equalsIgnoreCase(mensaje)){
             return mensaje_pedido;
+        } else if(!mensaje_servicio.equalsIgnoreCase(mensaje)){
+            return mensaje_servicio;
         }
-        return mensaje;
+          return mensaje;
     }
     
     /**
@@ -124,6 +132,20 @@ public class CtrNombramiento {
         }
         return mensaje;
     }
+    
+    /**
+     * Fecha no es un dia ya trabajado
+     * @param fecha
+     * @return 
+     */
+    private String getDiaServicio(LocalDate fecha){
+        String mensaje = "disponible";
+        boolean existe = mysql_servicio.getDiaServicio(fecha);
+        if(existe){
+            return "trabajado";
+        }
+        return mensaje;
+    }
    
     /**
      * Si el turno existe como turno de un cuadro existente
@@ -138,23 +160,61 @@ public class CtrNombramiento {
     }
     
     
-    public boolean setGuardarDatos(LocalDate fecha, String [] turno_linea, String [] horario, String nota){
-       Turno t = new Turno(fecha, turno_linea[0], turno_linea[1],
-                            horario[0],horario[1],horario[2],horario[3],horario[4],horario[5],horario[6],
-                            horario[7],horario[8],horario[9],horario[10],horario[11],nota);
-        mysql_servicio.insert(t);
-        return true;
+    public String[] getDatosOtroServicio(LocalDate fecha, String puesto){
+        String [] datos_otro_ser = mysql_servicio.getDatosOtroServicio(fecha, puesto);
+        return datos_otro_ser;
     }
     
-    public boolean setEditarDatos(String [] turno_linea, String [] horario, String nota){
-        
-        return true;
+    public String [] getPuesto (String puesto, String descripcion){
+        String [] datos_puesto = mysql_servicio.getPuesto(puesto, descripcion);
+        return datos_puesto;
     }
     
-    public boolean setEliminarDatos(String [] turno_linea, String [] horario, String nota){
-        
-        
-        return true;
+    
+    public boolean setGuardarDatosTurno(LocalDate fecha, String turno, String linea, String nota){
+        int v = mysql_servicio.insertServicio(fecha, turno, linea, null, null, null, nota);
+        if(v == 1){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean setGuardarDatosOtro(LocalDate fecha, String puesto, String descripcion, String [] datos, String nota) {
+        int v = mysql_servicio.insertServicio(fecha, null, null, puesto, descripcion, datos, nota);
+        if(v == 1){
+            return true;
+        }
+        return false;
+    }
+    
+    public String [] getDatosServicio(LocalDate fecha){
+        String [] datos = null;
+        datos = mysql_servicio.getDatosServicio(fecha);
+        return datos;
+    }
+    
+    public boolean setGuardarEditarTurno(LocalDate fecha, String turno, String linea, String nota) {
+        int v = mysql_servicio.setTurno(fecha, turno, linea, nota);
+        if (v == 1) {
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean setGuardarEditarOtro(LocalDate fecha, String puesto, String descripcion, String [] datos, String nota){
+        int v = mysql_servicio.setGuardarEditarOtro(fecha, puesto, descripcion, datos, nota);
+        if(v == 1){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean setEliminarDatos(LocalDate fecha){
+        int v = mysql_servicio.deleteServicio(fecha);
+        if(v == 1){
+            return true;
+        }
+        return false;
     }
     
   

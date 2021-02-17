@@ -45,7 +45,8 @@ public class FremeInit extends javax.swing.JFrame {
         pn_ctr = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(600, 500));
+        setMinimumSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(900, 600));
 
         pn_frame.setBackground(new java.awt.Color(51, 153, 255));
         pn_frame.setLayout(new java.awt.BorderLayout());
@@ -157,8 +158,11 @@ public class FremeInit extends javax.swing.JFrame {
         this.lbl_titulo.setText("Nombramiento...");
         this.lbl_mensaje.setText(" --- ");
         CtrNombramiento ctr_nombramiento = new CtrNombramiento(this.lbl_mensaje);
-        this.setPanel(ctr_nombramiento.getPnNombramiento());
-        
+        try{
+            this.setPanel(ctr_nombramiento.getPnNombramiento());
+        } catch(NullPointerException e){
+            
+        }
     }//GEN-LAST:event_btn_nombramientoActionPerformed
 
     private void btn_libresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_libresActionPerformed

@@ -3,7 +3,6 @@ package com.wanyos.vista;
 
 import com.wanyos.componentes.Configuraciones;
 import java.awt.Color;
-import java.awt.Font;
 import javax.swing.JPanel;
 
 /**
@@ -22,6 +21,10 @@ public class PnAbstract extends JPanel implements Configuraciones {
     public PnAbstract() {
         initComponents();
         this.btn.setVisible(false);
+    }
+    
+    public void setMensajeLbl(String mensaje){
+        //se sobreescribe en las subclases
     }
 
     

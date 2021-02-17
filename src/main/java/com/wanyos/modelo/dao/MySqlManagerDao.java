@@ -21,9 +21,11 @@ public class MySqlManagerDao implements ManagerDAO {
     
     @Override
     public MySqlServicioDao getServicioDao() {
-        if(mysql_servicio == null){
-           this.cx = conexion.getConexion("emt"); //nombre base datos
-           return new MySqlServicioDao(cx); 
+        if (mysql_servicio == null) {
+            this.cx = conexion.getConexion("emt"); //nombre base datos
+            if (cx != null) {
+                return new MySqlServicioDao(cx);
+            }
         }
         return mysql_servicio;
     }
