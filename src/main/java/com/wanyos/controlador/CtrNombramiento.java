@@ -149,24 +149,27 @@ public class CtrNombramiento {
    
     /**
      * Si el turno existe como turno de un cuadro existente
-     * @param fecha
+     * @param fecha necesaria para obtener el cuadro correspondiente con su temporada
      * @param turno
      * @param linea
      * @return 
      */
     public String[] getDatosTurno(LocalDate fecha, String turno, String linea) {
         String [] datos_turno = mysql_servicio.getTurno(fecha, turno, linea); 
+        comprobarMensajeMysql();
         return datos_turno;    
     }
     
     
     public String[] getDatosOtroServicio(LocalDate fecha, String puesto){
         String [] datos_otro_ser = mysql_servicio.getDatosOtroServicio(fecha, puesto);
+         comprobarMensajeMysql();
         return datos_otro_ser;
     }
     
     public String [] getPuesto (String puesto, String descripcion){
         String [] datos_puesto = mysql_servicio.getPuesto(puesto, descripcion);
+         comprobarMensajeMysql();
         return datos_puesto;
     }
     
@@ -176,6 +179,7 @@ public class CtrNombramiento {
         if(v == 1){
             return true;
         }
+        comprobarMensajeMysql();
         return false;
     }
     
@@ -184,12 +188,14 @@ public class CtrNombramiento {
         if(v == 1){
             return true;
         }
+         comprobarMensajeMysql();
         return false;
     }
     
     public String [] getDatosServicio(LocalDate fecha){
         String [] datos = null;
         datos = mysql_servicio.getDatosServicio(fecha);
+        comprobarMensajeMysql();
         return datos;
     }
     
@@ -198,6 +204,7 @@ public class CtrNombramiento {
         if (v == 1) {
             return true;
         }
+        comprobarMensajeMysql();
         return false;
     }
     
@@ -206,6 +213,7 @@ public class CtrNombramiento {
         if(v == 1){
             return true;
         }
+         comprobarMensajeMysql();
         return false;
     }
     
@@ -214,8 +222,16 @@ public class CtrNombramiento {
         if(v == 1){
             return true;
         }
+         comprobarMensajeMysql();
         return false;
     }
+    
+    private void comprobarMensajeMysql() {
+        if (mysql_servicio.getMensaje() != null) {
+            pn_nombramiento.setMensajeLbl(mysql_servicio.getMensaje());
+        }
+    }
+    
     
   
     

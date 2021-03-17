@@ -42,15 +42,16 @@ public class PnNombramiento extends PnAbstract {
     private CalendarChooser calendar;
     private LocalDate fecha;
     private PanelesNombramiento pn_nombramiento;
-    private JPanel pn_fecha, pn_turno_linea;
-    private JLabel lbl_mensaje;
+    private JPanel pn_fecha; 
+    //private JLabel lbl_mensaje;
     private JTextField aux1, aux2;
     
     
     
     public PnNombramiento(JLabel lbl_mensaje, CtrNombramiento ctr){
+        super(lbl_mensaje);
         this.ctr_nombramiento = ctr;
-        this.lbl_mensaje = lbl_mensaje;
+        //this.lbl_mensaje = lbl_mensaje;
         this.lbl_mensaje.setText(" --- ");
         crearComponent();
         crearPnFecha();
@@ -58,6 +59,9 @@ public class PnNombramiento extends PnAbstract {
         pn_nombramiento = new PanelesNombramiento();
     }
     
+    /**
+     * Componentes propios y añade los listener
+     */
      private void crearComponent(){
         btn_crear = new BtnMenu("Crear");
         btn_buscar = new BtnMenu("Buscar");
@@ -78,6 +82,9 @@ public class PnNombramiento extends PnAbstract {
         btn_eliminar.addActionListener(new OyenteButton());
     }
      
+     /**
+      * Crea el panel fecha con un JCalendarChoose
+      */
      private void crearPnFecha(){
         if(pn_fecha == null){
             pn_fecha = new JPanel();
@@ -106,6 +113,9 @@ public class PnNombramiento extends PnAbstract {
         super.pn_center.updateUI();
     }
      
+     /**
+      * Añade los componentes a la parte derecha del panel Abstract
+      */
       private void addComponentRight(){
         super.pn_right.add(btn_nuevo);
         super.pn_right.add(btn_crear);
@@ -153,7 +163,9 @@ public class PnNombramiento extends PnAbstract {
     
     
     
-    
+    /**
+     * Establece el panel al inicio parta crear un servicio
+     */
     private void setCrearServicio() {
         btn_crear.setEnabled(false);
         btn_buscar.setEnabled(false);
@@ -177,108 +189,18 @@ public class PnNombramiento extends PnAbstract {
         this.crearPnFecha();
     }
 
-    private void setBuscarServicio() {
-       String [] datos = ctr_nombramiento.getDatosServicio(fecha);
-       if(datos != null){
-           this.btn_buscar.setEnabled(false);
-           JPanel pn_turno_linea, pn_horario, pn_nota, pn_puesto_descripcion;
-           String [] datos_servicio;
-           boolean turno = false;
-           
-           if(datos[0] != null && datos[1] != null){
-               //mostrar datos turno y linea
-               pn_turno_linea = pn_nombramiento.getPnTurnoLinea(false, false);
-               pn_nombramiento.setTxtTurno(datos[0]);
-               pn_nombramiento.setTxtLinea(datos[1]);
-               datos_servicio = ctr_nombramiento.getDatosTurno(fecha, datos[0], datos[1]);
-               turno = true;
-               super.pn_center.add(pn_turno_linea);
-           } else {
-               //mostrar datos otro servicio
-               pn_puesto_descripcion = pn_nombramiento.getPnPuestoDescripcion(false);
-               pn_nombramiento.setTxtPuesto(datos[2]);
-               pn_nombramiento.setTxtDescripcion(datos[3]);
-               datos_servicio = ctr_nombramiento.getDatosOtroServicio(fecha, datos[2]);
-               turno = false;
-               super.pn_center.add(pn_puesto_descripcion);
-           }
-           
-           pn_horario = pn_nombramiento.getPnHorario(false, turno);
-           if(datos_servicio != null){
-               setDatosHorario(datos_servicio);
-           }
-           
-           pn_nota = pn_nombramiento.getPnNota(false);
-           pn_nombramiento.setTxtNota(datos[4]);
-           
-           //cargar paneles
-           btn_crear.setEnabled(false);
-           btn_editar.setEnabled(true);
-           btn_eliminar.setEnabled(true);
-           super.pn_center.add(pn_horario);
-           super.pn_center.add(pn_nota);
-           calendar.setEnabled(false);
-           
-       } else {
-           lbl_mensaje.setText("--No existe servicio..."); 
-       }
-        super.pn_center.updateUI();
-    }
-
-    
-    
-    private void setDatosHorario(String [] datos){
-        List<JTextField> cajas_horario = pn_nombramiento.getTxtCajasHorario();
-        int contador = 0;
-        for(JTextField aux: cajas_horario){
-            aux.setText(datos[contador++]);
-        }
-    }
-    
-    
     private void setPnTurnoLinea(){
         this.cbo_descripcion.setEnabled(false);
-        pn_turno_linea = pn_nombramiento.getPnTurnoLinea(true, true);
+        super.pn_center.add(pn_nombramiento.getPnTurnoLinea(true, true));
         this.setListenerBtnBuscarTurno();
-        super.pn_center.add(pn_turno_linea);
         super.pn_center.updateUI();
     }
     
-    private JPanel getPnHorarioTurno (String [] datos_turno){
-        JPanel pn_horario_turno = pn_nombramiento.getPnHorario(false, true);
-        List<JTextField> cajas_horario = pn_nombramiento.getTxtCajasHorario();
-            int contador = 0;
-            for (JTextField aux : cajas_horario) {
-                aux.setText(datos_turno[contador++]);
-            }
-        return pn_horario_turno;
-    }
-    
-    private String[] getHorarioOtroServicio() {
-        String[] datos_otro = new String[6];
-        List<JTextField> cajas_horario = pn_nombramiento.getTxtCajasHorario();
-        int contador = 0;
-        for (JTextField aux : cajas_horario) {
-            datos_otro[contador++] = aux.getText();
-        }
-        return datos_otro;
-    }
-    
-    private void setPnHorarioTurno(JPanel pn_horario_turno) {
-        pn_nombramiento.setEnabledPn(pn_turno_linea, false);
-        JPanel pn_nota = pn_nombramiento.getPnNota(true);
-        JPanel pn_btn_guardar = pn_nombramiento.getPnBtnGuardar();
-        this.setListenerBtnGuardarServicio();
-        this.btn_guardar_servicio.setName("btn_guardar_servicio");
-        
-        this.lbl_mensaje.setText(" --- ");
-        super.pn_center.add(pn_horario_turno);
-        super.pn_center.add(pn_nota);
-        super.pn_center.add(pn_btn_guardar);
-        super.pn_center.updateUI();
-    }
-    
-    private void setOtroServicio(){
+    /**
+     * Se usa para crear un nuevo servicio otro servicio
+     * Si existe el puesto lo muestra con su horario al salir de la caja descripcion
+     */
+    private void setPnOtroServicio(){
         cbo_descripcion.setEnabled(false);
         super.pn_center.add(pn_nombramiento.getPnPuestoDescripcion(true));
         
@@ -299,40 +221,103 @@ public class PnNombramiento extends PnAbstract {
         this.btn_guardar_servicio.setName("btn_guardar_servicio");
         super.pn_center.updateUI();
     }
-
     
-    private void setGuardarDatos() {
-        boolean c = false;
-        if (!pn_nombramiento.getTxtTurno().isEmpty() || !pn_nombramiento.getTxtLinea().isEmpty()) {
-            c = ctr_nombramiento.setGuardarDatosTurno(fecha, pn_nombramiento.getTxtTurno(), pn_nombramiento.getTxtLinea(), pn_nombramiento.getTxtNota());
+    /**
+     * Busca el turno y si existe muestra el horario
+     * Se usa para crear un nuevo servicio en linea
+     * @param pn_horario_turno 
+     */
+    private void setPnHorarioTurno(String [] datos_turno) {
+        JPanel pn_horario_turno = pn_nombramiento.getPnHorario(false, true);
+        List<JTextField> cajas_horario = pn_nombramiento.getTxtCajasHorario();
+            int contador = 0;
+            for (JTextField aux : cajas_horario) {
+                aux.setText(datos_turno[contador++]);
+            }
+        bloquearPanel("pn_turno_linea");
+        JPanel pn_nota = pn_nombramiento.getPnNota(true);
+        JPanel pn_btn_guardar = pn_nombramiento.getPnBtnGuardar();
+        this.setListenerBtnGuardarServicio();
+        this.btn_guardar_servicio.setName("btn_guardar_servicio");
+        
+        this.lbl_mensaje.setText(" --- ");
+        super.pn_center.add(pn_horario_turno);
+        super.pn_center.add(pn_nota);
+        super.pn_center.add(pn_btn_guardar);
+        super.pn_center.updateUI();
+    }
+    
+    
+    /**
+     * Pide a ctr_nombramiento el servicio con la fecha
+     * Si existe lo escribe en sus casillas
+     * Si no existe lo avisa en un mensaje
+     */
+    private void setBuscarServicio() {
+        String[] datos = ctr_nombramiento.getDatosServicio(fecha);
+        if (datos != null) {
+            this.btn_buscar.setEnabled(false);
+            JPanel pn_turno_linea, pn_horario, pn_nota, pn_puesto_descripcion;
+            String[] datos_servicio;
+            boolean turno = false;
+
+            if (datos[0] != null && datos[1] != null) {
+                //mostrar datos turno y linea
+                pn_turno_linea = pn_nombramiento.getPnTurnoLinea(false, false);
+                pn_nombramiento.setTxtTurno(datos[0]);
+                pn_nombramiento.setTxtLinea(datos[1]);
+                datos_servicio = ctr_nombramiento.getDatosTurno(fecha, datos[0], datos[1]);
+                turno = true;
+                super.pn_center.add(pn_turno_linea);
+            } else {
+                //mostrar datos otro servicio
+                pn_puesto_descripcion = pn_nombramiento.getPnPuestoDescripcion(false);
+                pn_nombramiento.setTxtPuesto(datos[2]);
+                pn_nombramiento.setTxtDescripcion(datos[3]);
+                datos_servicio = ctr_nombramiento.getDatosOtroServicio(fecha, datos[2]);
+                turno = false;
+                super.pn_center.add(pn_puesto_descripcion);
+            }
+
+            pn_horario = pn_nombramiento.getPnHorario(false, turno);
+            if (datos_servicio != null) {
+                setDatosHorario(datos_servicio);
+            }
+
+            pn_nota = pn_nombramiento.getPnNota(false);
+            pn_nombramiento.setTxtNota(datos[4]);
+
+            //cargar paneles
+            btn_crear.setEnabled(false);
+            btn_editar.setEnabled(true);
+            btn_eliminar.setEnabled(true);
+            super.pn_center.add(pn_horario);
+            super.pn_center.add(pn_nota);
+            calendar.setEnabled(false);
+
         } else {
-            c = ctr_nombramiento.setGuardarDatosOtro(fecha, pn_nombramiento.getTxtPuesto(), pn_nombramiento.getTxtDescripcion(), getHorarioOtroServicio(), pn_nombramiento.getTxtNota());
+            lbl_mensaje.setText("--No existe servicio...");
         }
-        if (c) {
-            JOptionPane.showMessageDialog(this, "!!! Datos guardados...");
-            this.setNuevoServicio();
-        } else {
-            this.lbl_mensaje.setText("--Error los datos no se han guardado...");
+        super.pn_center.updateUI();
+    }
+    
+    /**
+     * Coloca los datos de horario tanto de turno como puesto
+     * @param datos 
+     */
+    private void setDatosHorario(String [] datos){
+        List<JTextField> cajas_horario = pn_nombramiento.getTxtCajasHorario();
+        int contador = 0;
+        for(JTextField aux: cajas_horario){
+            aux.setText(datos[contador++]);
         }
     }
     
-    private void setGuardarEditar() {
-        boolean c = false;
-        if (!pn_nombramiento.getTxtTurno().isEmpty() || !pn_nombramiento.getTxtLinea().isEmpty()) {
-            c = ctr_nombramiento.setGuardarEditarTurno(fecha, pn_nombramiento.getTxtTurno(), pn_nombramiento.getTxtLinea(), pn_nombramiento.getTxtNota());
-        } else {
-            c = ctr_nombramiento.setGuardarEditarOtro(fecha, pn_nombramiento.getTxtPuesto(), pn_nombramiento.getTxtDescripcion(), getHorarioOtroServicio(), pn_nombramiento.getTxtNota());
-        }
-
-        if (c) {
-            JOptionPane.showMessageDialog(this, "!!! Datos editados...");
-            this.setNuevoServicio();
-        } else {
-            this.lbl_mensaje.setText("--Error los datos no se han editado...");
-        }
-    }
-    
-
+    /**
+     * Desbloque los paneles necesarios para editar un servicio
+     * Si el servicio es otro servicio y se quiere editar con un puesto que no existe
+     * ese puesto lo creara como nuevo.
+     */
     private void setEditar() {
         String[] nombres_pn;
         if (!pn_nombramiento.getTxtTurno().isEmpty() && !pn_nombramiento.getTxtLinea().isEmpty()) {
@@ -365,6 +350,96 @@ public class PnNombramiento extends PnAbstract {
         super.pn_center.updateUI();
     }
     
+    
+    
+    
+    private void setEliminarServicio(){
+        int op = JOptionPane.showConfirmDialog(null, "Confirmar eliminar datos?", "Eliminar...", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(op == 0){
+             boolean c = ctr_nombramiento.setEliminarDatos(fecha);
+            if(c){
+                this.lbl_mensaje.setText("!!!--Datos eliminados... ");
+                this.setNuevoServicio();
+            } else {
+                 this.lbl_mensaje.setText("--Error los datos no se han eliminado...");
+            }
+        }
+    }
+    
+    private void setGuardarDatos() {
+        boolean c = false;
+        if (!pn_nombramiento.getTxtTurno().isEmpty() || !pn_nombramiento.getTxtLinea().isEmpty()) {
+            c = ctr_nombramiento.setGuardarDatosTurno(fecha, pn_nombramiento.getTxtTurno(), pn_nombramiento.getTxtLinea(), pn_nombramiento.getTxtNota());
+        } else {
+            c = ctr_nombramiento.setGuardarDatosOtro(fecha, pn_nombramiento.getTxtPuesto(), pn_nombramiento.getTxtDescripcion(), getHorarioOtroServicio(), pn_nombramiento.getTxtNota());
+        }
+        if (c) {
+            JOptionPane.showMessageDialog(this, "!!!--Datos guardados...");
+            this.setNuevoServicio();
+        } else {
+            this.lbl_mensaje.setText("--Error los datos no se han guardado...");
+        }
+    }
+    
+    private void setGuardarEditar() {
+        boolean c = false;
+        if (!pn_nombramiento.getTxtTurno().isEmpty() || !pn_nombramiento.getTxtLinea().isEmpty()) {
+            c = ctr_nombramiento.setGuardarEditarTurno(fecha, pn_nombramiento.getTxtTurno(), pn_nombramiento.getTxtLinea(), pn_nombramiento.getTxtNota());
+        } else {
+            c = ctr_nombramiento.setGuardarEditarOtro(fecha, pn_nombramiento.getTxtPuesto(), pn_nombramiento.getTxtDescripcion(), getHorarioOtroServicio(), pn_nombramiento.getTxtNota());
+        }
+
+        if (c) {
+            JOptionPane.showMessageDialog(this, "!!!--Datos editados...");
+            this.setNuevoServicio();
+        } else {
+            this.lbl_mensaje.setText("--Error los datos no se han editado...");
+        }
+    }
+    
+    /**
+     * Recoge los datos del puesto de otro servicio
+     * Tanto si existe como si se crea uno nuevo
+     * En la base de datos si el puesto ya existe no lo creara
+     * @return 
+     */
+    private String[] getHorarioOtroServicio() {
+        String[] datos_otro = new String[6];
+        List<JTextField> cajas_horario = pn_nombramiento.getTxtCajasHorario();
+        int contador = 0;
+        for (JTextField aux : cajas_horario) {
+            datos_otro[contador++] = aux.getText();
+        }
+        return datos_otro;
+    }
+
+    
+    
+    
+    
+    
+     private void bloquearPanel(String name){
+        List<JPanel> lista_pn = this.getPaneles();
+        for(JPanel aux: lista_pn){
+            if(aux.getName() != null && aux.getName().equalsIgnoreCase(name)){
+                pn_nombramiento.setEnabledPn(aux, false);
+            }
+        }
+    }
+    
+    private void desbloquearPanel(String nombre_pn) {
+        List<JPanel> lista_pn = this.getPaneles();
+        for (JPanel pn : lista_pn) {
+            if (pn.getName() != null && nombre_pn != null && pn.getName().equalsIgnoreCase(nombre_pn)) {
+                pn_nombramiento.setEnabledPn(pn, true);
+            }
+        }
+    }
+    
+    /**
+     * Retorna lista con todos los paneles de este objeto
+     * @return 
+     */
     private List<JPanel> getPaneles(){
         List<JPanel> lista_pn = new ArrayList<>();
         Stack<JPanel> pila = new Stack<>();
@@ -387,23 +462,7 @@ public class PnNombramiento extends PnAbstract {
         return lista_pn;
     }
     
-    private void bloquearPanel(String name){
-        List<JPanel> lista_pn = this.getPaneles();
-        for(JPanel aux: lista_pn){
-            if(aux.getName() != null && aux.getName().equalsIgnoreCase(name)){
-                pn_nombramiento.setEnabledPn(aux, false);
-            }
-        }
-    }
-    
-    private void desbloquearPanel(String nombre_pn) {
-        List<JPanel> lista_pn = this.getPaneles();
-        for (JPanel pn : lista_pn) {
-            if (pn.getName() != null && nombre_pn != null && pn.getName().equalsIgnoreCase(nombre_pn)) {
-                pn_nombramiento.setEnabledPn(pn, true);
-            }
-        }
-    }
+   
     
     private void limpiarTxtHorario(){
         List<JTextField> lista_txt = pn_nombramiento.getTxtCajasHorario();
@@ -412,19 +471,15 @@ public class PnNombramiento extends PnAbstract {
         }
     }
     
-    private void setEliminarServicio(){
-        int op = JOptionPane.showConfirmDialog(null, "Confirmar eliminar datos?", "Eliminar...", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-        if(op == 0){
-             boolean c = ctr_nombramiento.setEliminarDatos(fecha);
-            if(c){
-                this.lbl_mensaje.setText("--Datos eliminados... ");
-            } else {
-                 this.lbl_mensaje.setText("--Error los datos no se han eliminado...");
-            }
-        } else {
-            setNuevoServicio();
-        }
-    }
+    
+    
+    
+    
+    
+    
+    
+    //  ------------ Clases oyente --------------------------//
+    
     
     private boolean getTurnoCorrect(String turno){
         boolean c = false;
@@ -452,24 +507,19 @@ public class PnNombramiento extends PnAbstract {
         return c;
     }
     
-    
-    
-    
-    
-    
     private class OyenteButton implements ActionListener {
         
       
         @Override
         public void actionPerformed(ActionEvent e) {
             Object obj = e.getSource();
-            
+
             if (obj instanceof JButton) {
                 setFecha();
 
-                 lbl_mensaje.setText(" --- ");
+                lbl_mensaje.setText(" --- ");
                 switch (((JButton) obj).getName()) {
-                    
+
                     //botones menu lateral
                     case "btn_nuevo":
                         setNuevoServicio();
@@ -488,6 +538,7 @@ public class PnNombramiento extends PnAbstract {
                     case "btn_editar":
                         setEditar();
                         break;
+                        
                     case "btn_eliminar":
                         setEliminarServicio();
                         break;
@@ -500,20 +551,19 @@ public class PnNombramiento extends PnAbstract {
                     case "btn_guardar_servicio":
                         setGuardarDatos();
                         break;
-                        
-                    case "btn_editar_servicio":
-                        //setEditarServicio();
-                        break;
-                        
+
                     case "btn_guardar_editar":
                         setGuardarEditar();
                         break;
                 }
-
             }
         }
         
-        
+        /**
+         * Comprueba que la fecha esta disponible, no es libre, vacación, etc
+         * Se usa para crear o buscar un servicio
+         * @param crear 
+         */
         private void eventoComprobarFecha(boolean crear) {
             if (fecha != null) {
                 String mensaje = ctr_nombramiento.getDiaDisponible(fecha);
@@ -530,9 +580,12 @@ public class PnNombramiento extends PnAbstract {
             }
         }
         
+        /**
+         * Busca un turno 
+         * Si existe crea el panel horario e introduce los datos
+         */
         private void eventoBtnBuscarTurno() {
             if (getTurnoCorrect(pn_nombramiento.getTxtTurno()) && getLineaCorrect(pn_nombramiento.getTxtLinea())) {
-                
                 String turno = pn_nombramiento.getTxtTurno();
                 String linea = pn_nombramiento.getTxtLinea();
                 String [] datos_turno =  ctr_nombramiento.getDatosTurno(fecha, turno, linea);
@@ -540,15 +593,13 @@ public class PnNombramiento extends PnAbstract {
                 if (datos_turno[0].equalsIgnoreCase("")) {
                     lbl_mensaje.setText("--No existen datos con ese turno... ");
                 } else {
-                    JPanel pn_turno = getPnHorarioTurno(datos_turno);
-                    setPnHorarioTurno(pn_turno);
+                    setPnHorarioTurno(datos_turno);
                 }
                 
             } else {
                 lbl_mensaje.setText("--Error valor turno y linea...");
             }
         }
-        
     }
     
     
@@ -569,9 +620,8 @@ public class PnNombramiento extends PnAbstract {
                         setPnTurnoLinea();
 
                     } else if (select.contains("Otros")) {
-                        setOtroServicio();
+                        setPnOtroServicio();
                     }
-
                 }
             }
         }
@@ -586,7 +636,6 @@ public class PnNombramiento extends PnAbstract {
         public void propertyChange(PropertyChangeEvent evt) {
             lbl_mensaje.setText(" --- ");
         }
-           
        }
        
        
@@ -622,7 +671,6 @@ public class PnNombramiento extends PnAbstract {
                 obj.setForeground(Color.red);
                 bloquearPanel("pn_guardar");
             }
-
         }
     }
       
@@ -689,7 +737,6 @@ public class PnNombramiento extends PnAbstract {
                 }
             }
         }
-
     }
     
     

@@ -12,7 +12,8 @@ public class MySqlManagerDao implements ManagerDAO {
     
     
     private Connection cx;
-    private MySqlServicioDao mysql_servicio;
+    private MySqlServicioDao mysql_servicio; 
+    private MySqlCalendarioDao mysql_calendario;
     private final Conexion conexion;
     
     public MySqlManagerDao(){
@@ -30,7 +31,15 @@ public class MySqlManagerDao implements ManagerDAO {
         return mysql_servicio;
     }
 
-    
+    public MySqlCalendarioDao getCalendarioDao(){
+        if (mysql_calendario == null) {
+            this.cx = conexion.getConexion("emt"); //nombre base datos
+            if (cx != null) {
+                return new MySqlCalendarioDao(cx);
+            }
+        }
+        return mysql_calendario;
+    }
     
     
 }

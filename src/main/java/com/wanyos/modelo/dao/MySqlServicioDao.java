@@ -33,12 +33,20 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
     private String sql_get_otro_servicio = "select * from puesto inner join otro_servicio on puesto.id_puesto = otro_servicio.puesto where fecha=? and puesto=?";
     private String sql_delete_servicio = "delete from servicio where fecha=?";
     private String sql_set_servicio = "update servicio set turno=?, linea=?, puesto=?, descripcion=?, nota=? where fecha=?";
-    private String sql_set_puesto = "update puesto set descripcion=?, h_init=?, l_init=?, dir_init=?, h_fin=?, l_fin=?, dir_fin=? where id_puesto=?";
     private String sql_set_otro_servicio = "update otro_servicio set puesto=? where fecha=?";
     private String sql_get_puesto = "select * from puesto where id_puesto=?";
+    private String mensaje;
     
     public MySqlServicioDao(Connection cx){
         this.cx = cx;
+    }
+    
+    public void setMensaje(String m){
+        mensaje = m;
+    }
+    
+    public String getMensaje(){
+        return mensaje;
     }
     
     @Override
@@ -89,7 +97,7 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
             }
             
         } catch(SQLException e){
-            System.out.println(e.getMessage());
+            this.setMensaje(e.getMessage());
         } finally {
             closeObjetos(null, ps);
         }
@@ -113,7 +121,7 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
             v = ps.executeUpdate();
             
         } catch(SQLException e){
-            System.out.println(e.getMessage());
+            this.setMensaje(e.getMessage());
         } finally {
             closeObjetos (null, ps);
         }
@@ -131,7 +139,7 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
             ps.setString(2, puesto);
             v = ps.executeUpdate();
         } catch (SQLException e){
-            System.out.println(e.getMessage());
+            this.setMensaje(e.getMessage());
         } finally {
             closeObjetos(null, ps);
         }
@@ -161,7 +169,7 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
             ps.setString(8, datos[5]);
             ps.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            this.setMensaje(e.getMessage());
         } finally {
             closeObjetos(null, ps);
         }
@@ -185,7 +193,7 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
             v = ps.executeUpdate();
             
         } catch(SQLException e){
-            System.out.println(e.getMessage());
+            this.setMensaje(e.getMessage());
         } finally {
             closeObjetos(null, ps);
         }
@@ -201,14 +209,22 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
             ps.setDate(2, Date.valueOf(fecha));
             ps.setString(1, puesto);
             ps.executeUpdate();
-        } catch(SQLException ex){
-            System.out.println(ex.getMessage());
+        } catch(SQLException e){
+            this.setMensaje(e.getMessage());
         } finally {
             closeObjetos(null, ps);
         }
     }
     
 
+    /**
+     * Busca el turno y la linea en las tablas usadas para cuadros horario
+     * La fecha es necesaria pues un mismo turno cambiara dependiendo de la temporada
+     * @param fecha
+     * @param turno
+     * @param linea
+     * @return 
+     */
     public String[] getTurno(LocalDate fecha, String turno, String linea) {
         String dia = "%"+super.getTipoDia(cx, fecha);
         PreparedStatement ps = null;
@@ -232,15 +248,15 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
                 datos[contador++] = rs.getString("dir_fin");
             }
            
-        } catch (SQLException ex) {
-           System.out.println(ex.getMessage());
+        } catch (SQLException e) {
+           this.setMensaje(e.getMessage());
         } finally {
            super.closeObjetos(rs, ps);
         }
         return datos;
     }
     
-    public String [] getDatosOtroServicio(LocalDate fecha,String puesto){
+    public String [] getDatosOtroServicio(LocalDate fecha, String puesto){
         String [] datos = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -258,7 +274,7 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
               }
           }
         } catch (SQLException e){
-            System.out.println(e.getMessage());
+            this.setMensaje(e.getMessage());
         } finally {
             closeObjetos(rs, ps);
         }
@@ -282,8 +298,8 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
                 }
             }
             
-        } catch (SQLException ex){
-            System.out.println(ex.getMessage());
+        } catch (SQLException e){
+            this.setMensaje(e.getMessage());
         } finally {
             closeObjetos(rs, ps);
         }
@@ -309,7 +325,7 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
                 }
             }
         } catch(SQLException e){
-            System.out.println();
+            this.setMensaje(e.getMessage());
         } finally {
             closeObjetos(rs, ps);
         }
@@ -325,7 +341,7 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
             ps.setDate(1, Date.valueOf(fecha));
             c = ps.executeUpdate();
         } catch (SQLException e){
-            System.out.println(e.getMessage());
+            this.setMensaje(e.getMessage());
         } finally {
             closeObjetos(null, ps);
         }

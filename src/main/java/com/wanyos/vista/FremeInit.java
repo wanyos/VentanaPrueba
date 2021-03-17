@@ -1,6 +1,7 @@
 
 package com.wanyos.vista;
 
+import com.wanyos.controlador.CtrCalendario;
 import com.wanyos.controlador.CtrNombramiento;
 import javax.swing.*;
 
@@ -8,7 +9,7 @@ import javax.swing.*;
  *
  * @author wanyos
  */
-public class FremeInit extends javax.swing.JFrame {
+public class FremeInit extends JFrame {
 
     
     public FremeInit() {
@@ -42,13 +43,15 @@ public class FremeInit extends javax.swing.JFrame {
         btn_nombramiento = new javax.swing.JButton();
         btn_libres = new javax.swing.JButton();
         btn_calendario = new javax.swing.JButton();
+        btn_configuracion = new javax.swing.JButton();
         pn_ctr = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(900, 600));
+        setPreferredSize(new java.awt.Dimension(1000, 900));
 
-        pn_frame.setBackground(new java.awt.Color(51, 153, 255));
+        pn_frame.setBackground(new java.awt.Color(95, 106, 116));
+        pn_frame.setToolTipText("");
         pn_frame.setLayout(new java.awt.BorderLayout());
 
         pn_inf.setBackground(new java.awt.Color(95, 106, 116));
@@ -131,8 +134,20 @@ public class FremeInit extends javax.swing.JFrame {
         });
         pn_left.add(btn_calendario);
 
+        btn_configuracion.setBackground(new java.awt.Color(51, 51, 51));
+        btn_configuracion.setForeground(new java.awt.Color(255, 255, 255));
+        btn_configuracion.setText("Configuración");
+        btn_configuracion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_configuracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_configuracionActionPerformed(evt);
+            }
+        });
+        pn_left.add(btn_configuracion);
+
         pn_frame.add(pn_left, java.awt.BorderLayout.LINE_START);
 
+        pn_ctr.setBackground(new java.awt.Color(51, 153, 255));
         pn_ctr.setLayout(new java.awt.BorderLayout());
         pn_frame.add(pn_ctr, java.awt.BorderLayout.CENTER);
 
@@ -169,17 +184,28 @@ public class FremeInit extends javax.swing.JFrame {
         this.lbl_titulo.setText("Libres...");
         this.lbl_mensaje.setText(" --- ");
         
-        PnAbstract pn_libres = new PnLibres();
+        PnAbstract pn_libres = new PnLibres(lbl_mensaje);
         this.setPanel(pn_libres);
     }//GEN-LAST:event_btn_libresActionPerformed
 
     private void btn_calendarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calendarioActionPerformed
         this.lbl_titulo.setText("Calendario...");
         this.lbl_mensaje.setText(" --- ");
-        
-        PnAbstract pn_calendario = new PnCalendario();
-        this.setPanel(pn_calendario);
+        CtrCalendario ctr_calendario = new CtrCalendario(lbl_mensaje);
+        try {
+            this.setPanel(ctr_calendario.getPnCalendario());
+        } catch (NullPointerException e) {
+
+        }
     }//GEN-LAST:event_btn_calendarioActionPerformed
+
+    private void btn_configuracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_configuracionActionPerformed
+       this.lbl_titulo.setText("Configuración...");
+       this.lbl_mensaje.setText(" --- ");
+       
+       PnAbstract pn_configuracion = new PnConfiguracion(lbl_mensaje);
+       this.setPanel(pn_configuracion);
+    }//GEN-LAST:event_btn_configuracionActionPerformed
 
   
     public static void main(String [] args){
@@ -190,6 +216,7 @@ public class FremeInit extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_calendario;
     private javax.swing.JButton btn_cerrar;
+    private javax.swing.JButton btn_configuracion;
     private javax.swing.JButton btn_libres;
     private javax.swing.JButton btn_nombramiento;
     private javax.swing.JLabel lbl_mensaje;

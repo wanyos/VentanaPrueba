@@ -89,9 +89,6 @@ public class PanelesNombramiento implements Configuraciones {
         this.txt_area_nota.setText(t);
     }
     
-//    public void setEnableBtnGuardar(boolean b){
-//        this.btn_guardar_servicio.setEnabled(b);
-//    }
     
     public void setVisibleBtnGuardar(boolean b){
         this.btn_guardar_servicio.setVisible(b);
@@ -397,6 +394,7 @@ public class PanelesNombramiento implements Configuraciones {
             }
         }
     }
+    
     
 
     
