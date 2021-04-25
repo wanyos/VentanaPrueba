@@ -2,6 +2,7 @@
 package com.wanyos.vista;
 
 import com.wanyos.controlador.CtrCalendario;
+import com.wanyos.controlador.CtrLibres;
 import com.wanyos.controlador.CtrNombramiento;
 import javax.swing.*;
 
@@ -16,6 +17,8 @@ public class FremeInit extends JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.lbl_titulo.setText("Ventana principal...");
+        this.barra_ps.setVisible(false);
+        this.barra_ps.setStringPainted(true);
         this.setVisible(true);
     }
     
@@ -34,6 +37,7 @@ public class FremeInit extends JFrame {
         pn_frame = new javax.swing.JPanel();
         pn_inf = new javax.swing.JPanel();
         lbl_mensaje = new javax.swing.JLabel();
+        barra_ps = new javax.swing.JProgressBar();
         pn_sup = new javax.swing.JPanel();
         pn_sup_left = new javax.swing.JPanel();
         lbl_titulo = new javax.swing.JLabel();
@@ -62,6 +66,7 @@ public class FremeInit extends JFrame {
         lbl_mensaje.setForeground(new java.awt.Color(255, 255, 255));
         lbl_mensaje.setText("Avisos y mensajes...");
         pn_inf.add(lbl_mensaje);
+        pn_inf.add(barra_ps);
 
         pn_frame.add(pn_inf, java.awt.BorderLayout.PAGE_END);
 
@@ -183,9 +188,12 @@ public class FremeInit extends JFrame {
     private void btn_libresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_libresActionPerformed
         this.lbl_titulo.setText("Libres...");
         this.lbl_mensaje.setText(" --- ");
-        
-        PnAbstract pn_libres = new PnLibres(lbl_mensaje);
-        this.setPanel(pn_libres);
+        CtrLibres ctr_libres = new CtrLibres(this.lbl_mensaje, this.barra_ps);
+        try {
+            this.setPanel(ctr_libres.getPnLibres());  
+        } catch(NullPointerException w){
+          
+        }
     }//GEN-LAST:event_btn_libresActionPerformed
 
     private void btn_calendarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calendarioActionPerformed
@@ -208,12 +216,18 @@ public class FremeInit extends JFrame {
     }//GEN-LAST:event_btn_configuracionActionPerformed
 
   
-    public static void main(String [] args){
-        new FremeInit();
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                 new FremeInit();
+            }
+        });
     }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar barra_ps;
     private javax.swing.JButton btn_calendario;
     private javax.swing.JButton btn_cerrar;
     private javax.swing.JButton btn_configuracion;

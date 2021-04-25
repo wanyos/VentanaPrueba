@@ -36,7 +36,7 @@ public class PnAbstract extends JPanel implements Configuraciones {
     }
     
     public void setMensajeLbl(String mensaje){
-        //se sobreescribe en las subclases
+        this.lbl_mensaje.setText(mensaje);
     }
 
     

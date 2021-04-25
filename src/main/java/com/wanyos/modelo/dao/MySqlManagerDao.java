@@ -14,6 +14,7 @@ public class MySqlManagerDao implements ManagerDAO {
     private Connection cx;
     private MySqlServicioDao mysql_servicio; 
     private MySqlCalendarioDao mysql_calendario;
+    private MySqlLibreGeneradoDao mysql_libre;
     private final Conexion conexion;
     
     public MySqlManagerDao(){
@@ -39,6 +40,16 @@ public class MySqlManagerDao implements ManagerDAO {
             }
         }
         return mysql_calendario;
+    }
+    
+    public MySqlLibreGeneradoDao getLibreDao(){
+        if (mysql_libre == null) {
+            this.cx = conexion.getConexion("emt"); //nombre base datos
+            if (cx != null) {
+                return new MySqlLibreGeneradoDao(cx);
+            }
+        }
+        return mysql_libre;
     }
     
     

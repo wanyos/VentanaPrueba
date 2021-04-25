@@ -20,22 +20,22 @@ import java.time.temporal.ChronoUnit;
  */
 public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
 
-    private Connection cx;
-    private String sql_insert_servicio = "insert into servicio values(?,?,?,?,?,?)";
-    private String sql_insert_puesto = "insert into puesto values(?,?,?,?,?,?,?,?)";
-    private String sql_insert_otro_servicio = "insert into otro_servicio values(?,?)";
-    private String sql_get_turno = "select * from turno \n" +
-                                    "inner join modelo_cuadro on turno.id_cuadro = modelo_cuadro.id_cuadro\n" +
-                                    "inner join cuadro on modelo_cuadro.num_cuadro = cuadro.num and modelo_cuadro.tipo = cuadro.tipo\n" +
+    private final Connection cx;
+    private final String sql_insert_servicio = "insert into servicio values(?,?,?,?,?,?)";
+    private final String sql_insert_puesto = "insert into puesto values(?,?,?,?,?,?,?,?)";
+    private final String sql_insert_otro_servicio = "insert into otro_servicio values(?,?)";
+    private final String sql_get_turno = "select * from turno \n" +
+                                    "inner join cuadro on turno.id_cuadro = cuadro.num and turno.tipo = cuadro.tipo\n" +
                                     "inner join tipo_dia on cuadro.num = tipo_dia.num_cuadro and cuadro.tipo = tipo_dia.tipo \n" +
                                     "where tipo_dia.tipo like ? and cuadro.num_linea=? and turno.num like ? and ? between tipo_dia.fecha_init and tipo_dia.fecha_fin;";
-    private String sql_get_servicio = "select turno,linea,puesto,descripcion,nota from servicio where fecha=?";
-    private String sql_get_otro_servicio = "select * from puesto inner join otro_servicio on puesto.id_puesto = otro_servicio.puesto where fecha=? and puesto=?";
-    private String sql_delete_servicio = "delete from servicio where fecha=?";
-    private String sql_set_servicio = "update servicio set turno=?, linea=?, puesto=?, descripcion=?, nota=? where fecha=?";
-    private String sql_set_otro_servicio = "update otro_servicio set puesto=? where fecha=?";
-    private String sql_get_puesto = "select * from puesto where id_puesto=?";
+    private final String sql_get_servicio = "select turno,linea,puesto,descripcion,nota from servicio where fecha=?";
+    private final String sql_get_otro_servicio = "select * from puesto inner join otro_servicio on puesto.id_puesto = otro_servicio.puesto where fecha=? and puesto=?";
+    private final String sql_delete_servicio = "delete from servicio where fecha=?";
+    private final String sql_set_servicio = "update servicio set turno=?, linea=?, puesto=?, descripcion=?, nota=? where fecha=?";
+    private final String sql_set_otro_servicio = "update otro_servicio set puesto=? where fecha=?";
+    private final String sql_get_puesto = "select * from puesto where id_puesto=?";
     private String mensaje;
+    
     
     public MySqlServicioDao(Connection cx){
         this.cx = cx;

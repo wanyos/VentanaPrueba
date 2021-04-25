@@ -80,6 +80,8 @@
                 <Property name="text" type="java.lang.String" value="Avisos y mensajes..."/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JProgressBar" name="barra_ps">
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pn_sup">

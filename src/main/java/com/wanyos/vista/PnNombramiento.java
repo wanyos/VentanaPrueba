@@ -12,6 +12,8 @@ import com.wanyos.componentes.PanelesNombramiento;
 import com.wanyos.controlador.CtrNombramiento;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
+import static java.awt.Cursor.HAND_CURSOR;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,7 +45,6 @@ public class PnNombramiento extends PnAbstract {
     private LocalDate fecha;
     private PanelesNombramiento pn_nombramiento;
     private JPanel pn_fecha; 
-    //private JLabel lbl_mensaje;
     private JTextField aux1, aux2;
     
     
@@ -51,7 +52,6 @@ public class PnNombramiento extends PnAbstract {
     public PnNombramiento(JLabel lbl_mensaje, CtrNombramiento ctr){
         super(lbl_mensaje);
         this.ctr_nombramiento = ctr;
-        //this.lbl_mensaje = lbl_mensaje;
         this.lbl_mensaje.setText(" --- ");
         crearComponent();
         crearPnFecha();
@@ -74,6 +74,12 @@ public class PnNombramiento extends PnAbstract {
         btn_nuevo.setName("btn_nuevo");
         btn_editar.setName("btn_editar");
         btn_eliminar.setName("btn_eliminar");
+        
+        btn_crear.setCursor(new Cursor(HAND_CURSOR));
+        btn_buscar.setCursor(new Cursor(HAND_CURSOR));
+        btn_nuevo.setCursor(new Cursor(HAND_CURSOR));
+        btn_editar.setCursor(new Cursor(HAND_CURSOR));
+        btn_eliminar.setCursor(new Cursor(HAND_CURSOR));
         
         btn_crear.addActionListener(new OyenteButton());
         btn_buscar.addActionListener(new OyenteButton());
