@@ -13,41 +13,41 @@ public class Turno {
     private String turno, linea, h_init, l_init, dir_init, h_fin, l_fin, dir_fin,
                                  h_init_p, l_init_p, dir_init_p, h_fin_p, l_fin_p, dir_fin_p, nota;
 
-    public Turno(LocalDate fecha, String turno, String linea, String h_init, String l_init, String dir_init, String h_fin, String l_fin, String dir_fin) {
-        this.fecha = fecha;
-        this.turno = turno;
-        this.linea = linea;
-        this.h_init = h_init;
-        this.l_init = l_init;
-        this.dir_init = dir_init;
-        this.h_fin = h_fin;
-        this.l_fin = l_fin;
-        this.dir_fin = dir_fin;
-    }
-
-    
-    
-    public Turno(LocalDate fecha, String turno, String linea, String h_init, String l_init, String dir_init, 
-                                                              String h_fin, String l_fin, String dir_fin, 
-                                                              String h_init_p, String l_init_p, String dir_init_p, 
-                                                              String h_fin_p, String l_fin_p, String dir_fin_p, String nota) {
-        this.fecha = fecha;
-        this.turno = turno;
-        this.linea = linea;
-        this.h_init = h_init;
-        this.l_init = l_init;
-        this.dir_init = dir_init;
-        this.h_fin = h_fin;
-        this.l_fin = l_fin;
-        this.dir_fin = dir_fin;
-        this.h_init_p = h_init_p;
-        this.l_init_p = l_init_p;
-        this.dir_init_p = dir_init_p;
-        this.h_fin_p = h_fin_p;
-        this.l_fin_p = l_fin_p;
-        this.dir_fin_p = dir_fin_p;
-        this.nota = nota;
-    }
+//    public Turno(LocalDate fecha, String turno, String linea, String h_init, String l_init, String dir_init, String h_fin, String l_fin, String dir_fin) {
+//        this.fecha = fecha;
+//        this.turno = turno;
+//        this.linea = linea;
+//        this.h_init = h_init;
+//        this.l_init = l_init;
+//        this.dir_init = dir_init;
+//        this.h_fin = h_fin;
+//        this.l_fin = l_fin;
+//        this.dir_fin = dir_fin;
+//    }
+//
+//    
+//    
+//    public Turno(LocalDate fecha, String turno, String linea, String h_init, String l_init, String dir_init, 
+//                                                              String h_fin, String l_fin, String dir_fin, 
+//                                                              String h_init_p, String l_init_p, String dir_init_p, 
+//                                                              String h_fin_p, String l_fin_p, String dir_fin_p, String nota) {
+//        this.fecha = fecha;
+//        this.turno = turno;
+//        this.linea = linea;
+//        this.h_init = h_init;
+//        this.l_init = l_init;
+//        this.dir_init = dir_init;
+//        this.h_fin = h_fin;
+//        this.l_fin = l_fin;
+//        this.dir_fin = dir_fin;
+//        this.h_init_p = h_init_p;
+//        this.l_init_p = l_init_p;
+//        this.dir_init_p = dir_init_p;
+//        this.h_fin_p = h_fin_p;
+//        this.l_fin_p = l_fin_p;
+//        this.dir_fin_p = dir_fin_p;
+//        this.nota = nota;
+//    }
     
     
 

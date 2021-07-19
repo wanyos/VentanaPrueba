@@ -49,6 +49,7 @@ public class LibreGenerado {
         this.fecha_disfrute = fecha_disfrute;
     }
 
+   
     
     
 }

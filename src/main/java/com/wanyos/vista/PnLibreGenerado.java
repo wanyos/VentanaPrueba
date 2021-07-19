@@ -1,11 +1,11 @@
 
 package com.wanyos.vista;
 
-import com.wanyos.componentes.BtnMenu;
-import com.wanyos.componentes.ComboBox;
-import com.wanyos.componentes.LblPanel;
+import com.wanyos.componentes.comunes.BtnMenu;
+import com.wanyos.componentes.comunes.ComboBox;
+import com.wanyos.componentes.comunes.LblPanel;
 import com.wanyos.modelo.ModeloTabla;
-import com.wanyos.componentes.TxtPanel;
+import com.wanyos.componentes.comunes.TxtPanel;
 import com.wanyos.controlador.CtrLibres;
 import com.wanyos.modelo.LibreGenerado;
 import java.awt.Color;
@@ -20,8 +20,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.BoxLayout;
@@ -34,6 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 
 /**
  *
@@ -114,9 +115,10 @@ public class PnLibreGenerado extends PnAbstract {
          pn_sup = new JPanel();
          pn_sup.setBackground(super.color_panel_central);
          FlowLayout fl = new FlowLayout();
-         fl.setVgap(30);
+         fl.setVgap(10);
          pn_sup.setLayout(fl);
-         pn_sup.setMaximumSize(new Dimension(800,100));
+         pn_sup.setMaximumSize(new Dimension(800,50));
+         pn_sup.setBorder(new BevelBorder(BevelBorder.RAISED));
          
          JLabel lbl_tipo, lbl_disponible;
          
@@ -282,10 +284,15 @@ public class PnLibreGenerado extends PnAbstract {
         if(!lista_cambios.isEmpty()){
             txt_area.append("Cambios en dias: \n");
             for(LibreGenerado aux: lista_cambios){
-                txt_area.append(" "+aux.getTipo()+" "+aux.getFechaGenerado()+" "+aux.getFechaCobro()+" "+aux.getFechaDisfrute()+"\n");
+                txt_area.append(" "+aux.getTipo()+" - "+aux.getFechaGenerado()+" - "+aux.getFechaCobro()+" - "+aux.getFechaDisfrute()+"\n");
             }
             txt_area.append("\n");
         }
+        
+        if(lista_nuevos.isEmpty() && lista_cambios.isEmpty()){
+            txt_area.append("--No existen cambios \n");
+        }
+        
         pn_nuevo_cambio.add(txt_area);
         pn_nuevo_cambio.updateUI();
         pn_ctr.add(pn_nuevo_cambio);
@@ -299,12 +306,12 @@ public class PnLibreGenerado extends PnAbstract {
      private void setDatosCombo(){
          String tipo = (String) this.cbo_tipo.getSelectedItem();
          boolean chk = this.chk_disponible.isSelected();
-         String [][] datos = ctr_libres.getListadoLibres(tipo, chk);
-         if(datos == null || datos.length <= 0){
+         List<LibreGenerado> listado = ctr_libres.getListadoLibres(tipo, chk);
+         if(listado == null || listado.isEmpty()){
              super.setMensajeLbl("---No existen libres...");
              model = null;
          } else {
-             model = new ModeloTabla(datos.length, nombre_columnas.length, nombre_columnas, datos);
+             model = new ModeloTabla(nombre_columnas, listado);
          }
           setPnTabla();
      }
@@ -427,12 +434,7 @@ public class PnLibreGenerado extends PnAbstract {
      }
      
      
-     private class OyenteMouse implements MouseListener {
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            
-        }
+    private class OyenteMouse extends MouseAdapter {
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -442,22 +444,8 @@ public class PnLibreGenerado extends PnAbstract {
             btn_buscar.setEnabled(false);
         }
 
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            
-        }
+    }
 
-        @Override
-        public void mouseEntered(MouseEvent e) {
-           
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            
-        }
-     }
-     
      
      
     

@@ -27,8 +27,9 @@ import javax.swing.table.TableColumnModel;
 
 /**
  * @author wanyos
+ * @param <T>
  */
-public class ModeloTabla extends AbstractTableModel {
+public class ModeloTabla<T> extends AbstractTableModel {
 
     
     private int filas, columnas;
@@ -51,11 +52,11 @@ public class ModeloTabla extends AbstractTableModel {
     }
     
     
-    public ModeloTabla(String [] name_colum, List<Object> obj){
+    public ModeloTabla(String [] name_colum, List<T> obj) {
         this.filas = obj.size();
         this.columnas = name_colum.length;
         this.name_colum = name_colum;
-        convertObject(obj);
+            convertObject(obj);
     }
     
     public ModeloTabla (String [] columnas, String [][] datos){
@@ -66,7 +67,7 @@ public class ModeloTabla extends AbstractTableModel {
     }
     
     
-    private void convertObject(List<Object> obj) {
+    private void convertObject(List<T> obj) {
         List<Object> lista_aux = new ArrayList<>();
         //eliminar elementos vacios o nulos
         for (Object aux : obj) {
@@ -85,24 +86,26 @@ public class ModeloTabla extends AbstractTableModel {
                 datos = new String[lista_aux.size()][cam.length];
 
                 for (int f = 0; f < lista_aux.size(); f++) {
+                    int c = 0;
                     aux = lista_aux.get(f);
-                    String[] campos_toString = separateString(aux, ";");
-                    for (int c = 0; c < campos_toString.length; c++) {
-                        datos[f][c] = campos_toString[c];
+
+                    for (Field field : aux.getClass().getDeclaredFields()) {
+                        field.setAccessible(true); // You might want to set modifier to public first.
+                        Object value = field.get(aux);
+                        if (value != null) {
+                            datos[f][c++] = value.toString();
+                        }
                     }
                 }
             }
         } catch (ClassNotFoundException | NullPointerException ex) {
             Logger.getLogger(ModeloTabla.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(ModeloTabla.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(ModeloTabla.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private String [] separateString(Object obj, String se){
-        String s = obj.toString();
-        String [] parts = s.split(se);
-        return parts;
-    }
-
     
     
     @Override

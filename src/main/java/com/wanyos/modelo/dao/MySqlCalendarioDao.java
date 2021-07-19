@@ -1,8 +1,7 @@
 
 package com.wanyos.modelo.dao;
 
-import com.wanyos.dao.ServicioDAO;
-import com.wanyos.modelo.Turno;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -17,44 +16,26 @@ import java.util.List;
  *
  * @author wanyos
  */
-public class MySqlCalendarioDao extends MySqlAbstract implements ServicioDAO {
+public class MySqlCalendarioDao extends MySqlAbstract {
     
     private final Connection cx;
     private final String mysql_lista_vacacion = "select * from vacacion where year(fecha_init)=?";
     private final String mysql_festivos = "select * from festivo where year(fecha)=?";
     private final String mysql_libres = "select * from libre_grupo where year(fecha)=? and tipo=?";
+    private final String mysql_pedidos = "select * from dia_pedido where year(fecha_pedido)=?";
+    private final String mysql_concedidos = "select * from generado where year(fecha_disfrute)=?";
     private final String mysql_insert_libres = "insert into libre_grupo values(?,?)";
     
     public MySqlCalendarioDao(Connection cx){
         this.cx = cx;
     }
 
-    @Override
-    public void insert(Turno s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void delete(Turno s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void set(Turno s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Turno> list() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Turno get(LocalDate s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
+    /**
+     * Se guardan todos los libres del año del usr
+     * En esta tabla se haran modificaciones cuando se cambien dias
+     * @param lista_libres
+     * @param tipo 
+     */
     public void insertLibres(List<LocalDate> lista_libres, String tipo) {
         PreparedStatement ps = null;
 
@@ -129,28 +110,45 @@ public class MySqlCalendarioDao extends MySqlAbstract implements ServicioDAO {
         return lista;
     }
     
-    public List<LocalDate> getFestivos(int year){
-        List<LocalDate> lista_festivos = new ArrayList<>();
+    
+    private List<LocalDate> getLista(int year, String mysql, String nombre_campo){
+        List<LocalDate> lista = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
         
         try {
-           ps = cx.prepareStatement(mysql_festivos);
+           ps = cx.prepareStatement(mysql);
            ps.setInt(1, year);
            rs = ps.executeQuery();
            
            while(rs.next()){
-               LocalDate fecha = LocalDate.parse(rs.getString("fecha"), DateTimeFormatter.ISO_DATE);
-               lista_festivos.add(fecha);
+               LocalDate fecha = LocalDate.parse(rs.getString(nombre_campo), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+               lista.add(fecha);
            }
             
         } catch(SQLException e){
-            
+            System.out.println();
         } finally {
             closeObjetos(rs, ps);
         }
         
+        return lista;
+    }
+    
+    public List<LocalDate> getFestivos(int year){
+        List<LocalDate> lista_festivos = this.getLista(year, mysql_festivos, "fecha");
         return lista_festivos;
     }
+    
+    public List<LocalDate> getDiasPedidos(int year) {
+        List<LocalDate> lista_pedidos = this.getLista(year, mysql_pedidos, "fecha_pedido");
+        return lista_pedidos;
+    }
+    
+     public List<LocalDate> getDiasConcedidos(int year){
+        List<LocalDate> lista_concedidos = this.getLista(year, mysql_concedidos, "fecha_disfrute");        
+        return lista_concedidos;
+    }
+    
     
 }

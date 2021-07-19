@@ -1,9 +1,7 @@
 
 package com.wanyos.modelo.dao;
 
-import com.wanyos.dao.ServicioDAO;
 import com.wanyos.modelo.LibreGenerado;
-import com.wanyos.modelo.Turno;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -20,7 +18,7 @@ import java.util.List;
  *
  * @author wanyos
  */
-public class MySqlLibreGeneradoDao extends MySqlAbstract implements ServicioDAO, Runnable {
+public class MySqlLibreGeneradoDao extends MySqlAbstract implements Runnable {
     
     private final Connection cx;
     private final String mysql_libres_tipo = "select * from generado where tipo=? order by fecha desc";
@@ -33,42 +31,60 @@ public class MySqlLibreGeneradoDao extends MySqlAbstract implements ServicioDAO,
     private final String mysql_fecha_creacion_tabla = "select create_time from information_schema.tables where table_name=?";
     private String terminado = "";
     
+    
     public MySqlLibreGeneradoDao(Connection cx){
         this.cx = cx;
     }
 
-    @Override
-    public void insert(Turno s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void delete(Turno s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void set(Turno s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Turno> list() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Turno get(LocalDate s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     
     public String getMensaje(){
         return this.terminado;
     }
     
-    public String[][] getListadoLibres(String tipo, boolean todos){
-        String [][] listado = null;
+//    public String[][] getListadoLibres(String tipo, boolean todos){
+//        String [][] listado = null;
+//        PreparedStatement ps = null;
+//        ResultSet rs = null;
+//        
+//        try {
+//            
+//            if (tipo.equalsIgnoreCase("todos")) {
+//                ps = cx.prepareStatement(mysql_todos_libres, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+//            } else {
+//                if (!todos) {
+//                    ps = cx.prepareStatement(mysql_libres_tipo, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+//                } else {
+//                    ps = cx.prepareStatement(mysql_libres_tipo_disponibles, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+//                }
+//                 ps.setString(1, tipo);
+//            }
+//            rs = ps.executeQuery();
+//
+//            rs.last();
+//            int l = rs.getRow();
+//            rs.beforeFirst();
+//            listado = new String[l][5];
+//            int f = 0;
+//            while(rs.next()){
+//                int c = 0;
+//                listado[f][c++] = rs.getString("id");
+//                listado[f][c++] = rs.getString("tipo");
+//                listado[f][c++] = rs.getString("fecha");
+//                listado[f][c++] = getFormatFecha(rs.getString("fecha_cobro"));
+//                listado[f][c++] = getFormatFecha(rs.getString("fecha_disfrute"));
+//                f++;
+//            }
+//
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        } finally {
+//            closeObjetos(rs, ps);
+//        }
+//        return listado;
+//    }
+    
+     public List<LibreGenerado> getListadoLibres(String tipo, boolean todos){
+        List<LibreGenerado> listado = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
         
@@ -85,20 +101,15 @@ public class MySqlLibreGeneradoDao extends MySqlAbstract implements ServicioDAO,
                  ps.setString(1, tipo);
             }
             rs = ps.executeQuery();
-
-            rs.last();
-            int l = rs.getRow();
-            rs.beforeFirst();
-            listado = new String[l][5];
-            int f = 0;
+            
             while(rs.next()){
-                int c = 0;
-                listado[f][c++] = rs.getString("id");
-                listado[f][c++] = rs.getString("tipo");
-                listado[f][c++] = rs.getString("fecha");
-                listado[f][c++] = getFormatFecha(rs.getString("fecha_cobro"));
-                listado[f][c++] = getFormatFecha(rs.getString("fecha_disfrute"));
-                f++;
+                int id = Integer.parseInt(rs.getString("id"));
+                String t = rs.getString("tipo");
+                LocalDate fecha_g = LocalDate.parse(rs.getString("fecha"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                LocalDate fecha_c = LocalDate.parse(rs.getString("fecha_cobro"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                LocalDate fecha_d = LocalDate.parse(rs.getString("fecha_disfrute"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                LibreGenerado libre = new LibreGenerado(id,t,fecha_g,fecha_c,fecha_d);
+                listado.add(libre);
             }
 
         } catch (SQLException e) {
@@ -110,13 +121,14 @@ public class MySqlLibreGeneradoDao extends MySqlAbstract implements ServicioDAO,
     }
     
     
-    private String getFormatFecha(String f){
-        String fecha = f;
-        if(fecha.equalsIgnoreCase("0000-00-00") || fecha.equalsIgnoreCase("0001-01-01")){
-            return "--";
-        }
-        return fecha;
-    }
+    
+//    private String getFormatFecha(String f){
+//        String fecha = f;
+//        if(fecha.equalsIgnoreCase("0000-00-00") || fecha.equalsIgnoreCase("0001-01-01")){
+//            return "--";
+//        }
+//        return fecha;
+//    }
     
     
     public int setEditarLibre(int id, LocalDate fecha_c, LocalDate fecha_d) {

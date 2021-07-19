@@ -1,19 +1,31 @@
 
 package com.wanyos.componentes;
 
+import com.wanyos.componentes.comunes.BtnMenu;
+import com.wanyos.componentes.comunes.TxtPanel;
+import com.wanyos.componentes.comunes.LblPanel;
+import com.wanyos.componentes.comunes.ComboBox;
+import com.wanyos.componentes.comunes.Lista;
+import com.wanyos.componentes.comunes.TxtAreaPanel;
+import com.wanyos.modelo.ModeloLista;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 /**
  * Crea los paneles de la ventana de nombramiento
@@ -21,17 +33,20 @@ import javax.swing.JTextField;
  */
 public class PanelesNombramiento implements Configuraciones {
     
-    //ComboBox objeto personalizado, paquete componentes
-    
     private JTextField txt_turno, txt_linea, txt_puesto, txt_descripcion;
     private List<JTextField> cajas_horario;
     private ComboBox cbo_descripcion;
-    private JButton btn_buscar_turno, btn_guardar_servicio;
-    private JTextArea txt_area_nota;
+    private BtnMenu btn_buscar_turno, btn_guardar_servicio;
+    private TxtAreaPanel txt_area_nota;
+    private ImageIcon img_azul_buscar, img_gris_buscar, img_azul_aceptar, img_gris_aceptar;
+    private Lista lista;
+    private ModeloLista ml;
     
-    
-    public PanelesNombramiento(){
-        
+    public PanelesNombramiento(ImageIcon img_azul_buscar, ImageIcon img_gris_buscar, ImageIcon img_azul_aceptar, ImageIcon img_gris_aceptar){
+        this.img_azul_buscar = img_azul_buscar;
+        this.img_gris_buscar = img_gris_buscar;
+        this.img_azul_aceptar = img_azul_aceptar;
+        this.img_gris_aceptar = img_gris_aceptar;
     }
     
     public String getTxtTurno() {
@@ -87,6 +102,10 @@ public class PanelesNombramiento implements Configuraciones {
     
     public void setTxtNota(String t){
         this.txt_area_nota.setText(t);
+    }
+    
+    public Lista getLista(){
+        return this.lista;
     }
     
     
@@ -162,8 +181,10 @@ public class PanelesNombramiento implements Configuraciones {
         pn_descripcion.setName("pn_descripcion");
         JLabel lbl_descripcion;
         
-        pn_descripcion.setLayout(new FlowLayout());
-        pn_descripcion.setMaximumSize(new Dimension(2147483647,50));
+        FlowLayout fl = new FlowLayout();
+        fl.setVgap(20);
+        pn_descripcion.setLayout(fl);
+        pn_descripcion.setMaximumSize(new Dimension(2147483647,75));
         pn_descripcion.setBackground(color_panel_central);
         
         lbl_descripcion = new LblPanel("Descripcion puesto: ");
@@ -187,7 +208,7 @@ public class PanelesNombramiento implements Configuraciones {
         JLabel lbl_turno, lbl_linea, lbl_sep1, lbl_sep2;
         
         pn_turno_linea.setLayout(new FlowLayout());
-        pn_turno_linea.setMaximumSize(new Dimension(2147483647,50));
+        pn_turno_linea.setMaximumSize(new Dimension(2147483647,75));
         pn_turno_linea.setBackground(color_panel_central);
         
         lbl_turno = new LblPanel("Turno");
@@ -200,8 +221,11 @@ public class PanelesNombramiento implements Configuraciones {
         txt_turno.setName("turno");
         txt_linea.setName("linea");
         
-        btn_buscar_turno = new JButton("Buscar");
-        btn_buscar_turno.setFont(fuente_letra);
+        btn_buscar_turno = new BtnMenu("Buscar");
+        btn_buscar_turno.setColorFondo(color_panel_lateral);
+        btn_buscar_turno.setIcono(img_azul_buscar);
+        btn_buscar_turno.setIconoFoco(img_gris_buscar);
+        btn_buscar_turno.setColorFoco(color_panel_lateral, color_panel_central);
         btn_buscar_turno.setName("btn_buscar_turno");
         
         pn_turno_linea.add(lbl_turno);
@@ -295,7 +319,6 @@ public class PanelesNombramiento implements Configuraciones {
         JPanel pn_nota = new JPanel();
         pn_nota.setName("pn_nota");
         JLabel lbl_nota;
-        JScrollPane scrol;
         JLabel lbl_sep;
         
         lbl_sep = new LblPanel(" ----- ");
@@ -306,18 +329,11 @@ public class PanelesNombramiento implements Configuraciones {
         pn_nota.setLayout(fl);
         
         lbl_nota = new LblPanel("Notas");
-        
-        scrol = new JScrollPane();
-        txt_area_nota = new JTextArea(5,30); //filas y columnas
-        txt_area_nota.setBackground(color_panel_central);
-        txt_area_nota.setForeground(color_letra_blanco);
-        txt_area_nota.setFont(fuente_letra);
-        txt_area_nota.setLineWrap(true);   
-        scrol.setViewportView(txt_area_nota);
+        txt_area_nota = new TxtAreaPanel(5,30);
         
         pn_nota.add(lbl_nota);
         pn_nota.add(lbl_sep);
-        pn_nota.add(scrol);
+        pn_nota.add(txt_area_nota.getScrolTxtArea());
         
         this.setEnabledPn(pn_nota, bloquear);
         
@@ -335,9 +351,12 @@ public class PanelesNombramiento implements Configuraciones {
         fl.setVgap(15);
         pn_guardar.setLayout(fl);
         
-        btn_guardar_servicio = new JButton("Guardar");
+        btn_guardar_servicio = new BtnMenu("Guardar");
+        btn_guardar_servicio.setColorFondo(color_panel_lateral);
+        btn_guardar_servicio.setIcono(img_azul_aceptar);
+        btn_guardar_servicio.setIconoFoco(img_gris_aceptar);
+        btn_guardar_servicio.setColorFoco(color_panel_lateral, color_panel_central);
         btn_guardar_servicio.setName("btn_guardar");
-        btn_guardar_servicio.setFont(fuente_letra);
         
         pn_guardar.add(btn_guardar_servicio);
         return pn_guardar;
@@ -368,6 +387,27 @@ public class PanelesNombramiento implements Configuraciones {
         this.setEnabledPn(pn_puesto, bloquear);
         return pn_puesto;
     }
+    
+    public JPanel getPnLeerCorreo(){
+        JPanel pn_leer_correo = new JPanel();
+        pn_leer_correo.setName("pn_leer_correo");
+        Border white_border = BorderFactory.createLineBorder(Color.WHITE);
+        pn_leer_correo.setBorder(BorderFactory.createTitledBorder​(white_border, "Turnos leidos...", TitledBorder.LEFT, 0, fuente_letra_lbl, color_letra_blanco));
+        
+        pn_leer_correo.setMaximumSize(new Dimension(850,450));
+        pn_leer_correo.setBackground(color_panel_central);
+        pn_leer_correo.setLayout(new FlowLayout());
+        
+        lista = new Lista();
+        Font fuente = new Font("Bookman Old Style",2,12);
+        lista.setFont(fuente);
+        lista.setAlinear(1);
+       
+        pn_leer_correo.add(lista);
+        pn_leer_correo.updateUI();
+        
+        return pn_leer_correo;
+    }
 
     public void setEnabledPn(JPanel pn, boolean bloquear) {
         Stack<JPanel> pila = new Stack();
@@ -388,7 +428,13 @@ public class PanelesNombramiento implements Configuraciones {
                     for (Component aux_j : cx) {
                         aux_j.setEnabled(bloquear);
                     }
-                } else if(aux instanceof JButton){
+                } else if (aux instanceof BtnMenu) {
+                    BtnMenu bt = (BtnMenu) aux;
+                    bt.setEnabled(bloquear);
+                    if (!bloquear) {
+                        bt.setColorFoco(color_panel_central, color_panel_central);
+                    }
+                } else if (aux instanceof JButton) {
                     aux.setEnabled(bloquear);
                 }
             }

@@ -64,27 +64,27 @@ public class CtrCalendario {
     
     
     public Map<Integer, List<String>> getListaLibres(){
-        Map<Integer, List<String>> libres = new HashMap<>();
+        Map<Integer, List<String>> map_libres = new HashMap<>();
         if(lista_libres != null && !lista_libres.isEmpty()){
-            return libres = getMapa(lista_libres);
+            return map_libres = getMapa(lista_libres);
         }
-        return libres;
+        return map_libres;
     }
     
     public Map<Integer, List<String>> getListaSubgrupo(){
-        Map<Integer, List<String>> libres_subgrupo = new HashMap<>();
+        Map<Integer, List<String>> map_subgrupo = new HashMap<>();
         if(lista_subgrupo != null && !lista_subgrupo.isEmpty()){
-            return libres_subgrupo = getMapa(lista_subgrupo);
+            return map_subgrupo = getMapa(lista_subgrupo);
         }
-        return libres_subgrupo;
+        return map_subgrupo;
     }
     
     public Map<Integer, List<String>> getListaSubComunes(){
-        Map<Integer, List<String>> libres_comunes = new HashMap<>();
+        Map<Integer, List<String>> map_comunes = new HashMap<>();
         if(lista_sub_comunes != null && !lista_sub_comunes.isEmpty()){
-           return libres_comunes = getMapa(lista_sub_comunes);
+           return map_comunes = getMapa(lista_sub_comunes);
         }
-        return libres_comunes;
+        return map_comunes;
     }
     
     public Map<Integer, List<String>> getListaFestivos(int year){
@@ -104,30 +104,47 @@ public class CtrCalendario {
      * @return 
      */
     public Map<Integer, List<String>> getLibresUsr(int year, String tipo){
-        Map<Integer, List<String>> libres_usr = new HashMap<>();
+        Map<Integer, List<String>> map_usr = new HashMap<>();
         List<LocalDate> libres = mysql_calendario.getLibreUsr(year, tipo);
         if(libres != null && !libres.isEmpty()){
-            return libres_usr = getMapa(libres);
+            return map_usr = getMapa(libres);
         }
-        return libres_usr;
+        return map_usr;
     }
     
     public Map<Integer, List<String>> getListaVacacionUsr(int year){
-         Map<Integer, List<String>> lista_vacacion = new HashMap<>();
+         Map<Integer, List<String>> map_vacacion = new HashMap<>();
          List<LocalDate> lista = mysql_calendario.getListaVacacionUsr(year);
          if(lista != null && !lista.isEmpty()){
-             return lista_vacacion = getMapa(lista);
+             return map_vacacion = getMapa(lista);
          }
-         return lista_vacacion;
+         return map_vacacion;
     }
     
     
     public Map<Integer, List<String>> getListaPedidosUsr(int year){
-         Map<Integer, List<String>> lista_pedidos = new HashMap<>();
-         
-         return lista_pedidos;
+         Map<Integer, List<String>> map_pedidos = new HashMap<>();
+         List<LocalDate> lista_pedidos = mysql_calendario.getDiasPedidos(year);
+         if(lista_pedidos != null && !lista_pedidos.isEmpty()){
+             return map_pedidos = getMapa(lista_pedidos);
+         }
+         return map_pedidos;
     }
    
+    /**
+     * Todos los dias concedidos a librar que se han pedido en el año del parametro
+     * @param year
+     * @return 
+     */
+    public Map<Integer, List<String>> getListaConcedidosUsr(int year){
+         Map<Integer, List<String>> map_concedidos = new HashMap<>();
+         List<LocalDate> lista_concedidos = mysql_calendario.getDiasConcedidos(year);
+         if(lista_concedidos != null && !lista_concedidos.isEmpty()){
+             return map_concedidos = getMapa(lista_concedidos);
+         }
+         return map_concedidos;
+    }
+    
      
     /**
      * Crea el objeto CalculoLibres y le pide calcular los libres del parametro

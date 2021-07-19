@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit;
  *
  * @author wanyos
  */
-public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
+public class MySqlServicioDao extends MySqlAbstract {
 
     private final Connection cx;
     private final String sql_insert_servicio = "insert into servicio values(?,?,?,?,?,?)";
@@ -49,30 +49,7 @@ public class MySqlServicioDao extends MySqlAbstract implements ServicioDAO {
         return mensaje;
     }
     
-    @Override
-    public void insert(Turno s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void delete(Turno s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void set(Turno s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Turno> list() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
-    @Override
-    public Turno get(LocalDate s) {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
     
     public int insertServicio(LocalDate fecha, String turno, String linea, String puesto, String descripcion, String [] datos, String nota){
         PreparedStatement ps = null;

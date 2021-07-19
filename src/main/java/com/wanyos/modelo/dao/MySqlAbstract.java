@@ -18,9 +18,10 @@ public class MySqlAbstract {
     private final String sql_dia_vacacion = "select * from vacacion where ? between fecha_init and fecha_fin;";
     private final String sql_dia_baja = "select * from baja where ? between fecha_init and fecha_fin";
     private final String sql_dia_cambio = "select fecha from cambio where dia_pedido=?";
-    private final String sql_dia_pedido = "select fecha from generado where fecha_disfrute=?";
+    private final String sql_dia_pedido = "select fecha_pedido from dia_pedido where fecha_pedido=?";
     private final String sql_dia_festivo = "select fecha from festivo where fecha=?";
     private final String sql_dia_servicio = "select fecha from servicio where fecha=?";
+    
     
     protected void closeObjetos(ResultSet rs, PreparedStatement ps) {
         if (rs != null) {
@@ -38,6 +39,7 @@ public class MySqlAbstract {
             }
         }
     }
+    
     
     private boolean existeFecha(Connection cx, String sql, LocalDate fecha){
         PreparedStatement ps = null;
@@ -65,7 +67,7 @@ public class MySqlAbstract {
      * @param fecha
      * @return true si es libre de grupo o subgrupo
      */
-    protected boolean getDiaLibreDisponible(Connection cx, LocalDate fecha){
+    public boolean getDiaLibreDisponible(Connection cx, LocalDate fecha){
        return this.existeFecha(cx, sql_libre_disponible, fecha);
     }
     
@@ -75,7 +77,7 @@ public class MySqlAbstract {
      * @param fecha
      * @return true si existe esa fecha como vacacion
      */
-    protected boolean getDiaVacacion(Connection cx, LocalDate fecha){
+    public boolean getDiaVacacion(Connection cx, LocalDate fecha){
         return this.existeFecha(cx, sql_dia_vacacion, fecha);
     }
     
@@ -86,7 +88,7 @@ public class MySqlAbstract {
      * @param fecha
      * @return true si existe esa fecha como baja
      */
-    protected boolean getDiaBaja(Connection cx, LocalDate fecha){
+    public boolean getDiaBaja(Connection cx, LocalDate fecha){
        return this.existeFecha(cx, sql_dia_baja, fecha);
     }
     
@@ -96,7 +98,7 @@ public class MySqlAbstract {
      * @param fecha
      * @return true si el dia lo hemos pedido por cambio de libre con compañero
      */
-    protected boolean getDiaCambio(Connection cx, LocalDate fecha){
+    public boolean getDiaCambio(Connection cx, LocalDate fecha){
         return this.existeFecha(cx, sql_dia_cambio, fecha);
     }
     
@@ -106,7 +108,7 @@ public class MySqlAbstract {
      * @param fecha
      * @return true si el día lo hemos pedido a disfrutar por un libre generado
      */
-    protected boolean getDiaPedido(Connection cx, LocalDate fecha){
+    public boolean getDiaPedido(Connection cx, LocalDate fecha){
         return this.existeFecha(cx, sql_dia_pedido, fecha);
     }
     
