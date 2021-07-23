@@ -6,12 +6,10 @@ import com.wanyos.modelo.ModeloLista;
 import com.wanyos.modelo.dao.MySqlManagerDao;
 import com.wanyos.modelo.dao.MySqlServicioDao;
 import com.wanyos.vista.Hilo;
+import com.wanyos.vista.InitApp;
 import com.wanyos.vista.PnAbstract;
 import com.wanyos.vista.PnNombramiento;
 import java.time.LocalDate;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 
 /**
  *
@@ -22,14 +20,12 @@ public class CtrNombramiento {
     private PnAbstract pn_nombramiento;
     private MySqlManagerDao manager_dao;
     private MySqlServicioDao mysql_servicio;
-    private JProgressBar barra;
     
     
-    public CtrNombramiento(JLabel lbl_mensaje, JProgressBar barra, JPanel pn_left){
-        pn_nombramiento = new PnNombramiento(lbl_mensaje, this, pn_left);
+    public CtrNombramiento(){
+        pn_nombramiento = new PnNombramiento(this);
         manager_dao = new MySqlManagerDao();
         mysql_servicio = manager_dao.getServicioDao();
-        this.barra = barra;
         if(mysql_servicio == null){
             pn_nombramiento.setMensajeLbl("Error no existe conexión con la BD...");
         }
@@ -43,9 +39,7 @@ public class CtrNombramiento {
         return null;
     }
     
-    public boolean getBarraVisible(){
-        return barra.isVisible();
-    }
+    
     
     public String getDiaDisponible(LocalDate fecha){
          String mensaje = "disponible";
@@ -187,7 +181,6 @@ public class CtrNombramiento {
     
     public void getCorreosLeidos(boolean todos, LocalDate desde_fecha, ModeloLista ml, Hilo h) {
          LeerGmailRobot lgr = new LeerGmailRobot(todos, desde_fecha, ml, h);
-            lgr.setBarra(barra);
             lgr.execute();   
     }
     

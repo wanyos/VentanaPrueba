@@ -1,29 +1,18 @@
 
-package com.wanyos.componentes;
+package com.wanyos.vista;
 
+import com.wanyos.componentes.Configuraciones;
 import com.wanyos.componentes.comunes.BtnMenu;
 import com.wanyos.componentes.comunes.TxtPanel;
 import com.wanyos.componentes.comunes.LblPanel;
 import com.wanyos.componentes.comunes.ComboBox;
 import com.wanyos.componentes.comunes.Lista;
 import com.wanyos.componentes.comunes.TxtAreaPanel;
-import com.wanyos.modelo.ModeloLista;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
@@ -40,14 +29,15 @@ public class PanelesNombramiento implements Configuraciones {
     private TxtAreaPanel txt_area_nota;
     private ImageIcon img_azul_buscar, img_gris_buscar, img_azul_aceptar, img_gris_aceptar;
     private Lista lista;
-    private ModeloLista ml;
+   
     
-    public PanelesNombramiento(ImageIcon img_azul_buscar, ImageIcon img_gris_buscar, ImageIcon img_azul_aceptar, ImageIcon img_gris_aceptar){
-        this.img_azul_buscar = img_azul_buscar;
-        this.img_gris_buscar = img_gris_buscar;
-        this.img_azul_aceptar = img_azul_aceptar;
-        this.img_gris_aceptar = img_gris_aceptar;
+    public PanelesNombramiento(){
+       img_azul_buscar =  new ImageIcon(getClass().getResource(R_IMG_AZUL_BUSCAR));
+       img_gris_buscar = new ImageIcon(getClass().getResource(R_IMG_GRIS_BUSCAR));
+       img_azul_aceptar = new ImageIcon(getClass().getResource(R_IMG_AZUL_ACEPTAR));
+       img_gris_aceptar = new ImageIcon(getClass().getResource(R_IMG_GRIS_ACEPTAR));
     }
+    
     
     public String getTxtTurno() {
         if(txt_turno == null){
@@ -172,10 +162,6 @@ public class PanelesNombramiento implements Configuraciones {
     
     
     
-    
-    
-    
-    
     public JPanel getPnDescripcion() {
         JPanel pn_descripcion = new JPanel();
         pn_descripcion.setName("pn_descripcion");
@@ -185,14 +171,14 @@ public class PanelesNombramiento implements Configuraciones {
         fl.setVgap(20);
         pn_descripcion.setLayout(fl);
         pn_descripcion.setMaximumSize(new Dimension(2147483647,75));
-        pn_descripcion.setBackground(color_panel_central);
+        pn_descripcion.setBackground(COLOR_PANEL_CENTRAL);
         
         lbl_descripcion = new LblPanel("Descripcion puesto: ");
 
         String [] items = {" ---- "," Turno en linea "," Otros"};
         cbo_descripcion = new ComboBox(items);
-        cbo_descripcion.setColorFondo(color_panel_central);
-        cbo_descripcion.setColorTexto(color_letra_blanco);
+        cbo_descripcion.setColorFondo(COLOR_PANEL_CENTRAL);
+        cbo_descripcion.setColorTexto(COLOR_LETRA_BLANCO);
         cbo_descripcion.setName("cbo_descripcion");
         
         pn_descripcion.add(lbl_descripcion);
@@ -209,7 +195,7 @@ public class PanelesNombramiento implements Configuraciones {
         
         pn_turno_linea.setLayout(new FlowLayout());
         pn_turno_linea.setMaximumSize(new Dimension(2147483647,75));
-        pn_turno_linea.setBackground(color_panel_central);
+        pn_turno_linea.setBackground(COLOR_PANEL_CENTRAL);
         
         lbl_turno = new LblPanel("Turno");
         lbl_linea = new LblPanel("Linea");
@@ -222,10 +208,10 @@ public class PanelesNombramiento implements Configuraciones {
         txt_linea.setName("linea");
         
         btn_buscar_turno = new BtnMenu("Buscar");
-        btn_buscar_turno.setColorFondo(color_panel_lateral);
+        btn_buscar_turno.setColorFondo(COLOR_PANEL_LATERAL);
         btn_buscar_turno.setIcono(img_azul_buscar);
         btn_buscar_turno.setIconoFoco(img_gris_buscar);
-        btn_buscar_turno.setColorFoco(color_panel_lateral, color_panel_central);
+        btn_buscar_turno.setColorFoco(COLOR_PANEL_LATERAL, COLOR_PANEL_CENTRAL);
         btn_buscar_turno.setName("btn_buscar_turno");
         
         pn_turno_linea.add(lbl_turno);
@@ -254,7 +240,7 @@ public class PanelesNombramiento implements Configuraciones {
         JPanel pn_horario = new JPanel();
         pn_horario.setName("pn_horario");
         cajas_horario = new ArrayList<>();
-        pn_horario.setBackground(color_panel_central);
+        pn_horario.setBackground(COLOR_PANEL_CENTRAL);
         pn_horario.setLayout(new BoxLayout(pn_horario, BoxLayout.Y_AXIS));
         
         pn_horario.add(getPnInit());
@@ -284,7 +270,7 @@ public class PanelesNombramiento implements Configuraciones {
         JTextField txt_1, txt_2, txt_3;
         
         pn_h.setMaximumSize(new Dimension(2147483647,50));
-        pn_h.setBackground(color_panel_central);
+        pn_h.setBackground(COLOR_PANEL_CENTRAL);
         pn_h.setLayout(new FlowLayout());
         
         lbl_1 = new LblPanel(t1);
@@ -323,7 +309,7 @@ public class PanelesNombramiento implements Configuraciones {
         
         lbl_sep = new LblPanel(" ----- ");
         pn_nota.setMaximumSize(new Dimension(2147483647,100));
-        pn_nota.setBackground(color_panel_central);
+        pn_nota.setBackground(COLOR_PANEL_CENTRAL);
         FlowLayout fl = new FlowLayout();
         fl.setHgap(25);
         pn_nota.setLayout(fl);
@@ -336,7 +322,6 @@ public class PanelesNombramiento implements Configuraciones {
         pn_nota.add(txt_area_nota.getScrolTxtArea());
         
         this.setEnabledPn(pn_nota, bloquear);
-        
         return pn_nota;
     }
 
@@ -346,16 +331,16 @@ public class PanelesNombramiento implements Configuraciones {
         pn_guardar.setName("pn_guardar");
         
         pn_guardar.setMaximumSize(new Dimension(2147483647,80));
-        pn_guardar.setBackground(color_panel_central);
+        pn_guardar.setBackground(COLOR_PANEL_CENTRAL);
         FlowLayout fl = new FlowLayout();
         fl.setVgap(15);
         pn_guardar.setLayout(fl);
         
         btn_guardar_servicio = new BtnMenu("Guardar");
-        btn_guardar_servicio.setColorFondo(color_panel_lateral);
+        btn_guardar_servicio.setColorFondo(COLOR_PANEL_LATERAL);
         btn_guardar_servicio.setIcono(img_azul_aceptar);
         btn_guardar_servicio.setIconoFoco(img_gris_aceptar);
-        btn_guardar_servicio.setColorFoco(color_panel_lateral, color_panel_central);
+        btn_guardar_servicio.setColorFoco(COLOR_PANEL_LATERAL, COLOR_PANEL_CENTRAL);
         btn_guardar_servicio.setName("btn_guardar");
         
         pn_guardar.add(btn_guardar_servicio);
@@ -368,7 +353,7 @@ public class PanelesNombramiento implements Configuraciones {
         JLabel lbl_puesto, lbl_descripcion, lbl_sep;
         
         pn_puesto.setMaximumSize(new Dimension(2147483647,80));
-        pn_puesto.setBackground(color_panel_central);
+        pn_puesto.setBackground(COLOR_PANEL_CENTRAL);
         pn_puesto.setLayout(new FlowLayout());
         
         lbl_puesto = new LblPanel("Puesto");
@@ -392,10 +377,10 @@ public class PanelesNombramiento implements Configuraciones {
         JPanel pn_leer_correo = new JPanel();
         pn_leer_correo.setName("pn_leer_correo");
         Border white_border = BorderFactory.createLineBorder(Color.WHITE);
-        pn_leer_correo.setBorder(BorderFactory.createTitledBorder​(white_border, "Turnos leidos...", TitledBorder.LEFT, 0, fuente_letra_lbl, color_letra_blanco));
+        pn_leer_correo.setBorder(BorderFactory.createTitledBorder​(white_border, "Turnos leidos...", TitledBorder.LEFT, 0, FUENTE_LETRA_LBL, COLOR_LETRA_BLANCO));
         
         pn_leer_correo.setMaximumSize(new Dimension(850,450));
-        pn_leer_correo.setBackground(color_panel_central);
+        pn_leer_correo.setBackground(COLOR_PANEL_CENTRAL);
         pn_leer_correo.setLayout(new FlowLayout());
         
         lista = new Lista();
@@ -432,7 +417,7 @@ public class PanelesNombramiento implements Configuraciones {
                     BtnMenu bt = (BtnMenu) aux;
                     bt.setEnabled(bloquear);
                     if (!bloquear) {
-                        bt.setColorFoco(color_panel_central, color_panel_central);
+                        bt.setColorFoco(COLOR_PANEL_CENTRAL, COLOR_PANEL_CENTRAL);
                     }
                 } else if (aux instanceof JButton) {
                     aux.setEnabled(bloquear);

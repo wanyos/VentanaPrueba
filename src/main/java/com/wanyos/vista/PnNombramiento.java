@@ -1,26 +1,17 @@
 package com.wanyos.vista;
 
 import com.wanyos.componentes.comunes.*;
-import com.wanyos.componentes.PanelesNombramiento;
 import com.wanyos.controlador.CtrNombramiento;
 import com.wanyos.modelo.ModeloLista;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
+import java.awt.*;
 import static java.awt.Cursor.HAND_CURSOR;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Stack;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
@@ -37,20 +28,18 @@ public class PnNombramiento extends PnAbstract {
     private CalendarChooser calendar;
     private LocalDate fecha;
     private PanelesNombramiento pn_nombramiento;
-    private JPanel pn_fecha, pn_left;
+    private JPanel pn_fecha;
     private JTextField aux1, aux2;
-    private JLabel lbl;
+    
 
-    public PnNombramiento(JLabel lbl_mensaje, CtrNombramiento ctr, JPanel pn_left) {
-        super(lbl_mensaje);
-        this.lbl = lbl_mensaje;
+    public PnNombramiento(CtrNombramiento ctr) {
+        super();
         this.ctr_nombramiento = ctr;
-        this.lbl_mensaje.setText(" --- ");
+        super.setMensajeLbl(" --- ");
         crearComponent();
         crearPnFecha();
         addComponentRight();
-        pn_nombramiento = new PanelesNombramiento(img_azul_buscar, img_gris_buscar, img_azul_aceptar, img_gris_aceptar);
-        this.pn_left = pn_left;
+        pn_nombramiento = new PanelesNombramiento();
     }
 
     /**
@@ -101,7 +90,7 @@ public class PnNombramiento extends PnAbstract {
         fl.setVgap(10);
         pn_fecha.setLayout(fl);
         pn_fecha.setMaximumSize(new Dimension(800, 50));
-        pn_fecha.setBackground(super.color_panel_central);
+        pn_fecha.setBackground(super.COLOR_PANEL_CENTRAL);
         pn_fecha.setBorder(new BevelBorder(BevelBorder.RAISED));
 
         JLabel lbl_fecha = new LblPanel("Fecha: ");
@@ -150,13 +139,8 @@ public class PnNombramiento extends PnAbstract {
         if (calendar.getDate() != null) {
             fecha = calendar.getFechaChooser();
         } else {
-            this.lbl_mensaje.setText("--Error valor fecha no válido... ");
+            super.setMensajeLbl("Error valor fecha no válido... ");
         }
-    }
-
-    @Override
-    public void setMensajeLbl(String mensaje) {
-        this.lbl_mensaje.setText("--" + mensaje);
     }
 
     /**
@@ -213,7 +197,6 @@ public class PnNombramiento extends PnAbstract {
         super.pn_center.add(pn_nombramiento.getPnNota(true));
         super.pn_center.add(pn_nombramiento.getPnBtnGuardar());
         this.setListenerBtnGuardarServicio();
-        //bloquearPanel("pn_guardar");
         enabledPn("pn_guardar", false);
         this.btn_guardar_servicio.setName("btn_guardar_servicio");
         super.pn_center.updateUI();
@@ -232,14 +215,13 @@ public class PnNombramiento extends PnAbstract {
         for (JTextField aux : cajas_horario) {
             aux.setText(datos_turno[contador++]);
         }
-        //bloquearPanel("pn_turno_linea");
         enabledPn("pn_turno_linea", false);
         JPanel pn_nota = pn_nombramiento.getPnNota(true);
         JPanel pn_btn_guardar = pn_nombramiento.getPnBtnGuardar();
         this.setListenerBtnGuardarServicio();
         this.btn_guardar_servicio.setName("btn_guardar_servicio");
 
-        this.lbl_mensaje.setText(" --- ");
+        super.setMensajeLbl(" --- ");
         super.pn_center.add(pn_horario_turno);
         super.pn_center.add(pn_nota);
         super.pn_center.add(pn_btn_guardar);
@@ -293,7 +275,7 @@ public class PnNombramiento extends PnAbstract {
             calendar.setEnabled(false);
 
         } else {
-            lbl_mensaje.setText("--No existe servicio...");
+           super.setMensajeLbl("No existe servicio...");
         }
         super.pn_center.updateUI();
     }
@@ -323,13 +305,11 @@ public class PnNombramiento extends PnAbstract {
             pn_nombramiento.getJTxtLinea().addFocusListener(new OyenteFocoTurno());
             nombres_pn = new String[]{"pn_turno_linea", "pn_nota"};
             for (String name : nombres_pn) {
-                //desbloquearPanel(name);
                 enabledPn(name, true);
             }
         } else {
             nombres_pn = new String[]{"pn_puesto_descripcion", "pn_nota"};
             for (String name : nombres_pn) {
-                //desbloquearPanel(name);
                 enabledPn(name, true);
             }
             List<JTextField> cajas_horario = pn_nombramiento.getTxtCajasHorario();   //si el puesto no existe lo creara en la tabla puesto       
@@ -344,7 +324,6 @@ public class PnNombramiento extends PnAbstract {
         this.setListenerBtnGuardarServicio();
         this.btn_guardar_servicio.setText("Guardar Edición");
         this.btn_guardar_servicio.setName("btn_guardar_editar");
-        //bloquearPanel("pn_guardar");
         enabledPn("pn_guardar", false);
         this.btn_editar.setEnabled(false);
         this.btn_eliminar.setEnabled(false);
@@ -356,10 +335,10 @@ public class PnNombramiento extends PnAbstract {
         if (op == 0) {
             boolean c = ctr_nombramiento.setEliminarDatos(fecha);
             if (c) {
-                this.lbl_mensaje.setText("!!!--Datos eliminados... ");
+                super.setMensajeLbl("!!!--Datos eliminados... ");
                 this.setNuevoServicio();
             } else {
-                this.lbl_mensaje.setText("--Error los datos no se han eliminado...");
+                super.setMensajeLbl("Error los datos no se han eliminado...");
             }
         }
     }
@@ -375,7 +354,7 @@ public class PnNombramiento extends PnAbstract {
             JOptionPane.showMessageDialog(this, "!!!--Datos guardados...");
             this.setNuevoServicio();
         } else {
-            this.lbl_mensaje.setText("--Error los datos no se han guardado...");
+            super.setMensajeLbl("Error los datos no se han guardado...");
         }
     }
 
@@ -391,7 +370,7 @@ public class PnNombramiento extends PnAbstract {
             JOptionPane.showMessageDialog(this, "!!!--Datos editados...");
             this.setNuevoServicio();
         } else {
-            this.lbl_mensaje.setText("--Error los datos no se han editado...");
+            super.setMensajeLbl("Error los datos no se han editado...");
         }
     }
 
@@ -416,6 +395,7 @@ public class PnNombramiento extends PnAbstract {
         this.crearPnFecha();
         DialogOpcionesLeerCorreo dialog_opciones = new DialogOpcionesLeerCorreo();
         String evento = dialog_opciones.getEvento();
+        
         if (evento.equals("aceptar")) {
             LocalDate desde_fecha = dialog_opciones.getFecha();
             boolean todos = dialog_opciones.getLeerTodosCorreos();
@@ -423,30 +403,13 @@ public class PnNombramiento extends PnAbstract {
             ModeloLista ml = new ModeloLista();
             pn_nombramiento.getLista().setModel(ml);
             
-            Hilo h = new Hilo(pn_right, calendar, pn_left, lbl_mensaje); //hilo que bloquea los componentes
+            Hilo h = new Hilo(calendar); //hilo que bloquea los componentes
             ctr_nombramiento.getCorreosLeidos(todos, desde_fecha, ml, h);
         }
         super.pn_center.updateUI();
     }
     
-    
-//    private void bloquearPanel(String name) {
-//        List<JPanel> lista_pn = this.getPaneles();
-//        for (JPanel aux : lista_pn) {
-//            if (aux.getName() != null && aux.getName().equalsIgnoreCase(name)) {
-//                pn_nombramiento.setEnabledPn(aux, false);
-//            }
-//        }
-//    }
 
-//    private void desbloquearPanel(String nombre_pn) {
-//        List<JPanel> lista_pn = this.getPaneles();
-//        for (JPanel pn : lista_pn) {
-//            if (pn.getName() != null && nombre_pn != null && pn.getName().equalsIgnoreCase(nombre_pn)) {
-//                pn_nombramiento.setEnabledPn(pn, true);
-//            }
-//        }
-//    }
     
     private void enabledPn(String nombre_pn, boolean b) {
         List<JPanel> lista_pn = this.getPaneles();
@@ -528,7 +491,7 @@ public class PnNombramiento extends PnAbstract {
             if (obj instanceof JButton) {
                 setFecha();
 
-                lbl_mensaje.setText(" --- ");
+                setMensajeLbl(" --- ");
                 switch (((JButton) obj).getName()) {
 
                     //botones menu lateral
@@ -589,10 +552,10 @@ public class PnNombramiento extends PnAbstract {
                 } else if (mensaje.equalsIgnoreCase("disponible") && crear) {
                     setCrearServicio();
                 } else {
-                    lbl_mensaje.setText("--Error!!! es un dia " + mensaje);
+                    setMensajeLbl("Error!!! es un dia " + mensaje);
                 }
             } else {
-                lbl_mensaje.setText("--Error!!! no existe fecha...");
+                setMensajeLbl("Error!!! no existe fecha...");
             }
         }
 
@@ -606,13 +569,13 @@ public class PnNombramiento extends PnAbstract {
                 String[] datos_turno = ctr_nombramiento.getDatosTurno(fecha, turno, linea);
 
                 if (datos_turno[0].equalsIgnoreCase("")) {
-                    lbl_mensaje.setText("--No existen datos con ese turno... ");
+                    setMensajeLbl("No existen datos con ese turno... ");
                 } else {
                     setPnHorarioTurno(datos_turno);
                 }
 
             } else {
-                lbl_mensaje.setText("--Error valor turno y linea...");
+                setMensajeLbl("Error valor turno y linea...");
             }
         }
     }
@@ -643,7 +606,7 @@ public class PnNombramiento extends PnAbstract {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            lbl_mensaje.setText(" --- ");
+            setMensajeLbl(" --- ");
         }
     }
 
@@ -654,8 +617,8 @@ public class PnNombramiento extends PnAbstract {
             JTextField obj = (JTextField) e.getSource();
             if (obj.getText().length() > 0) {
                 obj.setText("");
-                lbl_mensaje.setText(" --- ");
-                obj.setForeground(color_letra_blanco);
+                setMensajeLbl(" --- ");
+                obj.setForeground(COLOR_LETRA_BLANCO);
             }
         }
 
@@ -669,13 +632,11 @@ public class PnNombramiento extends PnAbstract {
                 Color c1 = aux1.getForeground();
                 Color c2 = aux2.getForeground();
                 if ((aux1.getText().length() > 0 && aux2.getText().length() > 0) && (!c1.equals(Color.red) && !c2.equals(Color.red))) {
-                    //desbloquearPanel("pn_guardar");
                     enabledPn("pn_guardar", true);
                 }
             } catch (Exception ex) {
-                lbl_mensaje.setText("--Error en formato hora...");
+                setMensajeLbl("Error en formato hora...");
                 obj.setForeground(Color.red);
-                //bloquearPanel("pn_guardar");
                 enabledPn("pn_guardar", false);
             }
         }
@@ -689,8 +650,8 @@ public class PnNombramiento extends PnAbstract {
             if (obj.getText().length() > 0) {
                 obj.setText("");
                 pn_nombramiento.getJTxtDescripcion().setText("");
-                lbl_mensaje.setText(" --- ");
-                obj.setForeground(color_letra_blanco);
+                setMensajeLbl(" --- ");
+                obj.setForeground(COLOR_LETRA_BLANCO);
             }
         }
 
@@ -702,12 +663,10 @@ public class PnNombramiento extends PnAbstract {
                 String[] datos = ctr_nombramiento.getPuesto(puesto, descripcion);
                 if (datos != null) {
                     setDatosHorario(datos);
-                    //desbloquearPanel("pn_guardar");
                     enabledPn("pn_guardar", true);
                 } else {
                     String[] nombre_pn = {"pn_init", "pn_fin"};
                     for (String name : nombre_pn) {
-                        //desbloquearPanel(name);
                         enabledPn(name, true);
                         limpiarTxtHorario();
                     }
@@ -725,8 +684,8 @@ public class PnNombramiento extends PnAbstract {
             if (obj.getText().length() > 0) {
                 obj.setText("");
                 pn_nombramiento.getJTxtLinea().setText("");
-                lbl_mensaje.setText(" --- ");
-                obj.setForeground(color_letra_blanco);
+                setMensajeLbl(" --- ");
+                obj.setForeground(COLOR_LETRA_BLANCO);
             }
         }
 
@@ -738,10 +697,9 @@ public class PnNombramiento extends PnAbstract {
                 String[] datos = ctr_nombramiento.getDatosTurno(fecha, turno, linea);
                 if (!datos[0].isEmpty()) {
                     setDatosHorario(datos);
-                    //desbloquearPanel("pn_guardar");
                     enabledPn("pn_guardar", true);
                 } else {
-                    lbl_mensaje.setText("--No existe el turno...");
+                    setMensajeLbl("No existe el turno...");
                 }
             }
         }

@@ -6,6 +6,7 @@ import com.wanyos.modelo.TratarPdfDiasGenerados;
 import com.wanyos.modelo.dao.MySqlLibreGeneradoDao;
 import com.wanyos.modelo.dao.MySqlManagerDao;
 import com.wanyos.modelo.dao.MySqlPedidoDao;
+import com.wanyos.vista.InitApp;
 import com.wanyos.vista.PnAbstract;
 import com.wanyos.vista.PnLibreGenerado;
 import java.io.File;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
@@ -37,17 +37,17 @@ public class CtrLibres {
     private List<LibreGenerado> lista_nuevos, lista_cambios;
     
     
-    public CtrLibres(){}
+//    public CtrLibres(){}
     
-    public CtrLibres(JLabel lbl_mensaje, JProgressBar barra_ps){
-        this.barra = barra_ps;
-        manager_dao = new MySqlManagerDao(); 
+    public CtrLibres() {
+        this.barra = InitApp.getBarraPs();
+        manager_dao = new MySqlManagerDao();
         mysql_libre_generado = manager_dao.getLibreDao();
         mysql_dia_pedido = manager_dao.getPedidosDao();
-        pn_libres = new PnLibreGenerado(lbl_mensaje, this);
-        if(mysql_libre_generado == null){
+        pn_libres = new PnLibreGenerado(this);
+        if (mysql_libre_generado == null) {
             pn_libres.setMensajeLbl("Error no existe conexión con la BD...");
-        } 
+        }
     }
     
      public PnAbstract getPnLibres(){
@@ -119,10 +119,10 @@ public class CtrLibres {
         File archivo_libres = getFileLibres();               //obtener el archivo más reciente con los libres 
 
         if (archivo_libres == null) {
-            pn_libres.setMensajeLbl("--No existe archivo libres nuevo...");
+            pn_libres.setMensajeLbl("No existe archivo libres nuevo...");
         } else {
             if (!isPosterior(archivo_libres)) {
-                pn_libres.setMensajeLbl("-- El archivo de libres nuevo es anterior a la última actualización...");
+                pn_libres.setMensajeLbl("El archivo de libres nuevo es anterior a la última actualización...");
             } else {
                 Worker w = new Worker(archivo_libres);
                 w.addPropertyChangeListener(new OyentePropiedadBarraPs(barra, 100));
@@ -218,7 +218,7 @@ public class CtrLibres {
          */
         private List<String> getListaLibres(File archivo_libres) {
             List<String> lista_dias_limpia = null;
-            pn_libres.setMensajeLbl("-- Leyendo archivo pdf...");
+            pn_libres.setMensajeLbl("Leyendo archivo pdf...");
             
             try {
                 String ruta = archivo_libres.getPath();
@@ -234,13 +234,13 @@ public class CtrLibres {
                 this.setProgress(getValorBarra());
 
                 if (lista_dias == null || lista_dias.isEmpty()) {
-                    pn_libres.setMensajeLbl("--No existen dias generados en la lista...");
+                    pn_libres.setMensajeLbl("No existen dias generados en la lista...");
                 } else {
                     lista_dias_limpia = getLimpiarLista(lista_dias);
                 }
 
             } catch (Exception ex) {
-                pn_libres.setMensajeLbl("--No se ha podido leer el archivo libres...");
+                pn_libres.setMensajeLbl("No se ha podido leer el archivo libres...");
             }
             pn_libres.setMensajeLbl(" --- ");
             return lista_dias_limpia;
@@ -429,7 +429,7 @@ public class CtrLibres {
         
         private boolean copiasTablaGenerado() {
             boolean correcto = false;
-            pn_libres.setMensajeLbl("-- Creando copia tabla...");
+            pn_libres.setMensajeLbl("Creando copia tabla...");
             try {
                 MySqlLibreGeneradoDao hilo_mysql = manager_dao.getLibreDao();
                 Thread ta1 = new Thread(hilo_mysql);
@@ -445,7 +445,7 @@ public class CtrLibres {
                 }
 
             } catch (InterruptedException ex) {
-                pn_libres.setMensajeLbl("-- Error hilo copias tabla generado...");
+                pn_libres.setMensajeLbl("Error hilo copias tabla generado...");
             }
             pn_libres.setMensajeLbl(" --- ");
             return correcto;
@@ -464,7 +464,7 @@ public class CtrLibres {
                     pn_libres.setPnNuevosCambios(lista_nuevos, lista_cambios);
                 }
             } else {
-                pn_libres.setMensajeLbl("-- No es posible continuar, no se han actualizado las copias de tabla generado...");
+                pn_libres.setMensajeLbl("No es posible continuar, no se han actualizado las copias de tabla generado...");
             }
             return v;
         }

@@ -2,24 +2,17 @@
 package com.wanyos.vista;
 
 import com.toedter.calendar.JYearChooser;
-import static com.wanyos.componentes.Configuraciones.color_panel_central;
 import com.wanyos.componentes.comunes.ComboBox;
 import com.wanyos.componentes.comunes.LblPanel;
 import com.wanyos.componentes.calendario.PnYear;
 import com.wanyos.componentes.comunes.BtnMenu;
 import com.wanyos.componentes.comunes.TxtPanel;
 import com.wanyos.controlador.CtrCalendario;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
 import java.util.Map;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
 /**
@@ -35,8 +28,8 @@ public class PnCalendario extends PnAbstract {
     private JPanel pn_ctr, pn_sup, pn_inf, pn_usr;
     
     
-    public PnCalendario(JLabel lbl_mensaje, CtrCalendario ctr_calendario){
-        super(lbl_mensaje);
+    public PnCalendario(CtrCalendario ctr_calendario){
+        super();
         this.ctr_calendario = ctr_calendario;
         setPnCentral();
         this.add(pn_ctr);
@@ -70,7 +63,7 @@ public class PnCalendario extends PnAbstract {
     
     private void setPnCentral(){
         pn_ctr = new JPanel();
-        pn_ctr.setBackground(super.color_panel_central);
+        pn_ctr.setBackground(super.COLOR_PANEL_CENTRAL);
         BoxLayout ly = new BoxLayout(pn_ctr, BoxLayout.Y_AXIS);
         pn_ctr.setLayout(ly);
         
@@ -86,7 +79,7 @@ public class PnCalendario extends PnAbstract {
     }
     
     private void setPnCalendario(){
-        pn_year = new PnYear(getYear(), super.color_panel_central, super.color_panel_frame);
+        pn_year = new PnYear(getYear(), super.COLOR_PANEL_CENTRAL, super.COLOR_PN_MONTH_CALENDAR);
         pn_year.setMaximumSize(new Dimension(700,850));
     }
     
@@ -99,7 +92,7 @@ public class PnCalendario extends PnAbstract {
         pn_sup.setLayout(fl);
         pn_sup.setMaximumSize(new Dimension(800,50));
         pn_sup.setBorder(new BevelBorder(BevelBorder.RAISED));
-        pn_sup.setBackground(super.color_panel_central);
+        pn_sup.setBackground(super.COLOR_PANEL_CENTRAL);
         
         JLabel lbl_year, lbl_grupo, lbl_subgrupo;
         
@@ -119,10 +112,10 @@ public class PnCalendario extends PnAbstract {
         
         
         btn_buscar = new BtnMenu("Buscar");
-        btn_buscar.setColorFondo(color_panel_lateral);
+        btn_buscar.setColorFondo(COLOR_PANEL_LATERAL);
         btn_buscar.setIcono(img_azul_buscar);
         btn_buscar.setIconoFoco(img_gris_buscar);
-        btn_buscar.setColorFoco(color_panel_lateral, color_panel_central);
+        btn_buscar.setColorFoco(COLOR_PANEL_LATERAL, COLOR_PANEL_CENTRAL);
         btn_buscar.addActionListener(new OyenteBuscar());
         
         pn_sup.add(lbl_year);
@@ -138,7 +131,6 @@ public class PnCalendario extends PnAbstract {
         pn_sup.add(new LblPanel(" --- "));
         
         pn_sup.add(btn_buscar);
-                
         pn_sup.updateUI();
     }
     
@@ -147,7 +139,7 @@ public class PnCalendario extends PnAbstract {
         pn_inf = new JPanel();
         FlowLayout fl = new FlowLayout();
         pn_inf.setLayout(fl);
-        pn_inf.setBackground(super.color_panel_central);
+        pn_inf.setBackground(super.COLOR_PANEL_CENTRAL);
         pn_inf.setPreferredSize(new Dimension(500,50));
         
         pn_inf.add(getPnLeyendaLibres());
@@ -158,7 +150,7 @@ public class PnCalendario extends PnAbstract {
         JPanel pn_leyinf = new JPanel();
         FlowLayout fl = new FlowLayout();
         pn_leyinf.setLayout(fl);
-        pn_leyinf.setBackground(super.color_panel_central);
+        pn_leyinf.setBackground(super.COLOR_PANEL_CENTRAL);
         
         JLabel lbl_libre, lbl_subgrupo, lbl_sub1, lbl_sub2; 
         JTextField txt_libre, txt_subgrupo, txt_sub1, txt_sub2; 
@@ -170,19 +162,19 @@ public class PnCalendario extends PnAbstract {
         
         txt_libre = new TxtPanel(2);
         txt_libre.setBorder(null);
-        txt_libre.setBackground(super.color_txt_libre);
+        txt_libre.setBackground(super.COLOR_TXT_LIBRE);
         
         txt_subgrupo = new TxtPanel(2);
         txt_subgrupo.setBorder(null);
-        txt_subgrupo.setBackground(super.color_txt_subgrupo);
+        txt_subgrupo.setBackground(super.COLOR_TXT_SUBGRUPO);
         
         txt_sub1 = new TxtPanel(2);
         txt_sub1.setBorder(null);
-        txt_sub1.setBackground(super.color_txt_sub1);
+        txt_sub1.setBackground(super.COLOR_TXT_SUB1);
         
         txt_sub2 = new TxtPanel(2);
         txt_sub2.setBorder(null);
-        txt_sub2.setBackground(super.color_txt_sub2);
+        txt_sub2.setBackground(super.COLOR_TXT_SUB2);
         
         pn_leyinf.add(lbl_libre);
         pn_leyinf.add(txt_libre);
@@ -207,7 +199,7 @@ public class PnCalendario extends PnAbstract {
         pn_usr = new JPanel();
         FlowLayout fl = new FlowLayout();
         pn_usr.setLayout(fl);
-        pn_usr.setBackground(super.color_panel_central);
+        pn_usr.setBackground(super.COLOR_PANEL_CENTRAL);
         
         JLabel lbl_vacacion, lbl_libre_vacacion, lbl_pedido, lbl_concedido;
         JTextField txt_vacacion, txt_libre_vacacion, txt_pedido, txt_concedido;
@@ -219,19 +211,19 @@ public class PnCalendario extends PnAbstract {
         
         txt_vacacion = new TxtPanel(2);
         txt_vacacion.setBorder(null);
-        txt_vacacion.setBackground(super.color_txt_vacacion);
+        txt_vacacion.setBackground(super.COLOR_TXT_VACACION);
         
         txt_libre_vacacion = new TxtPanel(2);
         txt_libre_vacacion.setBorder(null);
-        txt_libre_vacacion.setBackground(super.color_txt_libre_vacacion);
+        txt_libre_vacacion.setBackground(super.COLOR_TXT_LIBRE_VACACION);
         
         txt_pedido = new TxtPanel(2);
         txt_pedido.setBorder(null);
-        txt_pedido.setBackground(super.color_txt_pedido);
+        txt_pedido.setBackground(super.COLOR_TXT_PEDIDO);
         
         txt_concedido = new TxtPanel(2);
         txt_concedido.setBorder(null);
-        txt_concedido.setBackground(super.color_txt_concedido);
+        txt_concedido.setBackground(super.COLOR_TXT_CONCEDIDO);
         
         pn_usr.add(new LblPanel(" --- "));
         pn_usr.add(lbl_vacacion);
@@ -264,7 +256,7 @@ public class PnCalendario extends PnAbstract {
     }
     
     private void setColorYearUsr(){
-        pn_year.resetColor(color_panel_frame);
+        pn_year.resetColor(COLOR_PN_MONTH_CALENDAR);
         setComponentesUsr();
         int y = getYear();
         setColorFestivos(y);
@@ -275,7 +267,7 @@ public class PnCalendario extends PnAbstract {
     }
     
     private void setColorYear() {
-        pn_year.resetColor(color_panel_frame);
+        pn_year.resetColor(COLOR_PN_MONTH_CALENDAR);
         int y = getYear();
         String g = getGrupo();
         String sub = getSubgrupo();
@@ -289,12 +281,12 @@ public class PnCalendario extends PnAbstract {
     
     private void setColorLibresYear() {
         Map<Integer, List<String>> map_libres = ctr_calendario.getListaLibres();
-          setColor(map_libres, color_txt_libre, false);
+          setColor(map_libres, COLOR_TXT_LIBRE, false);
     }
     
     private void setColorSubgrupoYear(){
         Map<Integer, List<String>> map_libres = ctr_calendario.getListaSubgrupo();
-          setColor(map_libres, color_txt_subgrupo, false);
+          setColor(map_libres, COLOR_TXT_SUBGRUPO, false);
     }
     
     private void setColorSubComunesYear(){
@@ -302,15 +294,15 @@ public class PnCalendario extends PnAbstract {
             String sub = getSubgrupo();
             //A-C-E-G
             if(sub.equalsIgnoreCase("A") || sub.equalsIgnoreCase("C") || sub.equalsIgnoreCase("E") || sub.equalsIgnoreCase("G")){
-                setColor(map_libres, color_txt_sub1, false);
+                setColor(map_libres, COLOR_TXT_SUB1, false);
             } else {
-                setColor(map_libres, color_txt_sub2, false);
+                setColor(map_libres, COLOR_TXT_SUB2, false);
             }
     }
     
     private void setColorFestivos(int year){
          Map<Integer, List<String>> map_festivos = ctr_calendario.getListaFestivos(year);
-          setColor(map_festivos, color_txt_festivos , true);
+          setColor(map_festivos, COLOR_TXT_FESTIVOS , true);
     }
     
     
@@ -321,30 +313,30 @@ public class PnCalendario extends PnAbstract {
     private void setColorLibresUsr(int year) {
         Map<Integer, List<String>> map_libres;
         map_libres = ctr_calendario.getLibresUsr(year, "grupo");
-        setColor(map_libres, color_txt_libre, false);
+        setColor(map_libres, COLOR_TXT_LIBRE, false);
         map_libres.clear();
         map_libres = ctr_calendario.getLibresUsr(year, "subgrupo");
-        setColor(map_libres, color_txt_subgrupo, false);
+        setColor(map_libres, COLOR_TXT_SUBGRUPO, false);
         map_libres.clear();
         map_libres = ctr_calendario.getLibresUsr(year, "sub_com");
-        setColor(map_libres, color_txt_sub2, false); //obtener la letra subgrupo del usr
+        setColor(map_libres, COLOR_TXT_SUB2, false); //obtener la letra subgrupo del usr
     }
     
     private void setColorVacacionUsr(int year){
         Map<Integer, List<String>> map_vacacion = ctr_calendario.getListaVacacionUsr(year);
          for(int a = 1; a <= 12; a++){
-             pn_year.setColorVacacion(map_vacacion.get(a), a, color_txt_libre, color_txt_vacacion, color_txt_libre_vacacion);
+             pn_year.setColorVacacion(map_vacacion.get(a), a, COLOR_TXT_LIBRE, COLOR_TXT_VACACION, COLOR_TXT_LIBRE_VACACION);
          }
     }
     
     private void setColorPedidosUsr(int year){
         Map<Integer, List<String>> map_pedidos = ctr_calendario.getListaPedidosUsr(year);
-          setColor(map_pedidos, color_txt_pedido, false);
+          setColor(map_pedidos, COLOR_TXT_PEDIDO, false);
     }
     
      private void setColorConcedidosUsr(int year){
         Map<Integer, List<String>> map_concedidos = ctr_calendario.getListaConcedidosUsr(year);
-          setColor(map_concedidos, color_txt_concedido, false);
+          setColor(map_concedidos, COLOR_TXT_CONCEDIDO, false);
     }
     
      
@@ -363,8 +355,6 @@ public class PnCalendario extends PnAbstract {
     
     
     
-
-    
     private class OyenteBuscar implements ActionListener {
 
         @Override
@@ -376,11 +366,7 @@ public class PnCalendario extends PnAbstract {
             } else {
                 setColorYear();
             }
-            
         }
-        
-        
-        
     }
     
     

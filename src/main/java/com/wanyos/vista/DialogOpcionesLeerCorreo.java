@@ -79,7 +79,7 @@ public class DialogOpcionesLeerCorreo extends JDialog implements Configuraciones
         fl.setAlignment(FlowLayout.LEFT);
         pn_icono.setLayout(fl);
         pn_icono.setPreferredSize(new Dimension(300,35));
-        pn_icono.setBackground(color_panel_central);
+        pn_icono.setBackground(COLOR_PANEL_CENTRAL);
         ImageIcon icono = new ImageIcon(getClass().getResource("/img/eye.png"));
         JLabel lbl = new JLabel("");
         lbl.setIcon(icono);
@@ -95,7 +95,7 @@ public class DialogOpcionesLeerCorreo extends JDialog implements Configuraciones
         ButtonGroup g1 = new ButtonGroup();
 
         pn.setPreferredSize(new Dimension(300,200));
-        pn.setBackground(color_panel_central);
+        pn.setBackground(COLOR_PANEL_CENTRAL);
 
         pn.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -126,8 +126,8 @@ public class DialogOpcionesLeerCorreo extends JDialog implements Configuraciones
 
         });
         
-        rd_todos.setBackground(color_panel_central);
-        rd_ultima_fecha.setBackground(color_panel_central);
+        rd_todos.setBackground(COLOR_PANEL_CENTRAL);
+        rd_ultima_fecha.setBackground(COLOR_PANEL_CENTRAL);
         
         g1.add(rd_todos);
         g1.add(rd_ultima_fecha);
@@ -226,6 +226,12 @@ public class DialogOpcionesLeerCorreo extends JDialog implements Configuraciones
     }
     
     private class DialogOyente extends WindowAdapter {
+        
+//        @Override
+//        public void windowActivated(WindowEvent e){
+//            setEvento("activar");
+//        }
+        
         @Override
              public void windowDeactivated(WindowEvent e){
                  setEvento("cancelar");

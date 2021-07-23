@@ -8,24 +8,14 @@ import com.wanyos.controlador.CtrCalendario;
 import com.wanyos.controlador.CtrCambiosPedidos;
 import com.wanyos.controlador.CtrLibres;
 import com.wanyos.controlador.CtrNombramiento;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+
 import static java.awt.Frame.ICONIFIED;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import static java.awt.Frame.NORMAL;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
+import java.awt.event.*;
+import javax.swing.*;
+import java.awt.*;
+
 
 /**
  *
@@ -33,14 +23,15 @@ import javax.swing.SwingUtilities;
  */
 public class InitApp implements Configuraciones {
     
-    private JFrame frame;
+    private final JFrame frame;
     private JPanel pn_ctr;
+    private static JPanel pn_left;
     private ComponentResizer cr;
-    private JLabel lbl_titulo, lbl_mensaje;
+    private JLabel lbl_titulo;
+    private static JLabel lbl_mensaje;
     private int pX = 0, pY = 0;
     private boolean max;
-    private JProgressBar barra_ps;
-    private JPanel pn_left;
+    private static JProgressBar barra_ps;
     private ImageIcon img_azul_min = new ImageIcon(getClass().getResource("/img/min_azul32.png"));
     private ImageIcon img_gris_min = new ImageIcon(getClass().getResource("/img/min_gris32.png"));
     
@@ -56,7 +47,7 @@ public class InitApp implements Configuraciones {
         frame.setMinimumSize(new Dimension(300,300));
         frame.setPreferredSize(new Dimension(1150,900));
         frame.setUndecorated(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //se usa el objeto que hace que el frame se pueda agrandar sin el marco
         cr = new ComponentResizer();
         cr.registerComponent(frame);
         
@@ -76,6 +67,34 @@ public class InitApp implements Configuraciones {
         this.pn_ctr.updateUI();
     }
     
+    
+    /**
+     * Bloquea/Desbloquea los botones del panel left
+     * @param b 
+     */
+    public static void setEnabledPn(boolean b){
+        Component [] c = pn_left.getComponents();
+        for(Component aux: c){
+            if(aux instanceof JButton){
+                aux.setEnabled(b);
+            }
+        }
+    }
+    
+    public static JProgressBar getBarraPs(){
+        return barra_ps;
+    }
+    
+    public static void setVisibleBarra(boolean b){
+        barra_ps.setVisible(b);
+    }
+    
+    public static void setMensajeLbl(String m){
+        lbl_mensaje.setText(" --- "+m);
+    }
+    
+   
+    
     private JPanel getPnSup(){
         JPanel pn_sup = new JPanel();
         BoxLayout bx = new BoxLayout(pn_sup, BoxLayout.X_AXIS);
@@ -92,15 +111,15 @@ public class InitApp implements Configuraciones {
         JPanel pn_sup_left = new JPanel();
         pn_sup_left.setMaximumSize(new Dimension(100100,60));
         pn_sup_left.setPreferredSize(new Dimension(100100,60));
-        pn_sup_left.setBackground(color_panel_lateral);
+        pn_sup_left.setBackground(COLOR_PANEL_LATERAL);
         FlowLayout fl = new FlowLayout();
         fl.setAlignment(FlowLayout.LEFT);
         fl.setHgap(30);
         fl.setVgap(15);
         pn_sup_left.setLayout(fl);
         lbl_titulo = new JLabel(" Ventana principal...");
-        lbl_titulo.setForeground(color_letra_blanco);
-        lbl_titulo.setFont(fuente_letra_lbl);
+        lbl_titulo.setForeground(COLOR_LETRA_BLANCO);
+        lbl_titulo.setFont(FUENTE_LETRA_LBL);
         pn_sup_left.add(lbl_titulo);
         pn_sup_left.updateUI();
         return pn_sup_left;
@@ -110,7 +129,7 @@ public class InitApp implements Configuraciones {
         JPanel pn_sup_right = new JPanel();
         pn_sup_right.setMaximumSize(new Dimension(100100,60));
         pn_sup_right.setPreferredSize(new Dimension(100100,60));
-        pn_sup_right.setBackground(color_panel_lateral);
+        pn_sup_right.setBackground(COLOR_PANEL_LATERAL);
         FlowLayout fl = new FlowLayout();
         fl.setAlignment(FlowLayout.RIGHT);
         fl.setHgap(15);
@@ -153,7 +172,7 @@ public class InitApp implements Configuraciones {
     
     private JPanel getPnLeft(){
         pn_left = new JPanel();
-        pn_left.setBackground(color_panel_lateral);
+        pn_left.setBackground(COLOR_PANEL_LATERAL);
         pn_left.addMouseListener(new EventoRaton());
         pn_left.addMouseMotionListener(new EventoMotionRaton());
         BoxLayout bx = new BoxLayout(pn_left, BoxLayout.Y_AXIS);
@@ -188,7 +207,7 @@ public class InitApp implements Configuraciones {
     private JPanel getPnCtr(){
         pn_ctr = new JPanel();
         pn_ctr.setLayout(new BorderLayout());
-        pn_ctr.setBackground(color_panel_central);
+        pn_ctr.setBackground(COLOR_PANEL_CENTRAL);
         pn_ctr.addMouseListener(new EventoRaton());
         pn_ctr.addMouseMotionListener(new EventoMotionRaton());
         
@@ -199,15 +218,15 @@ public class InitApp implements Configuraciones {
         JPanel pn_inf = new JPanel();
         pn_inf.setMaximumSize(new Dimension(100,40));
         pn_inf.setPreferredSize(new Dimension(100,40));
-        pn_inf.setBackground(color_panel_lateral);
+        pn_inf.setBackground(COLOR_PANEL_LATERAL);
         FlowLayout fl = new FlowLayout();
         fl.setAlignment(FlowLayout.LEFT);
         fl.setHgap(30);
         fl.setVgap(10);
         pn_inf.setLayout(fl);
         lbl_mensaje = new JLabel("Mensajes y avisos...");
-        lbl_mensaje.setForeground(color_letra_blanco);
-        lbl_mensaje.setFont(fuente_letra_lbl);
+        lbl_mensaje.setForeground(COLOR_LETRA_BLANCO);
+        lbl_mensaje.setFont(FUENTE_LETRA_LBL);
         
         barra_ps = new JProgressBar();
         barra_ps.setMinimum(0);
@@ -227,13 +246,14 @@ public class InitApp implements Configuraciones {
          btn.setMinimumSize(new Dimension(140,40));
          btn.setPreferredSize(new Dimension(140,40));
          btn.setName(nombre);
-         btn.setBackground(color_boton_menu);
-         btn.setForeground(color_letra_blanco);
-         btn.setFont(fuente_btn_menu);
+         btn.setBackground(COLOR_BOTON_MENU);
+         btn.setForeground(COLOR_LETRA_BLANCO);
+         btn.setFont(FUENTE_BTN_MENU);
          return btn;
      }
      
      
+     //Metodos para mover el componenete por la pantalla con el ratón
     private class EventoRaton extends MouseAdapter {
         public void mousePressed(MouseEvent me) {
             // Get x,y and store them
@@ -250,6 +270,9 @@ public class InitApp implements Configuraciones {
     }
     
     
+    /**
+     * Clase que usan los botones, maximizar, minimizar y cerrar
+     */
     private class OyenteButton implements ActionListener {
 
         @Override
@@ -284,7 +307,7 @@ public class InitApp implements Configuraciones {
             if (btn.getName().equalsIgnoreCase("btn_nombramiento")) {
                 lbl_titulo.setText("Nombramiento...");
                 lbl_mensaje.setText(" --- ");
-                CtrNombramiento ctr_nombramiento = new CtrNombramiento(lbl_mensaje, barra_ps, pn_left);
+                CtrNombramiento ctr_nombramiento = new CtrNombramiento();
                 try {
                    setPanel(ctr_nombramiento.getPnNombramiento());
                 } catch (NullPointerException ex) {
@@ -294,7 +317,7 @@ public class InitApp implements Configuraciones {
             } else if (btn.getName().equalsIgnoreCase("btn_libres")) {
                 lbl_titulo.setText("Libres...");
                 lbl_mensaje.setText(" --- ");
-                CtrLibres ctr_libres = new CtrLibres(lbl_mensaje, barra_ps);
+                CtrLibres ctr_libres = new CtrLibres();
                 try {
                    setPanel(ctr_libres.getPnLibres());
                 } catch (NullPointerException w) {
@@ -304,7 +327,7 @@ public class InitApp implements Configuraciones {
             } else if (btn.getName().equalsIgnoreCase("btn_calendario")) {
                 lbl_titulo.setText("Calendario...");
                 lbl_mensaje.setText(" --- ");
-                CtrCalendario ctr_calendario = new CtrCalendario(lbl_mensaje);
+                CtrCalendario ctr_calendario = new CtrCalendario();
                 try {
                     setPanel(ctr_calendario.getPnCalendario());
                 } catch (NullPointerException ex) {
@@ -314,14 +337,14 @@ public class InitApp implements Configuraciones {
             } else if (btn.getName().equalsIgnoreCase("btn_cambios_pedidos")) {
                 lbl_titulo.setText("Cambios - Pedidos...");
                 lbl_mensaje.setText(" --- ");
-                CtrCambiosPedidos ctr_cambios_pedidos = new CtrCambiosPedidos(lbl_mensaje);
+                CtrCambiosPedidos ctr_cambios_pedidos = new CtrCambiosPedidos();
                 setPanel(ctr_cambios_pedidos.getPnCambiosPedidos());
                 lbl_mensaje.setText(" --- ");
                 
             } else if (btn.getName().equalsIgnoreCase("btn_configuracion")) {
                 lbl_titulo.setText("Configuración...");
                 lbl_mensaje.setText(" --- ");
-                PnAbstract pn_configuracion = new PnConfiguracion(lbl_mensaje);
+                PnAbstract pn_configuracion = new PnConfiguracion();
                 setPanel(pn_configuracion);
             }
 

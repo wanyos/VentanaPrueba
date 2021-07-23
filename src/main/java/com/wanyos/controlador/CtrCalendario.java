@@ -4,6 +4,7 @@ package com.wanyos.controlador;
 import com.wanyos.modelo.CalculoLibres;
 import com.wanyos.modelo.dao.MySqlCalendarioDao;
 import com.wanyos.modelo.dao.MySqlManagerDao;
+import com.wanyos.vista.InitApp;
 import com.wanyos.vista.PnAbstract;
 import com.wanyos.vista.PnCalendario;
 import java.time.LocalDate;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JLabel;
 
 /**
  *
@@ -26,10 +26,10 @@ public class CtrCalendario {
     private List<LocalDate> lista_libres, lista_subgrupo, lista_sub_comunes;
     
     
-    public CtrCalendario(JLabel lbl_mensaje){
+    public CtrCalendario(){
         manager_dao = new MySqlManagerDao(); 
         mysql_calendario = manager_dao.getCalendarioDao();
-        pn_calendario = new PnCalendario(lbl_mensaje, this);
+        pn_calendario = new PnCalendario(this);
         if(mysql_calendario == null){
             pn_calendario.setMensajeLbl("Error no existe conexión con la BD...");
         }

@@ -23,9 +23,9 @@ public class BtnMenu extends JButton implements Configuraciones {
         //btn_guardar.setContentAreaFilled(false);
     
     public BtnMenu(String nombre){
-        this.setBackground(color_boton_menu);
-        this.setForeground(color_letra_blanco);
-        this.setFont(fuente_btn_menu);
+        this.setBackground(COLOR_BOTON_MENU);
+        this.setForeground(COLOR_LETRA_BLANCO);
+        this.setFont(FUENTE_BTN_MENU);
         this.setText(nombre);
         this.setFocusPainted(false);
         this.setCursor(new Cursor(HAND_CURSOR));

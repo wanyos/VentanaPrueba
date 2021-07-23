@@ -2,9 +2,9 @@
 package com.wanyos.vista;
 
 import com.wanyos.componentes.Configuraciones;
-import java.awt.Color;
+import java.awt.Component;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
@@ -12,38 +12,33 @@ import javax.swing.JPanel;
  * @author wanyos
  */
 public class PnAbstract extends JPanel implements Configuraciones {
-
     
-    protected final Color color_panel_frame = new Color(95,106,116);
-    protected final Color color_panel_right = new Color(95,106,116);
-    protected final Color color_txt_libre = new Color(50,219,16);
-    protected final Color color_txt_subgrupo = new Color(44,55,42);
-    protected final Color color_txt_sub1 = new Color(212,216,82);
-    protected final Color color_txt_sub2 = new Color(232,132,37);
-    protected final Color color_txt_vacacion = new Color(68,88,200);
-    protected final Color color_txt_pedido = new Color(118,23,154);
-    protected final Color color_txt_concedido = new Color(9,110,61);
-    protected final Color color_txt_libre_vacacion = new Color(23,154,128);
-    protected final Color color_txt_festivos = new Color(232, 51, 19);
-    protected JLabel lbl_mensaje;
-    protected ImageIcon img_azul_cambios = new ImageIcon(getClass().getResource("/img/cambios_azul32.png"));
-    protected ImageIcon img_gris_cambios = new ImageIcon(getClass().getResource("/img/cambios_gris32.png"));
-    protected ImageIcon img_azul_buscar = new ImageIcon(getClass().getResource("/img/buscar_azul32.png"));
-    protected ImageIcon img_gris_buscar = new ImageIcon(getClass().getResource("/img/buscar_gris32.png"));
-    protected ImageIcon img_azul_aceptar = new ImageIcon(getClass().getResource("/img/accept_azul32.png"));
-    protected ImageIcon img_gris_aceptar = new ImageIcon(getClass().getResource("/img/accept_gris32.png"));
+    protected ImageIcon img_azul_cambios = new ImageIcon(getClass().getResource(R_IMG_AZUL_CAMBIOS));
+    protected ImageIcon img_gris_cambios = new ImageIcon(getClass().getResource(R_IMG_GRIS_CAMBIOS));
+    protected ImageIcon img_azul_buscar = new ImageIcon(getClass().getResource(R_IMG_AZUL_BUSCAR));
+    protected ImageIcon img_gris_buscar = new ImageIcon(getClass().getResource(R_IMG_GRIS_BUSCAR));
+    protected ImageIcon img_azul_aceptar = new ImageIcon(getClass().getResource(R_IMG_AZUL_ACEPTAR));
+    protected ImageIcon img_gris_aceptar = new ImageIcon(getClass().getResource(R_IMG_GRIS_ACEPTAR));
     
     /**
      * Creates new form NewJPanel
      */
-    public PnAbstract(JLabel lbl_mensaje) {
+    public PnAbstract() {
         initComponents();
-        this.lbl_mensaje = lbl_mensaje;
         this.btn.setVisible(false);
     }
     
     public void setMensajeLbl(String mensaje){
-        this.lbl_mensaje.setText(mensaje);
+        InitApp.setMensajeLbl(mensaje);
+    }
+    
+    public static void setEnabledPnRight(boolean b){
+        Component [] c = pn_right.getComponents();
+        for(Component aux: c){
+            if(aux instanceof JButton){
+                aux.setEnabled(b);
+            }
+        }
     }
 
     
@@ -74,6 +69,6 @@ public class PnAbstract extends JPanel implements Configuraciones {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn;
     protected javax.swing.JPanel pn_center;
-    protected javax.swing.JPanel pn_right;
+    protected static javax.swing.JPanel pn_right;
     // End of variables declaration//GEN-END:variables
 }

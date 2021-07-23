@@ -13,8 +13,8 @@ public class TxtCalendario extends JTextField implements Configuraciones {
     
     public TxtCalendario(int ancho, Color c){
         this.setColumns(ancho);
-        this.setFont(fuente_letra);
-        this.setForeground(color_letra_blanco);
+        this.setFont(FUENTE_LETRA);
+        this.setForeground(COLOR_LETRA_BLANCO);
         this.setBackground(c);
         this.setHorizontalAlignment(JTextField.CENTER);
         this.setEditable(false);

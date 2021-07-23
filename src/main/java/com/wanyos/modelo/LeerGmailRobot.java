@@ -2,6 +2,7 @@ package com.wanyos.modelo;
 
 import com.wanyos.controlador.OyentePropiedadBarraPs;
 import com.wanyos.vista.Hilo;
+import com.wanyos.vista.InitApp;
 import java.io.IOException;
 import java.text.Normalizer;
 import java.time.LocalDate;
@@ -49,12 +50,9 @@ public class LeerGmailRobot extends SwingWorker<Map, Integer> {
         v = 0;
         this.ml = ml;
         this.hilo = h;
+        barra = InitApp.getBarraPs();
     }
     
-    
-    public void setBarra(JProgressBar b) {
-        this.barra = b;
-    }
 
     
     @Override
@@ -68,7 +66,6 @@ public class LeerGmailRobot extends SwingWorker<Map, Integer> {
                 new OyentePropiedadBarraPs(barra, total_correos);
                 
                 //recibe paneles y calendar, mientras este la barra visible los bloquea
-                hilo.setBarra(barra);
                 hilo.setMsm("Leyendo...");
                 hilo.start();
                 

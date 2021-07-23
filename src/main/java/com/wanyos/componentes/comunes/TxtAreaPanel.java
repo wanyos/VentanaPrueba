@@ -16,9 +16,9 @@ public class TxtAreaPanel extends JTextArea implements Configuraciones {
     public TxtAreaPanel(int f, int c) {
         this.setRows(f);
         this.setColumns(c);
-        this.setBackground(color_panel_central);
-        this.setForeground(color_letra_blanco);
-        this.setFont(fuente_letra);
+        this.setBackground(COLOR_PANEL_CENTRAL);
+        this.setForeground(COLOR_LETRA_BLANCO);
+        this.setFont(FUENTE_LETRA);
         this.setLineWrap(true);
     }
 

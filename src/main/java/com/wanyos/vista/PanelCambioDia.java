@@ -1,24 +1,20 @@
 
-package com.wanyos.componentes;
+package com.wanyos.vista;
 
-import static com.wanyos.componentes.Configuraciones.color_panel_central;
 import com.wanyos.componentes.comunes.BtnMenu;
 import com.wanyos.componentes.comunes.CalendarChooser;
 import com.wanyos.componentes.comunes.LblPanel;
 import com.wanyos.componentes.comunes.TxtAreaPanel;
 import com.wanyos.componentes.comunes.TxtPanel;
 import com.wanyos.modelo.dao.MySqlLibreGeneradoDao;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 
 /**
  *
  * @author wanyos
  */
-public class PanelCambioDia extends JPanel implements Configuraciones {
+public class PanelCambioDia extends PnAbstract {
     
     private MySqlLibreGeneradoDao mysql_libres;
     private JPanel pn_fecha, pn_dias, pn_conductor, pn_guardar;
@@ -26,11 +22,10 @@ public class PanelCambioDia extends JPanel implements Configuraciones {
     private ImageIcon img_azul_aceptar, img_gris_aceptar;
     
     
-    public PanelCambioDia(ImageIcon img_azul_aceptar, ImageIcon img_gris_aceptar){
-        //this.mysql_libres = mysql;
-        this.img_azul_aceptar = img_azul_aceptar;
-        this.img_gris_aceptar = img_gris_aceptar;
-        this.setBackground(color_panel_central);
+    public PanelCambioDia(){
+        this.img_azul_aceptar = new ImageIcon(getClass().getResource(R_IMG_AZUL_ACEPTAR));
+        this.img_gris_aceptar = new ImageIcon(getClass().getResource(R_IMG_GRIS_ACEPTAR));
+        this.setBackground(COLOR_PANEL_CENTRAL);
         BoxLayout b = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(b);
         setPaneles();
@@ -49,10 +44,10 @@ public class PanelCambioDia extends JPanel implements Configuraciones {
         pn_conductor = new JPanel();
         pn_guardar = new JPanel();
         
-        pn_fecha.setBackground(color_panel_central);
-        pn_dias.setBackground(color_panel_central);
-        pn_conductor.setBackground(color_panel_central);
-        pn_guardar.setBackground(color_panel_central);
+        pn_fecha.setBackground(COLOR_PANEL_CENTRAL);
+        pn_dias.setBackground(COLOR_PANEL_CENTRAL);
+        pn_conductor.setBackground(COLOR_PANEL_CENTRAL);
+        pn_guardar.setBackground(COLOR_PANEL_CENTRAL);
         
         pn_fecha.setMaximumSize(new Dimension(800,60));
         pn_dias.setMaximumSize(new Dimension(800,60));
@@ -122,7 +117,7 @@ public class PanelCambioDia extends JPanel implements Configuraciones {
         BtnMenu btn_guardar = new BtnMenu("Guardar");
         btn_guardar.setIcono(img_azul_aceptar);
         btn_guardar.setIconoFoco(img_gris_aceptar);
-        btn_guardar.setColorFoco(color_boton_menu, color_panel_central);
+        btn_guardar.setColorFoco(COLOR_BOTON_MENU, COLOR_PANEL_CENTRAL);
         
         pn_guardar.add(btn_guardar);
         pn_guardar.updateUI();

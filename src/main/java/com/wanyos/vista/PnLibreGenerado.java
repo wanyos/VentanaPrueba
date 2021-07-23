@@ -8,32 +8,12 @@ import com.wanyos.modelo.ModeloTabla;
 import com.wanyos.componentes.comunes.TxtPanel;
 import com.wanyos.controlador.CtrLibres;
 import com.wanyos.modelo.LibreGenerado;
-import java.awt.Color;
-import java.awt.Cursor;
 import static java.awt.Cursor.HAND_CURSOR;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
 /**
@@ -56,8 +36,8 @@ public class PnLibreGenerado extends PnAbstract {
     private JTextField txt_fecha_c, txt_fecha_d;
     
     
-     public PnLibreGenerado(JLabel lbl_mensaje, CtrLibres ctr_libres){
-        super(lbl_mensaje);
+     public PnLibreGenerado(CtrLibres ctr_libres){
+        super();
         this.ctr_libres = ctr_libres;
         crearComponent();
         addComponentRight();
@@ -100,7 +80,7 @@ public class PnLibreGenerado extends PnAbstract {
 
      private void setPnCtr(){
         pn_ctr = new JPanel();
-        pn_ctr.setBackground(super.color_panel_central);
+        pn_ctr.setBackground(super.COLOR_PANEL_CENTRAL);
         BoxLayout ly = new BoxLayout(pn_ctr, BoxLayout.Y_AXIS);
         pn_ctr.setLayout(ly);
         pn_ctr.setMaximumSize(new Dimension(800,600));
@@ -113,7 +93,7 @@ public class PnLibreGenerado extends PnAbstract {
      
      private void setPnSup(){
          pn_sup = new JPanel();
-         pn_sup.setBackground(super.color_panel_central);
+         pn_sup.setBackground(super.COLOR_PANEL_CENTRAL);
          FlowLayout fl = new FlowLayout();
          fl.setVgap(10);
          pn_sup.setLayout(fl);
@@ -130,7 +110,7 @@ public class PnLibreGenerado extends PnAbstract {
          cbo_tipo.addItem("Todos");
          cbo_tipo.addItemListener(new OyenteChange());
          chk_disponible = new JCheckBox();
-         chk_disponible.setBackground(super.color_panel_central);
+         chk_disponible.setBackground(super.COLOR_PANEL_CENTRAL);
          chk_disponible.addItemListener(new OyenteChange());
          
          pn_sup.add(lbl_tipo);
@@ -151,7 +131,7 @@ public class PnLibreGenerado extends PnAbstract {
             pn_ctr.remove(pn_tabla);
         }
         pn_tabla.setMaximumSize(new Dimension(800,550));
-        pn_tabla.setBackground(super.color_panel_central);
+        pn_tabla.setBackground(super.COLOR_PANEL_CENTRAL);
         pn_tabla.setLayout(new FlowLayout());
         setTable();
         pn_tabla.add(sr);
@@ -174,18 +154,18 @@ public class PnLibreGenerado extends PnAbstract {
          model.setLinesFields(false, tabla);
          model.setBorderColum(false, tabla);
          
-         model.setColorTable(super.color_panel_central, sr, tabla);
+         model.setColorTable(super.COLOR_PANEL_CENTRAL, sr, tabla);
          
          model.setSelectionMultiplesFiles(tabla, true);
          model.setColorSelection(new Color(23,180,20), tabla);
          model.deseleccionarFilaTabla(this, tabla);
 
-         model.setColorCabecera(super.color_panel_central, tabla);        
-         model.setColorTxtCabecera(color_letra_blanco, tabla);
-         model.setFontCabecera(fuente_letra, tabla);
+         model.setColorCabecera(super.COLOR_PANEL_CENTRAL, tabla);        
+         model.setColorTxtCabecera(COLOR_LETRA_BLANCO, tabla);
+         model.setFontCabecera(FUENTE_LETRA, tabla);
          
-         model.setColorTxtColumnas(color_letra_blanco, tabla);
-         model.setFontTxtColumnas(fuente_letra, tabla);
+         model.setColorTxtColumnas(COLOR_LETRA_BLANCO, tabla);
+         model.setFontTxtColumnas(FUENTE_LETRA, tabla);
          
          int alto_tabla = model.getRowCount() * 40;
          if(alto_tabla > 500){
@@ -203,7 +183,7 @@ public class PnLibreGenerado extends PnAbstract {
             pn_inf.removeAll();
             pn_ctr.remove(pn_inf);
         }
-        pn_inf.setBackground(super.color_panel_central);
+        pn_inf.setBackground(super.COLOR_PANEL_CENTRAL);
         pn_inf.setLayout(new GridLayout(2,5,8,8));
         pn_inf.setMaximumSize(new Dimension(800,50));
         
@@ -263,15 +243,15 @@ public class PnLibreGenerado extends PnAbstract {
         }
         
         pn_nuevo_cambio.setMaximumSize(new Dimension(800,300));
-        pn_nuevo_cambio.setBackground(super.color_panel_central);
+        pn_nuevo_cambio.setBackground(super.COLOR_PANEL_CENTRAL);
         
         JTextArea txt_area = new JTextArea();
         txt_area.setColumns(40);
         txt_area.setRows(10);
         txt_area.setEditable(false);
-        txt_area.setBackground(super.color_panel_central);
-        txt_area.setFont(fuente_letra);
-        txt_area.setForeground(color_letra_blanco);
+        txt_area.setBackground(super.COLOR_PANEL_CENTRAL);
+        txt_area.setFont(FUENTE_LETRA);
+        txt_area.setForeground(COLOR_LETRA_BLANCO);
       
         if(!lista_nuevos.isEmpty()){
             txt_area.append("Dias nuevos añadidos: \n");
@@ -308,7 +288,7 @@ public class PnLibreGenerado extends PnAbstract {
          boolean chk = this.chk_disponible.isSelected();
          List<LibreGenerado> listado = ctr_libres.getListadoLibres(tipo, chk);
          if(listado == null || listado.isEmpty()){
-             super.setMensajeLbl("---No existen libres...");
+             super.setMensajeLbl("No existen libres...");
              model = null;
          } else {
              model = new ModeloTabla(nombre_columnas, listado);
@@ -337,7 +317,7 @@ public class PnLibreGenerado extends PnAbstract {
         String f_d = this.txt_fecha_d.getText().trim();
         
         if(Pattern.matches(regexp, f_c) && Pattern.matches(regexp, f_d)){
-            super.setMensajeLbl("--Error no pueden existir fechas en fecha_cobro y fecha_disfrute...");
+            super.setMensajeLbl("Error no pueden existir fechas en fecha_cobro y fecha_disfrute...");
         } else {
             setEditar();
         }
@@ -367,7 +347,7 @@ public class PnLibreGenerado extends PnAbstract {
     }
      
     private void resetPn() {
-        setMensajeLbl("---");
+        super.setMensajeLbl(" --- ");
         if(pn_tabla != null){
             pn_ctr.remove(pn_tabla);
         }

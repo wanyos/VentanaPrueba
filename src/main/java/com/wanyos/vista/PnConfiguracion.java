@@ -9,8 +9,8 @@ import javax.swing.JLabel;
  */
 public class PnConfiguracion extends PnAbstract {
     
-    public PnConfiguracion(JLabel lbl_mensaje){
-        super(lbl_mensaje);
+    public PnConfiguracion(){
+        super();
     }
     
 }

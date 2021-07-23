@@ -22,9 +22,9 @@ public class CalendarChooser extends JDateChooser implements Configuraciones {
         this.setPreferredSize(new Dimension(140,25));
         editor = ((JTextFieldDateEditor)this.getDateEditor());
         editor.setHorizontalAlignment(0);
-        editor.setForeground(color_letra_blanco);
-        editor.setFont(fuente_letra);
-        editor.setBackground(color_panel_central);
+        editor.setForeground(COLOR_LETRA_BLANCO);
+        editor.setFont(FUENTE_LETRA);
+        editor.setBackground(COLOR_PANEL_CENTRAL);
     }
     
     public JTextFieldDateEditor getEditor(){

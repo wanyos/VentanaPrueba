@@ -1,5 +1,5 @@
 
-package com.wanyos.componentes;
+package com.wanyos.vista;
 
 import com.wanyos.componentes.comunes.BtnMenu;
 import com.wanyos.componentes.comunes.TxtPanel;
@@ -10,16 +10,8 @@ import com.wanyos.componentes.comunes.ComboBox;
 import com.wanyos.controlador.CtrCambiosPedidos;
 import com.wanyos.modelo.LibreGenerado;
 import com.wanyos.modelo.ModeloLista;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.LayoutManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -34,7 +26,7 @@ import java.util.regex.Pattern;
 /**
  * @author wanyos
  */
-public class PanelPedirDia extends JPanel implements Configuraciones {
+public class PanelPedirDia extends PnAbstract {
     
     private JPanel pn_pedido, pn_ofrecido, pn_boton;
     private CalendarChooser datechooser;
@@ -49,15 +41,15 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
     private BtnMenu btn_buscar;
     
     
-    public PanelPedirDia(ImageIcon img_azul_aceptar, ImageIcon img_gris_aceptar, ImageIcon img_azul_buscar, ImageIcon img_gris_buscar, CtrCambiosPedidos ctr_cambios_pedidos){
-        this.img_azul_aceptar = img_azul_aceptar;
-        this.img_gris_aceptar = img_gris_aceptar;
-        this.img_azul_buscar = img_azul_buscar;
-        this.img_gris_buscar = img_gris_buscar;
+    public PanelPedirDia(CtrCambiosPedidos ctr_cambios_pedidos){
+        this.img_azul_aceptar = new ImageIcon(getClass().getResource(R_IMG_AZUL_ACEPTAR));
+        this.img_gris_aceptar = new ImageIcon(getClass().getResource(R_IMG_GRIS_ACEPTAR));
+        this.img_azul_buscar = new ImageIcon(getClass().getResource(R_IMG_AZUL_BUSCAR));
+        this.img_gris_buscar = new ImageIcon(getClass().getResource(R_IMG_GRIS_BUSCAR));
         this.ctr_cambios_pedidos = ctr_cambios_pedidos;
         
         this.tipo_libres = ctr_cambios_pedidos.getListadoTipoDias();
-        this.setBackground(color_panel_central);
+        this.setBackground(COLOR_PANEL_CENTRAL);
         BoxLayout b = new BoxLayout(this, BoxLayout.Y_AXIS);
         this.setLayout(b);
         crearPaneles();
@@ -66,7 +58,7 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
         setPnBoton();
         setEnabledPn(pn_ofrecido, false);
         setEnabledPn(pn_boton, false);
-        ctr_cambios_pedidos.setLblMensaje(" --- ");
+        setMensajeLbl(" --- ");
         this.updateUI();
     }
     
@@ -104,9 +96,9 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
         pn_ofrecido = new JPanel();
         pn_boton = new JPanel();
 
-        pn_pedido.setBackground(color_panel_central);
-        pn_ofrecido.setBackground(color_panel_central);
-        pn_boton.setBackground(color_panel_central);
+        pn_pedido.setBackground(COLOR_PANEL_CENTRAL);
+        pn_ofrecido.setBackground(COLOR_PANEL_CENTRAL);
+        pn_boton.setBackground(COLOR_PANEL_CENTRAL);
 
         pn_pedido.setMaximumSize(new Dimension(800, 50));
         pn_ofrecido.setMaximumSize(new Dimension(800, 150));
@@ -133,7 +125,7 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
         btn_buscar.addActionListener(new OyenteButtonBuscar());
         btn_buscar.setIcono(img_azul_buscar);
         btn_buscar.setIconoFoco(img_gris_buscar);
-        btn_buscar.setColorFoco(color_boton_menu, color_panel_central);
+        btn_buscar.setColorFoco(COLOR_BOTON_MENU, COLOR_PANEL_CENTRAL);
         enabledBtn(btn_buscar, false);
         
         pn_pedido.add(lbl_pedido);
@@ -145,7 +137,7 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
     
     private void enabledBtn(BtnMenu btn, boolean b){
         btn.setEnabled(b);
-        btn.isEnabled(b, color_boton_menu, color_panel_central);
+        btn.isEnabled(b, COLOR_BOTON_MENU, COLOR_PANEL_CENTRAL);
     }
     
     private void setPnOfrecido(){
@@ -184,7 +176,7 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
         btn_guardar.addActionListener(new OyenteButtonGuardar());
         btn_guardar.setIcono(img_azul_aceptar);
         btn_guardar.setIconoFoco(img_gris_aceptar);
-        btn_guardar.setColorFoco(color_boton_menu, color_panel_central);
+        btn_guardar.setColorFoco(COLOR_BOTON_MENU, COLOR_PANEL_CENTRAL);
         pn_boton.add(btn_guardar);
         this.add(pn_boton);
     }
@@ -224,7 +216,7 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
             for (Component aux : c) {
                 aux.setEnabled(bloquear);
                 if (aux instanceof BtnMenu) {
-                    ((BtnMenu) aux).isEnabled(bloquear, color_boton_menu, color_panel_central);
+                    ((BtnMenu) aux).isEnabled(bloquear, COLOR_BOTON_MENU, COLOR_PANEL_CENTRAL);
                 }
             }
         }
@@ -238,7 +230,7 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
             //desbloquear panel y bloquear datechooser 
             setEnabledPn(pn_pedido, false);
             setEnabledPn(pn_ofrecido, true);
-            ctr_cambios_pedidos.setLblMensaje(" --- ");
+            super.setMensajeLbl(" --- ");
         }
     }
     
@@ -300,7 +292,6 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
                 txt_ofrecido.setText("");
                 setList();
             }
-
         }
     }
     
@@ -317,7 +308,6 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
                 setEnabledPn(pn_boton, true);
             }
         }
-        
     }
     
     
@@ -327,7 +317,6 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
         public void actionPerformed(ActionEvent e) {
             setDiaPedido();
         }
-        
     }
     
     private class OyenteButtonGuardar implements ActionListener {
@@ -353,7 +342,7 @@ public class PanelPedirDia extends JPanel implements Configuraciones {
             //se añade la peticion a la tabla de dias pedidos
             boolean correcto = ctr_cambios_pedidos.setPedirDia(fecha_peticion, fecha_pedido, dia_seleccionado);
             if (correcto) {
-                ctr_cambios_pedidos.setLblMensaje("--Dia pedido guardado en tabla dia_pedido...");
+                setMensajeLbl("Dia pedido guardado en tabla dia_pedido...");
                 resetPanel();
             }
         }

@@ -7,13 +7,13 @@ import com.wanyos.modelo.dao.MySqlCambiosDao;
 import com.wanyos.modelo.dao.MySqlLibreGeneradoDao;
 import com.wanyos.modelo.dao.MySqlManagerDao;
 import com.wanyos.modelo.dao.MySqlPedidoDao;
+import com.wanyos.vista.InitApp;
 import com.wanyos.vista.PnAbstract;
 import com.wanyos.vista.PnCambiosPedidos;
 import java.time.LocalDate;
 import static java.time.temporal.ChronoUnit.DAYS;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.JLabel;
 
 /**
  *
@@ -28,8 +28,8 @@ public class CtrCambiosPedidos {
     private MySqlLibreGeneradoDao mysql_libre_generado;
     
     
-    public CtrCambiosPedidos(JLabel lbl_mensaje){
-        pn_cambios_pedidos = new PnCambiosPedidos(lbl_mensaje, this);
+    public CtrCambiosPedidos(){
+        pn_cambios_pedidos = new PnCambiosPedidos(this);
         manager_dao = new MySqlManagerDao();
         mysql_cambios = manager_dao.getCambiosDao();
         mysql_pedidos = manager_dao.getPedidosDao();
@@ -79,36 +79,30 @@ public class CtrCambiosPedidos {
         LocalDate fecha_ahora = LocalDate.now();
         long dias = DAYS.between(fecha_ahora, fecha_pedido);
         if(dias <= 5){
-            pn_cambios_pedidos.setMensajeLbl("--El día pedido debe ser inferior a 5 dias siguientes...");
+            pn_cambios_pedidos.setMensajeLbl("El día pedido debe ser inferior a 5 dias siguientes...");
             return false;
         } else {
             
             if(mysql_libre_generado.getDiaLibreDisponible(manager_dao.getConexion(), fecha_pedido)){
-                pn_cambios_pedidos.setMensajeLbl("--El día pedido es un día libre o subgrupo...");
+                pn_cambios_pedidos.setMensajeLbl("El día pedido es un día libre o subgrupo...");
                 return false;
             } else if(mysql_libre_generado.getDiaVacacion(manager_dao.getConexion(), fecha_pedido)){
-                pn_cambios_pedidos.setMensajeLbl("--El día pedido es un día de vacación...");
+                pn_cambios_pedidos.setMensajeLbl("El día pedido es un día de vacación...");
                 return false;
             } else if(mysql_libre_generado.getDiaBaja(manager_dao.getConexion(), fecha_pedido)){
-                pn_cambios_pedidos.setMensajeLbl("--El día pedido es un día de baja...");
+                pn_cambios_pedidos.setMensajeLbl("El día pedido es un día de baja...");
                 return false;
             } else if(mysql_libre_generado.getDiaCambio(manager_dao.getConexion(), fecha_pedido)){
-                pn_cambios_pedidos.setMensajeLbl("--El día pedido es un día ya cambiado...");
+                pn_cambios_pedidos.setMensajeLbl("El día pedido es un día ya cambiado...");
                 return false;
             } else if(mysql_libre_generado.getDiaPedido(manager_dao.getConexion(), fecha_pedido)){
-                pn_cambios_pedidos.setMensajeLbl("--El día pedido es un día que ya se ha pedido...");
+                pn_cambios_pedidos.setMensajeLbl("El día pedido es un día que ya se ha pedido...");
                 return false;
             }
         }
         return true;
     }
     
-    /**
-     * Lo utiliza el PnPedirDia para resetear el lbl
-     */
-    public void setLblMensaje(String mensaje){
-        pn_cambios_pedidos.setMensajeLbl(mensaje);
-    }
     
     
     public boolean setPedirDia(LocalDate fecha, LocalDate dia_pedido, LibreGenerado dia_seleccionado) {
