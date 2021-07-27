@@ -1,6 +1,7 @@
 
 package com.wanyos.modelo;
 
+import com.wanyos.vista.InitApp;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -33,7 +34,7 @@ public class UltimaFechaCorreo implements Serializable {
             out.writeObject(fecha);
             out.close();
         } catch (IOException ex) {
-            System.out.println("!!!Error escritura archivo...");
+            InitApp.setMensajeLbl("!!!Error escritura archivo setGuardarFecha() UltimaFechaCorreo... "+ex.getMessage());
         }
     }
      
@@ -45,12 +46,12 @@ public class UltimaFechaCorreo implements Serializable {
             in = new ObjectInputStream(new FileInputStream(archivo_fecha));
             fecha = (LocalDate) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("!!!Error lectura archivo fecha correo...");
+            InitApp.setMensajeLbl("!!!Error lectura archivo fecha correo getUltimaFecha() UltimaFechaCorreo... "+e.getMessage());
         } finally {
             try {
                 in.close();
             } catch (IOException ex) {
-                System.out.println(ex.getMessage());
+                InitApp.setMensajeLbl("Error cerrar archivo UltimaFechaCorreo... "+ex.getMessage());
             }
         }
         return fecha;

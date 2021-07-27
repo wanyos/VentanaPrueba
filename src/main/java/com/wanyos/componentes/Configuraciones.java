@@ -31,6 +31,14 @@ public interface Configuraciones {
     final Color COLOR_TXT_FESTIVOS = new Color(232, 51, 19);
     
     //rutas iconos botones
+    String R_IMG_MIN_AZUL = "/img/min_azul32.png";
+    String R_IMG_MIN_GRIS = "/img/min_gris32.png";
+    String R_IMG_MAX_AZUL = "/img/max_azul32.png";
+    String R_IMG_MAX_GRIS = "/img/max_gris32.png";
+    String R_IMG_CLOSE_AZUL = "/img/close_azul32.png";
+    String R_IMG_CLOSE_GRIS = "/img/close_gris32.png";
+    
+    
     String R_IMG_AZUL_CAMBIOS = "/img/cambios_azul32.png";
     String R_IMG_GRIS_CAMBIOS = "/img/cambios_gris32.png";
     String R_IMG_AZUL_BUSCAR = "/img/buscar_azul32.png";

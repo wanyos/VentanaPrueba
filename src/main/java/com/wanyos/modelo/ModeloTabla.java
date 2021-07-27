@@ -1,6 +1,7 @@
 
 package com.wanyos.modelo;
 
+import com.wanyos.vista.InitApp;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -8,10 +9,9 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.border.*;
 import javax.swing.JLabel;
@@ -93,18 +93,36 @@ public class ModeloTabla<T> extends AbstractTableModel {
                         field.setAccessible(true); // You might want to set modifier to public first.
                         Object value = field.get(aux);
                         if (value != null) {
-                            datos[f][c++] = value.toString();
+                            if(value instanceof LocalDate){
+                                datos[f][c++] = getValorLocalDate((LocalDate) value);
+                            } else {
+                                datos[f][c++] = value.toString();
+                            }
                         }
                     }
                 }
             }
         } catch (ClassNotFoundException | NullPointerException ex) {
-            Logger.getLogger(ModeloTabla.class.getName()).log(Level.SEVERE, null, ex);
+            InitApp.setMensajeLbl("Error convertObject() ModeloTabla... "+ex.getMessage());
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(ModeloTabla.class.getName()).log(Level.SEVERE, null, ex);
+            InitApp.setMensajeLbl("Error convertObject() ModeloTabla... "+ex.getMessage());
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(ModeloTabla.class.getName()).log(Level.SEVERE, null, ex);
+            InitApp.setMensajeLbl("Error convertObject() ModeloTabla... "+ex.getMessage());
         }
+    }
+    
+    /**
+     * Convierte fechas del tipo 0001-01-01 en " --- "
+     * La base de datos necesita una valor de fecha correcto
+     * @param f
+     * @return 
+     */
+    private String getValorLocalDate(LocalDate f){
+        String valor_fecha = f.toString();
+        if(f.getYear() < 1900){
+            return " --- ";
+        }
+        return valor_fecha;
     }
     
     

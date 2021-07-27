@@ -15,15 +15,15 @@ import java.util.logging.Logger;
 public class Conexion {
     
     private Connection cx;
+    private final String NOMBRE_BD = "emt";
+    
+    public Conexion() throws SQLException {
+        cx = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + NOMBRE_BD + "?serverTimezone=UTC", "wanyos", "1712@fll");
+    }
     
     
-    public Connection getConexion(String bd){
-        try {
-            cx = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + bd+"?serverTimezone=UTC", "wanyos", "1712@fll");
-        } catch (SQLException ex) {
-            
-        }
-        return this.cx;
+    public Connection getConexion(){
+        return cx;
     }
     
     

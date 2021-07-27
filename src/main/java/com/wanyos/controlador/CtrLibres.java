@@ -37,17 +37,13 @@ public class CtrLibres {
     private List<LibreGenerado> lista_nuevos, lista_cambios;
     
     
-//    public CtrLibres(){}
     
-    public CtrLibres() {
+    public CtrLibres(MySqlManagerDao manager_dao) {
         this.barra = InitApp.getBarraPs();
-        manager_dao = new MySqlManagerDao();
+        this.manager_dao = manager_dao;
         mysql_libre_generado = manager_dao.getLibreDao();
         mysql_dia_pedido = manager_dao.getPedidosDao();
         pn_libres = new PnLibreGenerado(this);
-        if (mysql_libre_generado == null) {
-            pn_libres.setMensajeLbl("Error no existe conexión con la BD...");
-        }
     }
     
      public PnAbstract getPnLibres(){
@@ -242,7 +238,7 @@ public class CtrLibres {
             } catch (Exception ex) {
                 pn_libres.setMensajeLbl("No se ha podido leer el archivo libres...");
             }
-            pn_libres.setMensajeLbl(" --- ");
+            pn_libres.setMensajeLbl("");
             return lista_dias_limpia;
         }
         
@@ -447,7 +443,7 @@ public class CtrLibres {
             } catch (InterruptedException ex) {
                 pn_libres.setMensajeLbl("Error hilo copias tabla generado...");
             }
-            pn_libres.setMensajeLbl(" --- ");
+            pn_libres.setMensajeLbl("");
             return correcto;
         }
         

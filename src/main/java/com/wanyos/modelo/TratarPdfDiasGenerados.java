@@ -1,10 +1,9 @@
 
 package com.wanyos.modelo;
 
+import com.wanyos.vista.InitApp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -278,7 +277,7 @@ public class TratarPdfDiasGenerados implements Runnable {
             datos = lpdf.getDatosPdf();
             setDatosPdf(datos);
         } catch (Exception ex) {
-            Logger.getLogger(TratarPdfDiasGenerados.class.getName()).log(Level.SEVERE, null, ex);
+            InitApp.setMensajeLbl("Erro run() TratarPdfDiasGenerados... "+ex.getMessage());
         }
     }
 

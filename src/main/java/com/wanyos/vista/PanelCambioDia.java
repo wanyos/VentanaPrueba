@@ -1,6 +1,7 @@
 
 package com.wanyos.vista;
 
+import com.wanyos.componentes.Configuraciones;
 import com.wanyos.componentes.comunes.BtnMenu;
 import com.wanyos.componentes.comunes.CalendarChooser;
 import com.wanyos.componentes.comunes.LblPanel;
@@ -14,7 +15,7 @@ import javax.swing.*;
  *
  * @author wanyos
  */
-public class PanelCambioDia extends PnAbstract {
+public class PanelCambioDia extends JPanel implements Configuraciones {
     
     private MySqlLibreGeneradoDao mysql_libres;
     private JPanel pn_fecha, pn_dias, pn_conductor, pn_guardar;

@@ -1,11 +1,8 @@
 
 package com.wanyos.modelo.dao;
 
-import com.wanyos.modelo.Turno;
 import java.sql.Connection;
 import java.time.LocalDate;
-import java.util.List;
-import com.wanyos.dao.ServicioDAO;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

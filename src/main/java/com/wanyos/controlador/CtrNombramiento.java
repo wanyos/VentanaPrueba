@@ -6,7 +6,6 @@ import com.wanyos.modelo.ModeloLista;
 import com.wanyos.modelo.dao.MySqlManagerDao;
 import com.wanyos.modelo.dao.MySqlServicioDao;
 import com.wanyos.vista.Hilo;
-import com.wanyos.vista.InitApp;
 import com.wanyos.vista.PnAbstract;
 import com.wanyos.vista.PnNombramiento;
 import java.time.LocalDate;
@@ -18,17 +17,12 @@ import java.time.LocalDate;
 public class CtrNombramiento {
     
     private PnAbstract pn_nombramiento;
-    private MySqlManagerDao manager_dao;
     private MySqlServicioDao mysql_servicio;
     
     
-    public CtrNombramiento(){
+    public CtrNombramiento(MySqlManagerDao manager_dao){
         pn_nombramiento = new PnNombramiento(this);
-        manager_dao = new MySqlManagerDao();
         mysql_servicio = manager_dao.getServicioDao();
-        if(mysql_servicio == null){
-            pn_nombramiento.setMensajeLbl("Error no existe conexión con la BD...");
-        }
     }
     
     

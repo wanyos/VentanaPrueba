@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -325,39 +327,43 @@ public class MySqlLibreGeneradoDao extends MySqlAbstract implements Runnable {
     
     
     public void actualizarCopiaTablaGenerado() {
-        Conexion conexion = new Conexion();
-        Connection c = conexion.getConexion("emt");
-        Statement st = null;
-        ResultSet rs = null;
-
-        PreparedStatement ps = null;
         try {
-            c.setAutoCommit(false);
-            st = c.createStatement();
-            rs = st.executeQuery("show tables like 'copia0_generado'");
-            if (rs.next()) {
-                //si existe copia0 existe copia1
-                st.execute("drop table copia0_generado");
-                st.execute("alter table copia1_generado rename copia0_generado");
-                st.execute("create table copia1_generado select * from generado");
-            } else {
-                //no existe copia0 probar si existe copia1
-                rs = st.executeQuery("show tables like 'copia1_generado'");
+            Conexion conexion = new Conexion();
+            Connection c = conexion.getConexion();
+            Statement st = null;
+            ResultSet rs = null;
+            
+            PreparedStatement ps = null;
+            try {
+                c.setAutoCommit(false);
+                st = c.createStatement();
+                rs = st.executeQuery("show tables like 'copia0_generado'");
                 if (rs.next()) {
+                    //si existe copia0 existe copia1
+                    st.execute("drop table copia0_generado");
                     st.execute("alter table copia1_generado rename copia0_generado");
                     st.execute("create table copia1_generado select * from generado");
                 } else {
-                    //no existe copia1 ni copia0, crear solo copia1
-                    st.execute("create table copia1_generado select * from generado");
+                    //no existe copia0 probar si existe copia1
+                    rs = st.executeQuery("show tables like 'copia1_generado'");
+                    if (rs.next()) {
+                        st.execute("alter table copia1_generado rename copia0_generado");
+                        st.execute("create table copia1_generado select * from generado");
+                    } else {
+                        //no existe copia1 ni copia0, crear solo copia1
+                        st.execute("create table copia1_generado select * from generado");
+                    }
                 }
+                c.commit();
+                terminado = "correcto";
+            } catch (SQLException | NullPointerException e) {
+                terminado = "incorrecto";
+                System.out.println(e.getMessage());
+            } finally {
+                closeObjetos(null, ps);
             }
-            c.commit();
-            terminado = "correcto";
-        } catch (SQLException | NullPointerException e) {
-            terminado = "incorrecto";
-            System.out.println(e.getMessage());
-        } finally {
-            closeObjetos(null, ps);
+        } catch (SQLException ex) {
+            Logger.getLogger(MySqlLibreGeneradoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -1,7 +1,9 @@
 
 package com.wanyos.modelo.dao;
 
+import com.wanyos.vista.InitApp;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  *
@@ -16,21 +18,34 @@ public class MySqlManagerDao {
     private MySqlLibreGeneradoDao mysql_libre;
     private MySqlCambiosDao mysql_cambios;
     private MySqlPedidoDao mysql_pedidos;
-    private final Conexion conexion;
-    private final String NOMBRE_BD = "emt";
+    private static Conexion conexion;
+    private static MySqlManagerDao manager_dao;
     
+    private MySqlManagerDao(){
+        
+    }
     
-    public MySqlManagerDao(){
-        conexion = new Conexion();
+    public static MySqlManagerDao getManagerDao(){
+        if(manager_dao == null){
+            try {
+                conexion = new Conexion();
+                if(conexion != null){
+                    manager_dao = new MySqlManagerDao();
+                }
+            } catch (SQLException ex) {
+                InitApp.setMensajeLbl("Error conexión BD... "+ex.getMessage());
+            }
+        }
+        return manager_dao;
     }
     
     public Connection getConexion(){
-        return cx;
+        return cx = conexion.getConexion();
     }
     
     public MySqlServicioDao getServicioDao() {
         if (mysql_servicio == null) {
-            this.cx = conexion.getConexion(NOMBRE_BD); 
+            this.cx = conexion.getConexion(); 
             if (cx != null) {
                 return new MySqlServicioDao(cx);
             }
@@ -40,7 +55,7 @@ public class MySqlManagerDao {
 
     public MySqlCalendarioDao getCalendarioDao(){
         if (mysql_calendario == null) {
-            this.cx = conexion.getConexion(NOMBRE_BD); 
+            this.cx = conexion.getConexion(); 
             if (cx != null) {
                 return new MySqlCalendarioDao(cx);
             }
@@ -50,7 +65,7 @@ public class MySqlManagerDao {
     
     public MySqlLibreGeneradoDao getLibreDao(){
         if (mysql_libre == null) {
-            this.cx = conexion.getConexion(NOMBRE_BD); 
+            this.cx = conexion.getConexion(); 
             if (cx != null) {
                 return new MySqlLibreGeneradoDao(cx);
             }
@@ -60,7 +75,7 @@ public class MySqlManagerDao {
     
     public MySqlCambiosDao getCambiosDao(){
         if (mysql_cambios == null) {
-            this.cx = conexion.getConexion(NOMBRE_BD);
+            this.cx = conexion.getConexion();
             if (cx != null) {
                 return new MySqlCambiosDao(cx);
             }
@@ -70,7 +85,7 @@ public class MySqlManagerDao {
     
     public MySqlPedidoDao getPedidosDao(){
         if (mysql_pedidos == null) {
-            this.cx = conexion.getConexion(NOMBRE_BD); 
+            this.cx = conexion.getConexion(); 
             if (cx != null) {
                 return new MySqlPedidoDao(cx);
             }

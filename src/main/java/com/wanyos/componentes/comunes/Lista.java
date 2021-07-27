@@ -1,18 +1,16 @@
 
 package com.wanyos.componentes.comunes;
 
+import com.wanyos.componentes.Configuraciones;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import static com.wanyos.componentes.Configuraciones.COLOR_PANEL_CENTRAL;
-import static com.wanyos.componentes.Configuraciones.COLOR_LETRA_BLANCO;
-import static com.wanyos.componentes.Configuraciones.FUENTE_LETRA;
 
 /**
  * @author wanyos
  */
-public class Lista extends JList {
+public class Lista extends JList implements Configuraciones {
     
     
     public Lista(){

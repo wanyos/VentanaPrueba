@@ -35,7 +35,7 @@ public class PnNombramiento extends PnAbstract {
     public PnNombramiento(CtrNombramiento ctr) {
         super();
         this.ctr_nombramiento = ctr;
-        super.setMensajeLbl(" --- ");
+        super.setMensajeLbl("");
         crearComponent();
         crearPnFecha();
         addComponentRight();
@@ -203,9 +203,7 @@ public class PnNombramiento extends PnAbstract {
     }
 
     /**
-     * Busca el turno y si existe muestra el horario Se usa para crear un nuevo
-     * servicio en linea
-     *
+     * Busca el turno y si existe muestra el horario Se usa para crear un nuevo servicio en linea
      * @param pn_horario_turno
      */
     private void setPnHorarioTurno(String[] datos_turno) {
@@ -221,7 +219,7 @@ public class PnNombramiento extends PnAbstract {
         this.setListenerBtnGuardarServicio();
         this.btn_guardar_servicio.setName("btn_guardar_servicio");
 
-        super.setMensajeLbl(" --- ");
+        super.setMensajeLbl("");
         super.pn_center.add(pn_horario_turno);
         super.pn_center.add(pn_nota);
         super.pn_center.add(pn_btn_guardar);
@@ -335,7 +333,7 @@ public class PnNombramiento extends PnAbstract {
         if (op == 0) {
             boolean c = ctr_nombramiento.setEliminarDatos(fecha);
             if (c) {
-                super.setMensajeLbl("!!!--Datos eliminados... ");
+                super.setMensajeLbl("!!!Datos eliminados... ");
                 this.setNuevoServicio();
             } else {
                 super.setMensajeLbl("Error los datos no se han eliminado...");
@@ -377,7 +375,6 @@ public class PnNombramiento extends PnAbstract {
     /**
      * Recoge los datos del puesto de otro servicio Tanto si existe como si se
      * crea uno nuevo En la base de datos si el puesto ya existe no lo creara
-     *
      * @return
      */
     private String[] getHorarioOtroServicio() {
@@ -448,6 +445,7 @@ public class PnNombramiento extends PnAbstract {
         return lista_pn;
     }
 
+    
     private void limpiarTxtHorario() {
         List<JTextField> lista_txt = pn_nombramiento.getTxtCajasHorario();
         for (JTextField aux : lista_txt) {
@@ -491,7 +489,7 @@ public class PnNombramiento extends PnAbstract {
             if (obj instanceof JButton) {
                 setFecha();
 
-                setMensajeLbl(" --- ");
+                setMensajeLbl("");
                 switch (((JButton) obj).getName()) {
 
                     //botones menu lateral
@@ -540,7 +538,6 @@ public class PnNombramiento extends PnAbstract {
         /**
          * Comprueba que la fecha esta disponible, no es libre, vacación, etc Se
          * usa para crear o buscar un servicio
-         *
          * @param crear
          */
         private void eventoComprobarFecha(boolean crear) {
@@ -606,7 +603,7 @@ public class PnNombramiento extends PnAbstract {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            setMensajeLbl(" --- ");
+            setMensajeLbl("");
         }
     }
 
@@ -617,7 +614,7 @@ public class PnNombramiento extends PnAbstract {
             JTextField obj = (JTextField) e.getSource();
             if (obj.getText().length() > 0) {
                 obj.setText("");
-                setMensajeLbl(" --- ");
+                setMensajeLbl("");
                 obj.setForeground(COLOR_LETRA_BLANCO);
             }
         }
@@ -650,7 +647,7 @@ public class PnNombramiento extends PnAbstract {
             if (obj.getText().length() > 0) {
                 obj.setText("");
                 pn_nombramiento.getJTxtDescripcion().setText("");
-                setMensajeLbl(" --- ");
+                setMensajeLbl("");
                 obj.setForeground(COLOR_LETRA_BLANCO);
             }
         }
@@ -684,7 +681,7 @@ public class PnNombramiento extends PnAbstract {
             if (obj.getText().length() > 0) {
                 obj.setText("");
                 pn_nombramiento.getJTxtLinea().setText("");
-                setMensajeLbl(" --- ");
+                setMensajeLbl("");
                 obj.setForeground(COLOR_LETRA_BLANCO);
             }
         }

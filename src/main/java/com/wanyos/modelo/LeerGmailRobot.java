@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -33,7 +31,7 @@ import javax.swing.SwingWorker;
 public class LeerGmailRobot extends SwingWorker<Map, Integer> {
 
     private final String CUENTA = "juanjor99@gmail.com";
-    private final String PASSWORD = "8980fky13923";
+    private final String PASSWORD = "8980Fky13923";
     private final String CARPETA_LEER = "robot";  //carpeta de gmail que se lee
     private Map<LocalDate, String[]> map;
     private LocalDate fecha_limit;
@@ -42,6 +40,8 @@ public class LeerGmailRobot extends SwingWorker<Map, Integer> {
     private JProgressBar barra;
     private ModeloLista ml;
     private Hilo hilo;
+    
+    
     
     public LeerGmailRobot(boolean todos, LocalDate fecha, ModeloLista ml, Hilo h) {
         map = new HashMap<>();
@@ -81,7 +81,7 @@ public class LeerGmailRobot extends SwingWorker<Map, Integer> {
                 }
             }
         } catch (MessagingException | IOException ex) {
-            System.out.println("!!!Error no existen correos..." + ex.getMessage());
+            InitApp.setMensajeLbl("!!!Error no existen mensakes... "+ex.getMessage());
         }
 
         leerCorreos(lista_mensaje);
@@ -105,9 +105,9 @@ public class LeerGmailRobot extends SwingWorker<Map, Integer> {
             ml.setMap(map);
             barra.setVisible(false);
         } catch (InterruptedException ex) {
-            Logger.getLogger(LeerGmailRobot.class.getName()).log(Level.SEVERE, null, ex);
+            InitApp.setMensajeLbl("Error metodo done() LeerGmail... "+ex.getMessage());
         } catch (ExecutionException ex) {
-            Logger.getLogger(LeerGmailRobot.class.getName()).log(Level.SEVERE, null, ex);
+            InitApp.setMensajeLbl("Error metodo done() LeerGmail... "+ex.getMessage());
         }
     }
         
@@ -127,9 +127,9 @@ public class LeerGmailRobot extends SwingWorker<Map, Integer> {
             inbox = store.getFolder(CARPETA_LEER);
             inbox.open(Folder.READ_ONLY);
         } catch (NoSuchProviderException ex) {
-            System.out.println("!!!Error lectura gmail..." + ex.getMessage());
+            InitApp.setMensajeLbl("!!!Error lectura gmail getFolder() LeerGmail..." + ex.getMessage());
         } catch (MessagingException ex) {
-            System.out.println("!!!Error lectura gmail..." + ex.getMessage());
+            InitApp.setMensajeLbl("!!!Error lectura gmail getFolder() LeerGmail..." + ex.getMessage());
         }
         return inbox;
     }

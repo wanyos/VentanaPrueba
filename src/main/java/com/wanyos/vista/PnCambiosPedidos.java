@@ -29,7 +29,7 @@ public class PnCambiosPedidos extends PnAbstract {
         pn_ctr = new JPanel();
         BoxLayout b = new BoxLayout(pn_ctr, BoxLayout.Y_AXIS);
         pn_ctr.setLayout(b);
-        pn_ctr.setBackground(super.COLOR_PANEL_CENTRAL);
+        pn_ctr.setBackground(COLOR_PANEL_CENTRAL);
         
         setPnSup();
         pn_ctr.add(pn_sup);
@@ -38,7 +38,7 @@ public class PnCambiosPedidos extends PnAbstract {
     
     private void setPnSup(){
         pn_sup = new JPanel();
-        pn_sup.setBackground(super.COLOR_PANEL_CENTRAL);
+        pn_sup.setBackground(COLOR_PANEL_CENTRAL);
         FlowLayout fl = new FlowLayout();
         fl.setVgap(20);
         fl.setHgap(20);
@@ -79,14 +79,12 @@ public class PnCambiosPedidos extends PnAbstract {
     
     private void setPnCambiarDia(){
         pn_cambio = new PanelCambioDia();
-        pn_cambio.updateUI();
         pn_ctr.add(pn_cambio);
         pn_ctr.updateUI();
     }
     
     private void setPnPedirDia(){
         pn_pedir = new PanelPedirDia(ctr_cambios_pedidos);
-        pn_pedir.updateUI();
         pn_ctr.add(pn_pedir);
         pn_ctr.updateUI();
     }

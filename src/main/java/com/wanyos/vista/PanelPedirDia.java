@@ -1,6 +1,7 @@
 
 package com.wanyos.vista;
 
+import com.wanyos.componentes.Configuraciones;
 import com.wanyos.componentes.comunes.BtnMenu;
 import com.wanyos.componentes.comunes.TxtPanel;
 import com.wanyos.componentes.comunes.Lista;
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
 /**
  * @author wanyos
  */
-public class PanelPedirDia extends PnAbstract {
+public class PanelPedirDia extends JPanel implements Configuraciones {
     
     private JPanel pn_pedido, pn_ofrecido, pn_boton;
     private CalendarChooser datechooser;
@@ -58,7 +59,7 @@ public class PanelPedirDia extends PnAbstract {
         setPnBoton();
         setEnabledPn(pn_ofrecido, false);
         setEnabledPn(pn_boton, false);
-        setMensajeLbl(" --- ");
+        InitApp.setMensajeLbl("");
         this.updateUI();
     }
     
@@ -230,7 +231,7 @@ public class PanelPedirDia extends PnAbstract {
             //desbloquear panel y bloquear datechooser 
             setEnabledPn(pn_pedido, false);
             setEnabledPn(pn_ofrecido, true);
-            super.setMensajeLbl(" --- ");
+            InitApp.setMensajeLbl("");
         }
     }
     
@@ -342,7 +343,7 @@ public class PanelPedirDia extends PnAbstract {
             //se añade la peticion a la tabla de dias pedidos
             boolean correcto = ctr_cambios_pedidos.setPedirDia(fecha_peticion, fecha_pedido, dia_seleccionado);
             if (correcto) {
-                setMensajeLbl("Dia pedido guardado en tabla dia_pedido...");
+                InitApp.setMensajeLbl("Dia pedido guardado en tabla dia_pedido...");
                 resetPanel();
             }
         }

@@ -21,6 +21,7 @@ public class LibreGenerado {
         this.fecha_disfrute = fecha_disfrute;
     }
     
+   
     public int getId(){
         return this.id;
     }

@@ -115,7 +115,7 @@ public class PnLibreGenerado extends PnAbstract {
          
          pn_sup.add(lbl_tipo);
          pn_sup.add(cbo_tipo);
-         pn_sup.add(new LblPanel(" --- "));
+         pn_sup.add(new LblPanel(""));
          
          pn_sup.add(lbl_disponible);
          pn_sup.add(chk_disponible);
@@ -347,7 +347,7 @@ public class PnLibreGenerado extends PnAbstract {
     }
      
     private void resetPn() {
-        super.setMensajeLbl(" --- ");
+        super.setMensajeLbl("");
         if(pn_tabla != null){
             pn_ctr.remove(pn_tabla);
         }

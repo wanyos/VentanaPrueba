@@ -7,7 +7,6 @@ import com.wanyos.modelo.dao.MySqlCambiosDao;
 import com.wanyos.modelo.dao.MySqlLibreGeneradoDao;
 import com.wanyos.modelo.dao.MySqlManagerDao;
 import com.wanyos.modelo.dao.MySqlPedidoDao;
-import com.wanyos.vista.InitApp;
 import com.wanyos.vista.PnAbstract;
 import com.wanyos.vista.PnCambiosPedidos;
 import java.time.LocalDate;
@@ -28,9 +27,9 @@ public class CtrCambiosPedidos {
     private MySqlLibreGeneradoDao mysql_libre_generado;
     
     
-    public CtrCambiosPedidos(){
+    public CtrCambiosPedidos(MySqlManagerDao manager_dao){
+        this.manager_dao = manager_dao;
         pn_cambios_pedidos = new PnCambiosPedidos(this);
-        manager_dao = new MySqlManagerDao();
         mysql_cambios = manager_dao.getCambiosDao();
         mysql_pedidos = manager_dao.getPedidosDao();
         mysql_libre_generado = manager_dao.getLibreDao();
@@ -83,7 +82,7 @@ public class CtrCambiosPedidos {
             return false;
         } else {
             
-            if(mysql_libre_generado.getDiaLibreDisponible(manager_dao.getConexion(), fecha_pedido)){
+            if(mysql_libre_generado.getDiaLibreDisponible(manager_dao.getConexion(), fecha_pedido)){              //revisar este acceso al manager
                 pn_cambios_pedidos.setMensajeLbl("El día pedido es un día libre o subgrupo...");
                 return false;
             } else if(mysql_libre_generado.getDiaVacacion(manager_dao.getConexion(), fecha_pedido)){
