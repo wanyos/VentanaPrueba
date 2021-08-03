@@ -4,6 +4,7 @@ package com.wanyos.modelo.dao;
 import com.wanyos.vista.InitApp;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -18,77 +19,115 @@ public class MySqlManagerDao {
     private MySqlLibreGeneradoDao mysql_libre;
     private MySqlCambiosDao mysql_cambios;
     private MySqlPedidoDao mysql_pedidos;
-    private static Conexion conexion;
+    private Conexion conexion;
     private static MySqlManagerDao manager_dao;
+    private Thread t;
+    private WorkerManagerDao k;
     
-    private MySqlManagerDao(){
-        
+    
+      private MySqlManagerDao() {
+        k = new WorkerManagerDao();
+        k.execute();
     }
-    
-    public static MySqlManagerDao getManagerDao(){
-        if(manager_dao == null){
-            try {
-                conexion = new Conexion();
-                if(conexion != null){
-                    manager_dao = new MySqlManagerDao();
-                }
-            } catch (SQLException ex) {
-                InitApp.setMensajeLbl("Error conexión BD... "+ex.getMessage());
-            }
+      
+        
+      public static void setManagerDao() {
+        if (manager_dao == null) {
+            manager_dao = new MySqlManagerDao();
         }
+    }
+      
+     public static MySqlManagerDao getManagerDao() {
         return manager_dao;
     }
+     
+    
+   
+    private void getCx() {
+            t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        conexion = new Conexion();
+                    } catch (SQLException ex) {
+                        InitApp.setMensajeLbl("No hay conxión con BD... " + ex.getMessage());
+                    }
+                }
+            });
+            t.start();
+    }
+    
+   
+    private class WorkerManagerDao extends SwingWorker<Void, Integer> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            String b = "";
+            getCx();
+            while (t.isAlive()) {
+                b = b.concat("-");
+                if (b.length() > 10) {
+                    b = "";
+                }
+                Thread.sleep(40);
+                InitApp.setMensajeLbl(b);
+            }
+            return null;
+        }
+
+        @Override
+        public void done() {
+            if (conexion != null) {
+                cx = conexion.getConexion();
+                InitApp.setEnabledPn(true);
+                InitApp.setMensajeLbl("Conexión BD con éxito... ");
+            } else {
+                InitApp.setMensajeLbl("No hay conxión con BD... ");
+            }
+        }
+    }
+   
     
     public Connection getConexion(){
-        return cx = conexion.getConexion();
+        return cx;
     }
     
     public MySqlServicioDao getServicioDao() {
-        if (mysql_servicio == null) {
-            this.cx = conexion.getConexion(); 
-            if (cx != null) {
-                return new MySqlServicioDao(cx);
-            }
+        if(conexion != null){
+            cx = conexion.getConexion();
+            mysql_servicio = new MySqlServicioDao(cx);
         }
         return mysql_servicio;
     }
 
     public MySqlCalendarioDao getCalendarioDao(){
-        if (mysql_calendario == null) {
-            this.cx = conexion.getConexion(); 
-            if (cx != null) {
-                return new MySqlCalendarioDao(cx);
-            }
+        if(conexion != null){
+            cx = conexion.getConexion();
+            mysql_calendario = new MySqlCalendarioDao(cx);
         }
         return mysql_calendario;
     }
     
     public MySqlLibreGeneradoDao getLibreDao(){
-        if (mysql_libre == null) {
-            this.cx = conexion.getConexion(); 
-            if (cx != null) {
-                return new MySqlLibreGeneradoDao(cx);
-            }
+        if(conexion != null){
+            cx = conexion.getConexion();
+            mysql_libre = new MySqlLibreGeneradoDao(cx);
         }
         return mysql_libre;
     }
     
     public MySqlCambiosDao getCambiosDao(){
-        if (mysql_cambios == null) {
-            this.cx = conexion.getConexion();
-            if (cx != null) {
-                return new MySqlCambiosDao(cx);
-            }
+        if(conexion != null){
+            cx = conexion.getConexion();
+            mysql_cambios = new MySqlCambiosDao(cx);
         }
         return mysql_cambios;
     }
     
     public MySqlPedidoDao getPedidosDao(){
-        if (mysql_pedidos == null) {
-            this.cx = conexion.getConexion(); 
-            if (cx != null) {
-                return new MySqlPedidoDao(cx);
-            }
+        if(conexion != null){
+            cx = conexion.getConexion();
+            mysql_pedidos = new MySqlPedidoDao(cx);
         }
         return mysql_pedidos;
     }

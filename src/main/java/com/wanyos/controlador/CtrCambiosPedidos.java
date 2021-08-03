@@ -35,10 +35,13 @@ public class CtrCambiosPedidos {
         mysql_libre_generado = manager_dao.getLibreDao();
     }
     
-    public PnAbstract getPnCambiosPedidos(){
-        return pn_cambios_pedidos;
+    public PnAbstract getPnCambiosPedidos() {
+        if (mysql_cambios != null && mysql_pedidos != null && mysql_libre_generado != null) {
+            return pn_cambios_pedidos;
+        }
+        return null;
     }
-    
+
     public String[] getListadoTipoDias(){
         String [] lista = mysql_libre_generado.getTipoLibres();
         return lista;

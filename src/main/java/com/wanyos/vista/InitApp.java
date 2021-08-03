@@ -33,7 +33,7 @@ public class InitApp implements Configuraciones {
     private static JProgressBar barra_ps;
     private MySqlManagerDao manager_dao;
     private ImageIcon img_azul_min, img_gris_min, img_azul_max, img_gris_max, img_azul_close, img_gris_close; 
-    
+    private static boolean bd_correct;
 
     
     public InitApp() {
@@ -54,9 +54,23 @@ public class InitApp implements Configuraciones {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        
+        bd_correct = false;
+        setEnabledPn(false);
+        setBD();
+    }
+    
+    
+    private void setBD() {
+        if (manager_dao == null) {
+            MySqlManagerDao.setManagerDao();
+        }
     }
 
+    
+    
     public void setPanel(JPanel p) {
+        lbl_mensaje.setText(" --- ");
         this.pn_ctr.removeAll();
         this.pn_ctr.add(p);
         this.pn_ctr.updateUI();
@@ -64,7 +78,6 @@ public class InitApp implements Configuraciones {
 
     /**
      * Bloquea/Desbloquea los botones del panel left
-     *
      * @param b
      */
     public static void setEnabledPn(boolean b) {
@@ -80,9 +93,6 @@ public class InitApp implements Configuraciones {
         return barra_ps;
     }
 
-    public static void setVisibleBarra(boolean b) {
-        barra_ps.setVisible(b);
-    }
 
     public static void setMensajeLbl(String m) {
         lbl_mensaje.setText(" --- " + m);
@@ -157,7 +167,6 @@ public class InitApp implements Configuraciones {
 
     /**
      * Crea los botones minimizar, maximizar y cerrar
-     *
      * @param img_azul
      * @param img_gris
      * @return
@@ -194,7 +203,7 @@ public class InitApp implements Configuraciones {
         btn_calendario.addActionListener(new OyenteBtnCalendario());
         btn_cambios_pedidos.addActionListener(new OyenteBtnCambiosPedidos());
         btn_configuracion.addActionListener(new OyenteBtnConfiguracion());
-
+        
         pn_left.add(new JLabel("   "));
         pn_left.add(btn_nombramiento);
         pn_left.add(new JLabel("   "));
@@ -272,7 +281,6 @@ public class InitApp implements Configuraciones {
         public void mouseDragged(MouseEvent me) {
             frame.setLocation(frame.getLocation().x + me.getX() - pX, frame.getLocation().y + me.getY() - pY);
         }
-
     }
 
     /**
@@ -303,35 +311,37 @@ public class InitApp implements Configuraciones {
     }
     
     
+    
     private class OyenteBtnNombramiento implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             lbl_titulo.setText("Nombramiento...");
-            if (getManagerDao() != null) {
-                CtrNombramiento ctr_nombramiento = new CtrNombramiento(getManagerDao());
-                try {
+            try {
+                if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
+                    CtrNombramiento ctr_nombramiento = new CtrNombramiento(manager_dao);
                     setPanel(ctr_nombramiento.getPnNombramiento());
-                } catch (NullPointerException ex) {
-                    lbl_mensaje.setText(" --- Error crear panel CtrNombramiento... " + ex.getMessage());
                 }
+            } catch (NullPointerException ex) {
+                lbl_mensaje.setText(" --- Error crear panel CtrNombramiento... " + ex.getMessage());
             }
         }
-
     }
+    
+    
     
     private class OyenteBtnLibres implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             lbl_titulo.setText("Libres...");
-            if (getManagerDao() != null) {
-                CtrLibres ctr_libres = new CtrLibres(getManagerDao());
-                try {
+            try {
+                if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
+                    CtrLibres ctr_libres = new CtrLibres(manager_dao);
                     setPanel(ctr_libres.getPnLibres());
-                } catch (NullPointerException ex) {
-                    lbl_mensaje.setText(" --- Error crear panel CtrLibres... " + ex.getMessage());
                 }
+            } catch (NullPointerException ex) {
+                lbl_mensaje.setText(" --- Error crear panel CtrLibres... " + ex.getMessage());
             }
         }
     }
@@ -341,13 +351,13 @@ public class InitApp implements Configuraciones {
         @Override
         public void actionPerformed(ActionEvent e) {
             lbl_titulo.setText("Calendario...");
-            if (getManagerDao() != null) {
-                CtrCalendario ctr_calendario = new CtrCalendario(getManagerDao());
-                try {
+            try {
+                if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
+                    CtrCalendario ctr_calendario = new CtrCalendario(manager_dao);
                     setPanel(ctr_calendario.getPnCalendario());
-                } catch (NullPointerException ex) {
-                    lbl_mensaje.setText(" --- Error crear panel CtrCalendario... " + ex.getMessage());
                 }
+            } catch (NullPointerException ex) {
+                lbl_mensaje.setText(" --- Error crear panel CtrCalendario... " + ex.getMessage());
             }
         }
     }
@@ -357,13 +367,13 @@ public class InitApp implements Configuraciones {
         @Override
         public void actionPerformed(ActionEvent e) {
             lbl_titulo.setText("Cambios - Pedidos...");
-            if (getManagerDao() != null) {
-                CtrCambiosPedidos ctr_cambios_pedidos = new CtrCambiosPedidos(getManagerDao());
-                try {
+            try {
+                if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
+                    CtrCambiosPedidos ctr_cambios_pedidos = new CtrCambiosPedidos(manager_dao);
                     setPanel(ctr_cambios_pedidos.getPnCambiosPedidos());
-                } catch (NullPointerException ex) {
-                    lbl_mensaje.setText(" --- Error crear panel CtrCambiosPedidos... " + ex.getMessage());
                 }
+            } catch (NullPointerException ex) {
+                lbl_mensaje.setText(" --- Error crear panel CtrCambiosPedidos... " + ex.getMessage());
             }
         }
     }
@@ -373,7 +383,7 @@ public class InitApp implements Configuraciones {
         @Override
         public void actionPerformed(ActionEvent e) {
             lbl_titulo.setText("Configuración...");
-            if (getManagerDao() != null) {
+            if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
                 PnAbstract pn_configuracion = new PnConfiguracion();
                 try {
                     setPanel(pn_configuracion);
@@ -385,14 +395,8 @@ public class InitApp implements Configuraciones {
     }
     
     
-    private MySqlManagerDao getManagerDao(){
-        lbl_mensaje.setText(" --- ");
-        manager_dao = MySqlManagerDao.getManagerDao();
-        if(manager_dao == null){
-            lbl_mensaje.setText(" --- No existe ManagerDao o conexión BD...");
-        }
-        return manager_dao;
-    }
+    
+   
     
 
    
