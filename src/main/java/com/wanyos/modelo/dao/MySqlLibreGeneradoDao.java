@@ -43,47 +43,6 @@ public class MySqlLibreGeneradoDao extends MySqlAbstract implements Runnable {
         return this.terminado;
     }
     
-//    public String[][] getListadoLibres(String tipo, boolean todos){
-//        String [][] listado = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        
-//        try {
-//            
-//            if (tipo.equalsIgnoreCase("todos")) {
-//                ps = cx.prepareStatement(mysql_todos_libres, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-//            } else {
-//                if (!todos) {
-//                    ps = cx.prepareStatement(mysql_libres_tipo, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-//                } else {
-//                    ps = cx.prepareStatement(mysql_libres_tipo_disponibles, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-//                }
-//                 ps.setString(1, tipo);
-//            }
-//            rs = ps.executeQuery();
-//
-//            rs.last();
-//            int l = rs.getRow();
-//            rs.beforeFirst();
-//            listado = new String[l][5];
-//            int f = 0;
-//            while(rs.next()){
-//                int c = 0;
-//                listado[f][c++] = rs.getString("id");
-//                listado[f][c++] = rs.getString("tipo");
-//                listado[f][c++] = rs.getString("fecha");
-//                listado[f][c++] = getFormatFecha(rs.getString("fecha_cobro"));
-//                listado[f][c++] = getFormatFecha(rs.getString("fecha_disfrute"));
-//                f++;
-//            }
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        } finally {
-//            closeObjetos(rs, ps);
-//        }
-//        return listado;
-//    }
     
      public List<LibreGenerado> getListadoLibres(String tipo, boolean todos){
         List<LibreGenerado> listado = new ArrayList<>();
@@ -328,8 +287,8 @@ public class MySqlLibreGeneradoDao extends MySqlAbstract implements Runnable {
     
     public void actualizarCopiaTablaGenerado() {
         try {
-            Conexion conexion = new Conexion();
-            Connection c = conexion.getConexion();
+            //Conexion conexion = new Conexion();
+            Connection c = Conexion.getConexion();
             Statement st = null;
             ResultSet rs = null;
             

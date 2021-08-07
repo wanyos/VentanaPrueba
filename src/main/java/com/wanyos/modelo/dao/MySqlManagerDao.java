@@ -19,7 +19,6 @@ public class MySqlManagerDao {
     private MySqlLibreGeneradoDao mysql_libre;
     private MySqlCambiosDao mysql_cambios;
     private MySqlPedidoDao mysql_pedidos;
-    private Conexion conexion;
     private static MySqlManagerDao manager_dao;
     private Thread t;
     private WorkerManagerDao k;
@@ -44,24 +43,24 @@ public class MySqlManagerDao {
     
    
     private void getCx() {
-            t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        conexion = new Conexion();
-                    } catch (SQLException ex) {
-                        InitApp.setMensajeLbl("No hay conxión con BD... " + ex.getMessage());
-                    }
+        t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    cx = Conexion.getConexion();
+                } catch (SQLException ex) {
+                    InitApp.setMensajeLbl("No hay conxión con BD metodo getCx()... " + ex.getMessage());
                 }
-            });
-            t.start();
+            }
+        });
+        t.start();
     }
     
    
-    private class WorkerManagerDao extends SwingWorker<Void, Integer> {
+    private class WorkerManagerDao extends SwingWorker<Boolean, Integer> {
 
         @Override
-        protected Void doInBackground() throws Exception {
+        protected Boolean doInBackground() throws Exception {
             String b = "";
             getCx();
             while (t.isAlive()) {
@@ -77,15 +76,17 @@ public class MySqlManagerDao {
 
         @Override
         public void done() {
-            if (conexion != null) {
-                cx = conexion.getConexion();
+            if (cx != null) {
                 InitApp.setEnabledPn(true);
                 InitApp.setMensajeLbl("Conexión BD con éxito... ");
             } else {
                 InitApp.setMensajeLbl("No hay conxión con BD... ");
+                Conexion.iniciarServicioMySql();
             }
         }
     }
+    
+    
    
     
     public Connection getConexion(){
@@ -93,40 +94,35 @@ public class MySqlManagerDao {
     }
     
     public MySqlServicioDao getServicioDao() {
-        if(conexion != null){
-            cx = conexion.getConexion();
+        if(cx != null){
             mysql_servicio = new MySqlServicioDao(cx);
         }
         return mysql_servicio;
     }
 
     public MySqlCalendarioDao getCalendarioDao(){
-        if(conexion != null){
-            cx = conexion.getConexion();
+        if(cx != null){
             mysql_calendario = new MySqlCalendarioDao(cx);
         }
         return mysql_calendario;
     }
     
     public MySqlLibreGeneradoDao getLibreDao(){
-        if(conexion != null){
-            cx = conexion.getConexion();
+        if(cx != null){
             mysql_libre = new MySqlLibreGeneradoDao(cx);
         }
         return mysql_libre;
     }
     
     public MySqlCambiosDao getCambiosDao(){
-        if(conexion != null){
-            cx = conexion.getConexion();
+        if(cx != null){
             mysql_cambios = new MySqlCambiosDao(cx);
         }
         return mysql_cambios;
     }
     
     public MySqlPedidoDao getPedidosDao(){
-        if(conexion != null){
-            cx = conexion.getConexion();
+        if(cx != null){
             mysql_pedidos = new MySqlPedidoDao(cx);
         }
         return mysql_pedidos;

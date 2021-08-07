@@ -33,8 +33,7 @@ public class InitApp implements Configuraciones {
     private static JProgressBar barra_ps;
     private MySqlManagerDao manager_dao;
     private ImageIcon img_azul_min, img_gris_min, img_azul_max, img_gris_max, img_azul_close, img_gris_close; 
-    private static boolean bd_correct;
-
+    
     
     public InitApp() {
         frame = new JFrame();
@@ -54,8 +53,7 @@ public class InitApp implements Configuraciones {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        
-        bd_correct = false;
+       
         setEnabledPn(false);
         setBD();
     }
@@ -64,9 +62,11 @@ public class InitApp implements Configuraciones {
     private void setBD() {
         if (manager_dao == null) {
             MySqlManagerDao.setManagerDao();
+            manager_dao = MySqlManagerDao.getManagerDao();
         }
     }
-
+    
+    
     
     
     public void setPanel(JPanel p) {
@@ -321,9 +321,11 @@ public class InitApp implements Configuraciones {
                 if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
                     CtrNombramiento ctr_nombramiento = new CtrNombramiento(manager_dao);
                     setPanel(ctr_nombramiento.getPnNombramiento());
+                } else {
+                    lbl_mensaje.setText("Error no existe ManagerDao ... ");
                 }
             } catch (NullPointerException ex) {
-                lbl_mensaje.setText(" --- Error crear panel CtrNombramiento... " + ex.getMessage());
+                lbl_mensaje.setText("Error crear panel CtrNombramiento... " + ex.getMessage());
             }
         }
     }
@@ -339,6 +341,8 @@ public class InitApp implements Configuraciones {
                 if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
                     CtrLibres ctr_libres = new CtrLibres(manager_dao);
                     setPanel(ctr_libres.getPnLibres());
+                } else {
+                    lbl_mensaje.setText("Error no existe ManagerDao ... ");
                 }
             } catch (NullPointerException ex) {
                 lbl_mensaje.setText(" --- Error crear panel CtrLibres... " + ex.getMessage());
@@ -355,6 +359,8 @@ public class InitApp implements Configuraciones {
                 if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
                     CtrCalendario ctr_calendario = new CtrCalendario(manager_dao);
                     setPanel(ctr_calendario.getPnCalendario());
+                } else {
+                    lbl_mensaje.setText("Error no existe ManagerDao ... ");
                 }
             } catch (NullPointerException ex) {
                 lbl_mensaje.setText(" --- Error crear panel CtrCalendario... " + ex.getMessage());
@@ -371,6 +377,8 @@ public class InitApp implements Configuraciones {
                 if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
                     CtrCambiosPedidos ctr_cambios_pedidos = new CtrCambiosPedidos(manager_dao);
                     setPanel(ctr_cambios_pedidos.getPnCambiosPedidos());
+                } else {
+                    lbl_mensaje.setText("Error no existe ManagerDao ... ");
                 }
             } catch (NullPointerException ex) {
                 lbl_mensaje.setText(" --- Error crear panel CtrCambiosPedidos... " + ex.getMessage());
@@ -383,16 +391,19 @@ public class InitApp implements Configuraciones {
         @Override
         public void actionPerformed(ActionEvent e) {
             lbl_titulo.setText("Configuración...");
-            if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
-                PnAbstract pn_configuracion = new PnConfiguracion();
-                try {
+            try {
+                if ((manager_dao = MySqlManagerDao.getManagerDao()) != null) {
+                    PnAbstract pn_configuracion = new PnConfiguracion();
                     setPanel(pn_configuracion);
-                } catch (NullPointerException ex) {
-                    lbl_mensaje.setText(" --- Error crear panel CtrConfiguracion... " + ex.getMessage());
+                } else {
+                     lbl_mensaje.setText("Error no existe ManagerDao ... ");
                 }
+            } catch (NullPointerException ex) {
+                lbl_mensaje.setText("Error crear panel CtrConfiguracion... " + ex.getMessage());
             }
         }
     }
+    
     
     
     
