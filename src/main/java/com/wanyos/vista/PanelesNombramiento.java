@@ -25,7 +25,7 @@ public class PanelesNombramiento implements Configuraciones {
     private JTextField txt_turno, txt_linea, txt_puesto, txt_descripcion;
     private List<JTextField> cajas_horario;
     private ComboBox cbo_descripcion;
-    private BtnMenu btn_buscar_turno, btn_guardar_servicio;
+    private BtnMenu btn_buscar_turno, btn_guardar_servicio, btn_guardar_correos;
     private TxtAreaPanel txt_area_nota;
     private ImageIcon img_azul_buscar, img_gris_buscar, img_azul_aceptar, img_gris_aceptar;
     private Lista lista;
@@ -98,10 +98,15 @@ public class PanelesNombramiento implements Configuraciones {
         return this.lista;
     }
     
-    
     public void setVisibleBtnGuardar(boolean b){
         this.btn_guardar_servicio.setVisible(b);
     }
+    
+    public void setVisibleBtnGuardarCorreos(boolean b){
+        this.btn_guardar_correos.setVisible(b);
+    }
+    
+    
     
     public void setResetCampos() {
         if (txt_turno != null) {
@@ -158,6 +163,10 @@ public class PanelesNombramiento implements Configuraciones {
     
     public JTextField getJTxtDescripcion(){
         return this.txt_descripcion;
+    }
+    
+    public BtnMenu getBtnGuardarCorreos(){
+        return this.btn_guardar_correos;
     }
     
     
@@ -376,21 +385,32 @@ public class PanelesNombramiento implements Configuraciones {
     public JPanel getPnLeerCorreo(){
         JPanel pn_leer_correo = new JPanel();
         pn_leer_correo.setName("pn_leer_correo");
-        Border white_border = BorderFactory.createLineBorder(Color.WHITE);
-        pn_leer_correo.setBorder(BorderFactory.createTitledBorder​(white_border, "Turnos leidos...", TitledBorder.LEFT, 0, FUENTE_LETRA_LBL, COLOR_LETRA_BLANCO));
-        
+        pn_leer_correo.setLayout(new BoxLayout(pn_leer_correo, BoxLayout.Y_AXIS));
         pn_leer_correo.setMaximumSize(new Dimension(850,450));
         pn_leer_correo.setBackground(COLOR_PANEL_CENTRAL);
-        pn_leer_correo.setLayout(new FlowLayout());
+        
+        JPanel pn_lista = new JPanel();
+        pn_lista.setMaximumSize(new Dimension(850,400));
+        pn_lista.setBackground(COLOR_PANEL_CENTRAL);
+        Border white_border = BorderFactory.createLineBorder(Color.WHITE);
+        pn_lista.setBorder(BorderFactory.createTitledBorder​(white_border, "Turnos leidos...", TitledBorder.LEFT, 0, FUENTE_LETRA_LBL, COLOR_LETRA_BLANCO));
         
         lista = new Lista();
         Font fuente = new Font("Bookman Old Style",2,12);
         lista.setFont(fuente);
         lista.setAlinear(1);
-       
-        pn_leer_correo.add(lista);
-        pn_leer_correo.updateUI();
+        pn_lista.add(lista);
         
+        JPanel pn_btn = new JPanel();
+        pn_btn.setMaximumSize(new Dimension(850,50));
+        pn_btn.setBackground(COLOR_PANEL_CENTRAL);
+        btn_guardar_correos = new BtnMenu("Guardar Correos");
+        this.setVisibleBtnGuardarCorreos(false);
+        pn_btn.add(btn_guardar_correos);
+        
+        pn_leer_correo.add(pn_lista);
+        pn_leer_correo.add(pn_btn);
+        pn_leer_correo.updateUI();
         return pn_leer_correo;
     }
 

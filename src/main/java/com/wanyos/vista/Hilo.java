@@ -10,11 +10,13 @@ public class Hilo extends Thread {
 
     private JProgressBar barra;
     private CalendarChooser calendar;
+    private PanelesNombramiento pn;
     private String msm;
 
-    public Hilo(CalendarChooser calendar) {
+    public Hilo(CalendarChooser calendar, PanelesNombramiento pn) {
         this.barra = InitApp.getBarraPs();
         this.calendar = calendar;
+        this.pn = pn;
     }
 
     
@@ -26,17 +28,20 @@ public class Hilo extends Thread {
     
     @Override
     public void run() {
-        if(barra.isVisible()){
+        if (barra.isVisible()) {
             InitApp.setEnabledPn(false);
             calendar.setEnabled(false);
             PnAbstract.setEnabledPnRight(false);
+            pn.setVisibleBtnGuardarCorreos(false);
         }
-        while(barra.isVisible()){
+        while (barra.isVisible()) {
             InitApp.setMensajeLbl(msm);
         }
         InitApp.setEnabledPn(true);
         calendar.setEnabled(true);
         PnAbstract.setEnabledPnRight(true);
+        pn.setVisibleBtnGuardarCorreos(true);
+        
         
         InitApp.setMensajeLbl("Fin lectura");
     }

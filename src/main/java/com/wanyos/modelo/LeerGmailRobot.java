@@ -53,6 +53,11 @@ public class LeerGmailRobot extends SwingWorker<Map, Integer> {
         barra = InitApp.getBarraPs();
     }
     
+    
+    public Map<LocalDate, String[]> getMap(){
+        return this.map;
+    }
+    
 
     
     @Override

@@ -9,6 +9,7 @@ import com.wanyos.vista.Hilo;
 import com.wanyos.vista.PnAbstract;
 import com.wanyos.vista.PnNombramiento;
 import java.time.LocalDate;
+import java.util.Map;
 
 /**
  *
@@ -18,6 +19,7 @@ public class CtrNombramiento {
     
     private PnAbstract pn_nombramiento;
     private MySqlServicioDao mysql_servicio;
+    private LeerGmailRobot lgr;
     
     
     public CtrNombramiento(MySqlManagerDao manager_dao){
@@ -174,7 +176,7 @@ public class CtrNombramiento {
     
     
     public void getCorreosLeidos(boolean todos, LocalDate desde_fecha, ModeloLista ml, Hilo h) {
-         LeerGmailRobot lgr = new LeerGmailRobot(todos, desde_fecha, ml, h);
+         lgr = new LeerGmailRobot(todos, desde_fecha, ml, h);
             lgr.execute();   
     }
     
@@ -185,6 +187,21 @@ public class CtrNombramiento {
             return true;
         }
         comprobarMensajeMysql();
+        return false;
+    }
+    
+    public boolean setTurnosLeidosCorreos(){
+        Map<LocalDate, String[]> aux = lgr.getMap();
+        if(!aux.isEmpty()){
+           for(Map.Entry<LocalDate, String[]> m : aux.entrySet()){
+               LocalDate fecha = m.getKey();
+               String [] datos = m.getValue();
+               String turno = datos[0];
+               String linea = datos[1];
+               this.setGuardarDatosTurno(fecha, turno, linea, "");
+           }
+           return true;
+        }
         return false;
     }
     

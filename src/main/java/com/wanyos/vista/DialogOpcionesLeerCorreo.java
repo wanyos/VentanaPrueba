@@ -177,7 +177,9 @@ public class DialogOpcionesLeerCorreo extends JDialog implements Configuraciones
         btn_cancelar.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                 addWindowListener(new DialogOyente());
+                 //addWindowListener(new DialogOyente());
+                 setEvento("cancelar");
+                 dispose();
             }
             
         });

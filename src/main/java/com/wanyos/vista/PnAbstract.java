@@ -38,6 +38,10 @@ public class PnAbstract extends JPanel implements Configuraciones {
             if(aux instanceof JButton){
                 aux.setEnabled(b);
             }
+//            String n = aux.getName();
+//            if(n != null && b && (aux.getName().equals("btn_eliminar") || aux.getName().equals("btn_editar"))){
+//                aux.setEnabled(!b);
+//            }
         }
     }
 

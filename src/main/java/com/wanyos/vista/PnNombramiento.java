@@ -1,6 +1,9 @@
 package com.wanyos.vista;
 
-import com.wanyos.componentes.comunes.*;
+import com.wanyos.componentes.comunes.LblPanel;
+import com.wanyos.componentes.comunes.CalendarChooser;
+import com.wanyos.componentes.comunes.ComboBox;
+import com.wanyos.componentes.comunes.BtnMenu;
 import com.wanyos.controlador.CtrNombramiento;
 import com.wanyos.modelo.ModeloLista;
 import java.awt.*;
@@ -392,16 +395,16 @@ public class PnNombramiento extends PnAbstract {
         this.crearPnFecha();
         DialogOpcionesLeerCorreo dialog_opciones = new DialogOpcionesLeerCorreo();
         String evento = dialog_opciones.getEvento();
-        
+
         if (evento.equals("aceptar")) {
             LocalDate desde_fecha = dialog_opciones.getFecha();
             boolean todos = dialog_opciones.getLeerTodosCorreos();
             super.pn_center.add(pn_nombramiento.getPnLeerCorreo());
             ModeloLista ml = new ModeloLista();
             pn_nombramiento.getLista().setModel(ml);
-            
-            Hilo h = new Hilo(calendar); //hilo que bloquea los componentes
+            Hilo h = new Hilo(calendar, pn_nombramiento); //hilo que bloquea los componentes
             ctr_nombramiento.getCorreosLeidos(todos, desde_fecha, ml, h);
+            pn_nombramiento.getBtnGuardarCorreos().addActionListener(new OyenteBtnGuardarCorreos());
         }
         super.pn_center.updateUI();
     }
@@ -670,7 +673,6 @@ public class PnNombramiento extends PnAbstract {
                 }
             }
         }
-
     }
 
     private class OyenteFocoTurno implements FocusListener {
@@ -700,6 +702,24 @@ public class PnNombramiento extends PnAbstract {
                 }
             }
         }
+    }
+    
+    private class OyenteBtnGuardarCorreos implements ActionListener {
+       
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            boolean c = ctr_nombramiento.setTurnosLeidosCorreos();
+            pn_center.removeAll();
+            pn_center.updateUI();
+            crearPnFecha();
+            if (c) {
+                setMensajeLbl("Turnos leidos correos guardados en base datos...");
+            } else {
+                setMensajeLbl("No existen turnos a guardar o existen errores...");
+            }
+        }
+        
+        
     }
 
 }
